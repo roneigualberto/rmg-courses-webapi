@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.example.rmg.domain.category.messages.CategoryMessages.*;
+
 
 @RequiredArgsConstructor
 public class CreateCategoryUseCase implements UseCase<CreateCategoryInput, CreateCategoryOutput> {
@@ -20,12 +22,7 @@ public class CreateCategoryUseCase implements UseCase<CreateCategoryInput, Creat
     @Override
     public CreateCategoryOutput execute(CreateCategoryInput input) {
 
-
-        Optional<Category> optCategory = categoryPersistence.findByName(input.getName());
-
-        if (optCategory.isPresent()) {
-            throw new DomainException("Category name already exists");
-        }
+        validateInput(input);
 
         Category category = Category.builder()
                 .id(UUID.randomUUID())
@@ -42,5 +39,22 @@ public class CreateCategoryUseCase implements UseCase<CreateCategoryInput, Creat
                 .group(category.getGroup())
                 .build();
 
+    }
+
+    private void validateInput(CreateCategoryInput input) {
+
+        Optional<Category> optCategory = categoryPersistence.findByName(input.getName());
+
+        if (input.getName() == null) {
+            throw new DomainException(CATEGORY_NAME_REQUIRED);
+        }
+
+        if (input.getGroup() == null) {
+            throw new DomainException(CATEGORY_GROUP_REQUIRED);
+        }
+
+        if (optCategory.isPresent()) {
+            throw new DomainException(CATEGORY_NAME_EXISTS);
+        }
     }
 }
