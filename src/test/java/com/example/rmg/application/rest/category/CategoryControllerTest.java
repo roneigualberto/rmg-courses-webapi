@@ -80,4 +80,24 @@ class CategoryControllerTest {
                 .andExpect(jsonPath("$[0].name").value(categoryEntity.getName()))
                 .andExpect(jsonPath("$[0].group").value(categoryEntity.getGroup().name()));
     }
+
+    @Test
+    @Transactional
+    void should_find_by_id() throws Exception {
+
+        UUID categoryId = UUID.randomUUID();
+
+        CategoryEntity categoryEntity = CategoryEntity.builder()
+                .id(categoryId)
+                .group(CategoryGroup
+                        .DEVELOPMENT).name("Category 1 ").build();
+
+        categoryEntityRepository.save(categoryEntity);
+
+        mockMvc.perform(get(BASE_URI + "/" + categoryId).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(categoryEntity.getId().toString()))
+                .andExpect(jsonPath("$.name").value(categoryEntity.getName()))
+                .andExpect(jsonPath("$.group").value(categoryEntity.getGroup().name()));
+    }
 }

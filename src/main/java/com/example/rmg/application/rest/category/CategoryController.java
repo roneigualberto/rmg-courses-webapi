@@ -5,6 +5,9 @@ import com.example.rmg.usecase.category.common.CategoryView;
 import com.example.rmg.usecase.category.create.CreateCategoryInput;
 import com.example.rmg.usecase.category.create.CreateCategoryOutput;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCase;
+import com.example.rmg.usecase.category.find.FindCategoryUseCase;
+import com.example.rmg.usecase.category.find.FindCategoryUseCaseInput;
+import com.example.rmg.usecase.category.find.FindCategoryUseCaseOutput;
 import com.example.rmg.usecase.category.list.ListCategoryUseCase;
 import com.example.rmg.usecase.category.list.ListCategoryUseCaseInput;
 import com.example.rmg.usecase.category.list.ListCategoryUseCaseOutput;
@@ -16,6 +19,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -27,6 +31,8 @@ public class CategoryController {
     private final CreateCategoryUseCase createCategoryUseCase;
 
     private final ListCategoryUseCase listCategoryUseCase;
+
+    private final FindCategoryUseCase findCategoryUseCase;
 
 
     @PostMapping
@@ -68,6 +74,27 @@ public class CategoryController {
                         .group(categoryView.getGroup())
                         .build()
         ).collect(Collectors.toList());
+
+        return ResponseEntity.ok(response);
+
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CategoryResponse> get(@PathVariable  UUID id) {
+
+        FindCategoryUseCaseInput input = FindCategoryUseCaseInput.builder()
+                .categoryId(id)
+                .build();
+
+        FindCategoryUseCaseOutput output = findCategoryUseCase.execute(input);
+
+        CategoryView category = output.getCategory();
+
+        CategoryResponse response = CategoryResponse.builder()
+                .id(category.getId())
+                .name(category.getName())
+                .group(category.getGroup())
+                .build();
 
         return ResponseEntity.ok(response);
 

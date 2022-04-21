@@ -21,4 +21,9 @@ public class BeansConfig {
         return new ListCategoryUseCase(categoryPersistence);
     }
 
+    @Bean
+    public FindCategoryUseCase findCategoryUseCase(CategoryPersistence categoryPersistence) {
+        return new FindCategoryUseCase(categoryPersistence);
+    }
+
 }
