@@ -1,10 +1,14 @@
 package com.example.rmg.application.rest.category;
 
 
+import com.example.rmg.domain.common.exception.DomainException;
 import com.example.rmg.usecase.category.common.ouput.CategoryView;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCaseInput;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCaseOutput;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCase;
+import com.example.rmg.usecase.category.delete.DeleteCategoryUseCase;
+import com.example.rmg.usecase.category.delete.DeleteCategoryUseCaseInput;
+import com.example.rmg.usecase.category.delete.DeleteCategoryUseCaseOutput;
 import com.example.rmg.usecase.category.find.FindCategoryUseCase;
 import com.example.rmg.usecase.category.find.FindCategoryUseCaseInput;
 import com.example.rmg.usecase.category.find.FindCategoryUseCaseOutput;
@@ -15,8 +19,10 @@ import com.example.rmg.usecase.category.update.UpdateCategoryUseCase;
 import com.example.rmg.usecase.category.update.UpdateCategoryUseCaseInput;
 import com.example.rmg.usecase.category.update.UpdateCategoryUseCaseOutput;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -39,10 +45,11 @@ public class CategoryController {
 
     private final UpdateCategoryUseCase updateCategoryUseCase;
 
+    private final DeleteCategoryUseCase deleteCategoryUseCase;
+
 
     @PostMapping
     public ResponseEntity<CategoryResponse> create(@RequestBody @Valid CategoryRequest request, UriComponentsBuilder uriBuilder) {
-
         CreateCategoryUseCaseInput input = CreateCategoryUseCaseInput.builder()
                 .name(request.getName())
                 .group(request.getGroup())
@@ -61,6 +68,7 @@ public class CategoryController {
         URI location = uriBuilder.buildAndExpand(response.getId()).toUri();
 
         return ResponseEntity.created(location).body(response);
+
 
     }
 
@@ -125,5 +133,17 @@ public class CategoryController {
                 .build();
 
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable UUID id) {
+
+        DeleteCategoryUseCaseInput input = DeleteCategoryUseCaseInput.builder()
+                .categoryId(id)
+                .build();
+
+        DeleteCategoryUseCaseOutput output = deleteCategoryUseCase.execute(input);
+
+        return ResponseEntity.noContent().build();
     }
 }
