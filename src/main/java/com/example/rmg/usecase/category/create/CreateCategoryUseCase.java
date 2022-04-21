@@ -32,12 +32,7 @@ public class CreateCategoryUseCase implements UseCase<CreateCategoryInput, Creat
 
         categoryPersistence.save(category);
 
-
-        return CreateCategoryOutput.builder()
-                .id(category.getId())
-                .name(category.getName())
-                .group(category.getGroup())
-                .build();
+        return CreateCategoryOutput.of(category);
 
     }
 

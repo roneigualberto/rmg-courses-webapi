@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -41,6 +42,10 @@ public class CategoryJPAPersistence implements CategoryPersistence {
 
     @Override
     public List<Category> findAll() {
-        return null;
+        return repository.findAll().stream().map((entity) -> Category.builder()
+                .id(entity.getId())
+                .name(entity.getName())
+                .group(entity.getGroup())
+                .build()).collect(Collectors.toList());
     }
 }

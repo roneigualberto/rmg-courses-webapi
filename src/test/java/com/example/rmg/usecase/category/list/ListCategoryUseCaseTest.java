@@ -31,7 +31,7 @@ class ListCategoryUseCaseTest {
     private CategoryPersistence categoryPersistence;
 
     @Test
-    void execute() {
+    void execute_should_list_categories() {
         ListCategoryUseCaseInput input = ListCategoryUseCaseInput.builder().build();
 
         List<Category> categoriesMock = createCategoriesMock();

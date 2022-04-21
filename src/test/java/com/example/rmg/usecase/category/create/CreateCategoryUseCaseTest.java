@@ -5,6 +5,7 @@ import com.example.rmg.domain.category.messages.CategoryMessages;
 import com.example.rmg.domain.category.persistence.CategoryPersistence;
 import com.example.rmg.domain.category.shared.DomainException;
 import com.example.rmg.domain.category.valueobject.CategoryGroup;
+import com.example.rmg.usecase.category.common.CategoryView;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -47,10 +48,13 @@ class CreateCategoryUseCaseTest {
         CreateCategoryOutput output = useCase.execute(input);
 
 
+        CategoryView categoryView = output.getCategory();
+
+
         // Verify Result
-        assertNotNull(output.getId());
-        assertEquals(CATEGORY_NAME, output.getName());
-        assertEquals(CATEGORY_GROUP, output.getGroup());
+        assertNotNull(categoryView.getId());
+        assertEquals(CATEGORY_NAME, categoryView.getName());
+        assertEquals(CATEGORY_GROUP, categoryView.getGroup());
         verify(categoryPersistence).save(any());
     }
 
@@ -72,8 +76,6 @@ class CreateCategoryUseCaseTest {
         DomainException exc = assertThrows(DomainException.class, () -> useCase.execute(input));
 
         assertEquals(CategoryMessages.CATEGORY_NAME_REQUIRED, exc.getMessage());
-
-
     }
 
     @Test

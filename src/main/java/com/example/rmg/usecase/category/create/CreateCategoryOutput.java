@@ -1,6 +1,8 @@
 package com.example.rmg.usecase.category.create;
 
+import com.example.rmg.domain.category.entity.Category;
 import com.example.rmg.domain.category.valueobject.CategoryGroup;
+import com.example.rmg.usecase.category.common.CategoryView;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,11 +15,15 @@ import java.util.UUID;
 @Builder
 public class CreateCategoryOutput {
 
+    private CategoryView category;
 
-    private UUID id;
 
-    private String name;
+    public static CreateCategoryOutput of(Category category) {
 
-    private CategoryGroup group;
+        return CreateCategoryOutput.builder()
+                .category(CategoryView.of(category))
+                .build();
+
+    }
 
 }

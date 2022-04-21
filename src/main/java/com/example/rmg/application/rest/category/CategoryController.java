@@ -1,19 +1,22 @@
 package com.example.rmg.application.rest.category;
 
 
+import com.example.rmg.usecase.category.common.CategoryView;
 import com.example.rmg.usecase.category.create.CreateCategoryInput;
 import com.example.rmg.usecase.category.create.CreateCategoryOutput;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCase;
+import com.example.rmg.usecase.category.list.ListCategoryUseCase;
+import com.example.rmg.usecase.category.list.ListCategoryUseCaseInput;
+import com.example.rmg.usecase.category.list.ListCategoryUseCaseOutput;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/categories")
@@ -23,9 +26,11 @@ public class CategoryController {
 
     private final CreateCategoryUseCase createCategoryUseCase;
 
+    private final ListCategoryUseCase listCategoryUseCase;
+
 
     @PostMapping
-    public ResponseEntity<CategoryResponse> create(@RequestBody @Valid  CategoryRequest request, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<CategoryResponse> create(@RequestBody @Valid CategoryRequest request, UriComponentsBuilder uriBuilder) {
 
         CreateCategoryInput input = CreateCategoryInput.builder()
                 .name(request.getName())
@@ -34,15 +39,37 @@ public class CategoryController {
 
         CreateCategoryOutput output = createCategoryUseCase.execute(input);
 
+        CategoryView category = output.getCategory();
+
         CategoryResponse response = CategoryResponse.builder()
-                .id(output.getId())
-                .name(output.getName())
-                .group(output.getGroup())
+                .id(category.getId())
+                .name(category.getName())
+                .group(category.getGroup())
                 .build();
 
         URI location = uriBuilder.buildAndExpand(response.getId()).toUri();
 
         return ResponseEntity.created(location).body(response);
+
+    }
+
+    @GetMapping
+    public ResponseEntity<List<CategoryResponse>> list() {
+
+        ListCategoryUseCaseInput input = ListCategoryUseCaseInput.builder()
+                .build();
+
+        ListCategoryUseCaseOutput output = listCategoryUseCase.execute(input);
+
+        List<CategoryResponse> response = output.getCategories().stream().map((categoryView) ->
+                CategoryResponse.builder()
+                        .id(categoryView.getId())
+                        .name(categoryView.getName())
+                        .group(categoryView.getGroup())
+                        .build()
+        ).collect(Collectors.toList());
+
+        return ResponseEntity.ok(response);
 
     }
 }
