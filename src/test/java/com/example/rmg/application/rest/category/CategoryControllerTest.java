@@ -20,8 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -58,7 +57,13 @@ class CategoryControllerTest {
 
         CategoryRequest request = CategoryRequest.builder().name("Category Name").group(CategoryGroup.DEVELOPMENT).build();
 
-        mockMvc.perform(post(BASE_URI).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(request))).andExpect(status().isCreated()).andExpect(jsonPath("$.id").isNotEmpty()).andExpect(jsonPath("$.name").value("Category Name")).andExpect(jsonPath("$.group").value(CategoryGroup.DEVELOPMENT.name()));
+        mockMvc.perform(post(BASE_URI)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").isNotEmpty())
+                .andExpect(jsonPath("$.name").value("Category Name"))
+                .andExpect(jsonPath("$.group").value(CategoryGroup.DEVELOPMENT.name()));
     }
 
 
@@ -99,5 +104,32 @@ class CategoryControllerTest {
                 .andExpect(jsonPath("$.id").value(categoryEntity.getId().toString()))
                 .andExpect(jsonPath("$.name").value(categoryEntity.getName()))
                 .andExpect(jsonPath("$.group").value(categoryEntity.getGroup().name()));
+    }
+
+    @Test
+    @Transactional
+    void should_update_category() throws Exception {
+
+        UUID categoryId = UUID.randomUUID();
+
+        CategoryEntity categoryEntity = CategoryEntity.builder()
+                .id(categoryId)
+                .group(CategoryGroup
+                        .DEVELOPMENT).name("Category 1 ").build();
+
+        categoryEntityRepository.save(categoryEntity);
+
+
+        CategoryRequest request = CategoryRequest.builder().name("Category Updated").group(CategoryGroup.BUSINESS).build();
+
+        mockMvc.perform(
+                        put(BASE_URI + "/" + categoryId)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(request))
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(categoryId.toString()))
+                .andExpect(jsonPath("$.name").value(request.getName()))
+                .andExpect(jsonPath("$.group").value(request.getGroup().name()));
     }
 }

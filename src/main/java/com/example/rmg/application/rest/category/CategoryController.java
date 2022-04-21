@@ -11,6 +11,9 @@ import com.example.rmg.usecase.category.find.FindCategoryUseCaseOutput;
 import com.example.rmg.usecase.category.list.ListCategoryUseCase;
 import com.example.rmg.usecase.category.list.ListCategoryUseCaseInput;
 import com.example.rmg.usecase.category.list.ListCategoryUseCaseOutput;
+import com.example.rmg.usecase.category.update.UpdateCategoryUseCase;
+import com.example.rmg.usecase.category.update.UpdateCategoryUseCaseInput;
+import com.example.rmg.usecase.category.update.UpdateCategoryUseCaseOutput;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +36,8 @@ public class CategoryController {
     private final ListCategoryUseCase listCategoryUseCase;
 
     private final FindCategoryUseCase findCategoryUseCase;
+
+    private final UpdateCategoryUseCase updateCategoryUseCase;
 
 
     @PostMapping
@@ -80,7 +85,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CategoryResponse> get(@PathVariable  UUID id) {
+    public ResponseEntity<CategoryResponse> get(@PathVariable UUID id) {
 
         FindCategoryUseCaseInput input = FindCategoryUseCaseInput.builder()
                 .categoryId(id)
@@ -98,5 +103,27 @@ public class CategoryController {
 
         return ResponseEntity.ok(response);
 
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoryResponse> update(@PathVariable UUID id, @RequestBody @Valid CategoryRequest request) {
+
+        UpdateCategoryUseCaseInput input = UpdateCategoryUseCaseInput.builder()
+                .categoryId(id)
+                .name(request.getName())
+                .group(request.getGroup())
+                .build();
+
+        UpdateCategoryUseCaseOutput output = updateCategoryUseCase.execute(input);
+
+        CategoryView category = output.getCategory();
+
+        CategoryResponse response = CategoryResponse.builder()
+                .id(category.getId())
+                .name(category.getName())
+                .group(category.getGroup())
+                .build();
+
+        return ResponseEntity.ok(response);
     }
 }
