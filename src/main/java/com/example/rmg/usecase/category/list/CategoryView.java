@@ -1,4 +1,4 @@
-package com.example.rmg.usecase.category.create;
+package com.example.rmg.usecase.category.list;
 
 import com.example.rmg.domain.category.valueobject.CategoryGroup;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @Builder
-public class CreateCategoryOutput {
+public class CategoryView {
 
 
     private UUID id;

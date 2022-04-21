@@ -2,6 +2,7 @@ package com.example.rmg.domain.category.persistence;
 
 import com.example.rmg.domain.category.entity.Category;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CategoryPersistence {
@@ -11,4 +12,5 @@ public interface CategoryPersistence {
 
     Optional<Category> findByName(String name);
 
+    List<Category> findAll();
 }

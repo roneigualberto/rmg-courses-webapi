@@ -6,6 +6,7 @@ import com.example.rmg.domain.category.persistence.CategoryPersistence;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -36,5 +37,10 @@ public class CategoryJPAPersistence implements CategoryPersistence {
                 .name(entity.getName())
                 .group(entity.getGroup())
                 .build());
+    }
+
+    @Override
+    public List<Category> findAll() {
+        return null;
     }
 }
