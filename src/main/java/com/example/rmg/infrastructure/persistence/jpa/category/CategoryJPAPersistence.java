@@ -58,4 +58,9 @@ public class CategoryJPAPersistence implements CategoryPersistence {
                 .group(entity.getGroup())
                 .build());
     }
+
+    @Override
+    public void update(Category category) {
+        this.save(category);
+    }
 }

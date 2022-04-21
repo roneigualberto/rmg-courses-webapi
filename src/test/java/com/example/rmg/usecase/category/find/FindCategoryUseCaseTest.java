@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
@@ -29,7 +30,7 @@ class FindCategoryUseCaseTest {
     @InjectMocks
     private FindCategoryUseCase useCase;
 
-    @Mock
+    @Spy
     private CategoryPersistence categoryPersistence;
 
     @Test
@@ -40,6 +41,7 @@ class FindCategoryUseCaseTest {
                 .build();
 
         Category categoryMock = Category.builder().id(UUID.randomUUID())
+                .id(UUID.randomUUID())
                 .name("Category 1")
                 .group(DEVELOPMENT)
                 .build();

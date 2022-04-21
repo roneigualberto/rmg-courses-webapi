@@ -26,7 +26,7 @@ public class FindCategoryUseCase implements UseCase<FindCategoryUseCaseInput, Fi
     @Override
     public FindCategoryUseCaseOutput execute(FindCategoryUseCaseInput input) {
 
-        Category category = categoryPersistence.findById(input.getCategoryId()).orElseThrow(() -> new DomainException(CATEGORY_NOT_FOUND));
+        Category category = categoryPersistence.get(input.getCategoryId());
 
         return FindCategoryUseCaseOutput.of(category);
     }
