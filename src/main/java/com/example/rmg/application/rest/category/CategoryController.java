@@ -1,9 +1,9 @@
 package com.example.rmg.application.rest.category;
 
 
-import com.example.rmg.usecase.category.common.CategoryView;
-import com.example.rmg.usecase.category.create.CreateCategoryInput;
-import com.example.rmg.usecase.category.create.CreateCategoryOutput;
+import com.example.rmg.usecase.category.common.ouput.CategoryView;
+import com.example.rmg.usecase.category.create.CreateCategoryUseCaseInput;
+import com.example.rmg.usecase.category.create.CreateCategoryUseCaseOutput;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCase;
 import com.example.rmg.usecase.category.find.FindCategoryUseCase;
 import com.example.rmg.usecase.category.find.FindCategoryUseCaseInput;
@@ -43,12 +43,12 @@ public class CategoryController {
     @PostMapping
     public ResponseEntity<CategoryResponse> create(@RequestBody @Valid CategoryRequest request, UriComponentsBuilder uriBuilder) {
 
-        CreateCategoryInput input = CreateCategoryInput.builder()
+        CreateCategoryUseCaseInput input = CreateCategoryUseCaseInput.builder()
                 .name(request.getName())
                 .group(request.getGroup())
                 .build();
 
-        CreateCategoryOutput output = createCategoryUseCase.execute(input);
+        CreateCategoryUseCaseOutput output = createCategoryUseCase.execute(input);
 
         CategoryView category = output.getCategory();
 

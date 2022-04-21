@@ -3,9 +3,9 @@ package com.example.rmg.usecase.category.create;
 import com.example.rmg.domain.category.entity.Category;
 import com.example.rmg.domain.category.messages.CategoryMessages;
 import com.example.rmg.domain.category.persistence.CategoryPersistence;
-import com.example.rmg.domain.category.shared.DomainException;
+import com.example.rmg.domain.common.exception.DomainException;
 import com.example.rmg.domain.category.valueobject.CategoryGroup;
-import com.example.rmg.usecase.category.common.CategoryView;
+import com.example.rmg.usecase.category.common.ouput.CategoryView;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -42,10 +42,10 @@ class CreateCategoryUseCaseTest {
 
 
         //Build Input
-        CreateCategoryInput input = createCategoryInput(CATEGORY_NAME, CATEGORY_GROUP);
+        CreateCategoryUseCaseInput input = createCategoryInput(CATEGORY_NAME, CATEGORY_GROUP);
 
         // Execute Use Case
-        CreateCategoryOutput output = useCase.execute(input);
+        CreateCategoryUseCaseOutput output = useCase.execute(input);
 
 
         CategoryView categoryView = output.getCategory();
@@ -58,8 +58,8 @@ class CreateCategoryUseCaseTest {
         verify(categoryPersistence).save(any());
     }
 
-    private CreateCategoryInput createCategoryInput(String name, CategoryGroup group) {
-        return CreateCategoryInput.builder()
+    private CreateCategoryUseCaseInput createCategoryInput(String name, CategoryGroup group) {
+        return CreateCategoryUseCaseInput.builder()
                 .name(name)
                 .group(group)
                 .build();
@@ -70,7 +70,7 @@ class CreateCategoryUseCaseTest {
 
 
         //Build Input
-        CreateCategoryInput input = createCategoryInput(null, CATEGORY_GROUP);
+        CreateCategoryUseCaseInput input = createCategoryInput(null, CATEGORY_GROUP);
 
         // Execute Use Case
         DomainException exc = assertThrows(DomainException.class, () -> useCase.execute(input));
@@ -82,7 +82,7 @@ class CreateCategoryUseCaseTest {
     void execute_should_not_create_category_when_group_is_null() {
 
         //Build Input
-        CreateCategoryInput input = createCategoryInput(CATEGORY_NAME, null);
+        CreateCategoryUseCaseInput input = createCategoryInput(CATEGORY_NAME, null);
 
         // Execute Use Case
         DomainException exc = assertThrows(DomainException.class, () -> useCase.execute(input));
@@ -97,7 +97,7 @@ class CreateCategoryUseCaseTest {
 
 
         //Build Input
-        CreateCategoryInput input = createCategoryInput(CATEGORY_NAME, CATEGORY_GROUP);
+        CreateCategoryUseCaseInput input = createCategoryInput(CATEGORY_NAME, CATEGORY_GROUP);
 
         Category categoryMock = Category.builder().id(UUID.randomUUID())
                 .name(CATEGORY_NAME)

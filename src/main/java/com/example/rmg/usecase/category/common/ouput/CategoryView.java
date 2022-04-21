@@ -1,4 +1,4 @@
-package com.example.rmg.usecase.category.common;
+package com.example.rmg.usecase.category.common.ouput;
 
 import com.example.rmg.domain.category.entity.Category;
 import com.example.rmg.domain.category.valueobject.CategoryGroup;

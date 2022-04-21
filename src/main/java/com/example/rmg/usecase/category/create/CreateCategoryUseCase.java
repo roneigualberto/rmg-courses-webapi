@@ -3,8 +3,8 @@ package com.example.rmg.usecase.category.create;
 
 import com.example.rmg.domain.category.entity.Category;
 import com.example.rmg.domain.category.persistence.CategoryPersistence;
-import com.example.rmg.domain.category.shared.DomainException;
-import com.example.rmg.usecase.category.UseCase;
+import com.example.rmg.domain.common.exception.DomainException;
+import com.example.rmg.usecase.category.common.UseCase;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
@@ -14,13 +14,13 @@ import static com.example.rmg.domain.category.messages.CategoryMessages.*;
 
 
 @RequiredArgsConstructor
-public class CreateCategoryUseCase implements UseCase<CreateCategoryInput, CreateCategoryOutput> {
+public class CreateCategoryUseCase implements UseCase<CreateCategoryUseCaseInput, CreateCategoryUseCaseOutput> {
 
 
     private final CategoryPersistence categoryPersistence;
 
     @Override
-    public CreateCategoryOutput execute(CreateCategoryInput input) {
+    public CreateCategoryUseCaseOutput execute(CreateCategoryUseCaseInput input) {
 
         validateInput(input);
 
@@ -32,11 +32,11 @@ public class CreateCategoryUseCase implements UseCase<CreateCategoryInput, Creat
 
         categoryPersistence.save(category);
 
-        return CreateCategoryOutput.of(category);
+        return CreateCategoryUseCaseOutput.of(category);
 
     }
 
-    private void validateInput(CreateCategoryInput input) {
+    private void validateInput(CreateCategoryUseCaseInput input) {
 
         Optional<Category> optCategory = categoryPersistence.findByName(input.getName());
 

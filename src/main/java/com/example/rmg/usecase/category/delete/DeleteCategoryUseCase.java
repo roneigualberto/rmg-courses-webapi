@@ -1,5 +1,4 @@
-package com.example.rmg.usecase.category.find;
-
+package com.example.rmg.usecase.category.delete;
 
 import com.example.rmg.domain.category.entity.Category;
 import com.example.rmg.domain.category.persistence.CategoryPersistence;
@@ -8,17 +7,17 @@ import lombok.RequiredArgsConstructor;
 
 
 @RequiredArgsConstructor
-public class FindCategoryUseCase implements UseCase<FindCategoryUseCaseInput, FindCategoryUseCaseOutput> {
+public class DeleteCategoryUseCase implements UseCase<DeleteCategoryUseCaseInput, DeleteCategoryUseCaseOutput> {
 
 
     private final CategoryPersistence categoryPersistence;
 
-
     @Override
-    public FindCategoryUseCaseOutput execute(FindCategoryUseCaseInput input) {
+    public DeleteCategoryUseCaseOutput execute(DeleteCategoryUseCaseInput input) {
 
         Category category = categoryPersistence.get(input.getCategoryId());
+        categoryPersistence.deleteById(category.getId());
 
-        return FindCategoryUseCaseOutput.of(category);
+        return DeleteCategoryUseCaseOutput.builder().build();
     }
 }

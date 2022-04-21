@@ -1,7 +1,7 @@
 package com.example.rmg.usecase.category.update;
 
 import com.example.rmg.domain.category.entity.Category;
-import com.example.rmg.usecase.category.common.CategoryView;
+import com.example.rmg.usecase.category.common.ouput.CategoryView;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

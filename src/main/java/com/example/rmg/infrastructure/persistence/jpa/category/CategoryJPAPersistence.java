@@ -63,4 +63,9 @@ public class CategoryJPAPersistence implements CategoryPersistence {
     public void update(Category category) {
         this.save(category);
     }
+
+    @Override
+    public void deleteById(UUID categoryId) {
+        this.repository.deleteById(categoryId);
+    }
 }

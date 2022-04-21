@@ -1,4 +1,4 @@
-package com.example.rmg.usecase.category;
+package com.example.rmg.usecase.category.common;
 
 public interface UseCase<IN, OUT> {
 

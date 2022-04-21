@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class CreateCategoryInput {
+public class CreateCategoryUseCaseInput {
 
 
     private String name;

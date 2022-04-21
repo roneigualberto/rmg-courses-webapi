@@ -1,26 +1,23 @@
 package com.example.rmg.usecase.category.create;
 
 import com.example.rmg.domain.category.entity.Category;
-import com.example.rmg.domain.category.valueobject.CategoryGroup;
-import com.example.rmg.usecase.category.common.CategoryView;
+import com.example.rmg.usecase.category.common.ouput.CategoryView;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.UUID;
 
 
 @Data
 @AllArgsConstructor
 @Builder
-public class CreateCategoryOutput {
+public class CreateCategoryUseCaseOutput {
 
     private CategoryView category;
 
 
-    public static CreateCategoryOutput of(Category category) {
+    public static CreateCategoryUseCaseOutput of(Category category) {
 
-        return CreateCategoryOutput.builder()
+        return CreateCategoryUseCaseOutput.builder()
                 .category(CategoryView.of(category))
                 .build();
 
