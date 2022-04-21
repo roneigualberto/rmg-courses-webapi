@@ -4,6 +4,7 @@ import com.example.rmg.domain.category.entity.Category;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface CategoryPersistence {
 
@@ -13,4 +14,6 @@ public interface CategoryPersistence {
     Optional<Category> findByName(String name);
 
     List<Category> findAll();
+
+    Optional<Category> findById(UUID categoryId);
 }

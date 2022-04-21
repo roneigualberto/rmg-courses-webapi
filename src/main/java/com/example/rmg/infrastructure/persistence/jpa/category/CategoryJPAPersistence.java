@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -47,5 +48,14 @@ public class CategoryJPAPersistence implements CategoryPersistence {
                 .name(entity.getName())
                 .group(entity.getGroup())
                 .build()).collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<Category> findById(UUID categoryId) {
+        return repository.findById(categoryId).map((entity) -> Category.builder()
+                .id(entity.getId())
+                .name(entity.getName())
+                .group(entity.getGroup())
+                .build());
     }
 }
