@@ -73,7 +73,7 @@ class CategoryControllerTest {
         MvcResult response = mockMvc.perform(post(BASE_URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isUnprocessableEntity())
+                .andExpect(status().isBadRequest())
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(jsonPath("$.message").value(CategoryMessages.CATEGORY_NAME_EXISTS))
                 .andReturn();

@@ -1,6 +1,7 @@
 package com.example.rmg.infrastructure.category;
 
 import com.example.rmg.domain.common.exception.DomainException;
+import com.example.rmg.domain.common.exception.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,16 +29,34 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 
 
     @ExceptionHandler(DomainException.class)
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseStatus(HttpStatus.BAD_GATEWAY)
     public final ResponseEntity<Map<String, Object>> handleDomainException(DomainException ex, WebRequest request) {
+
+        Map<String, Object> body = new HashMap<>();
+
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        body.put("timestamp", new Date().getTime());
+        body.put("message", ex.getMessage());
+        body.put("error", httpStatus.getReasonPhrase());
+        body.put("path", httpServletRequest.getRequestURI());
+        body.put("status", String.valueOf(httpStatus.value()));
+
+        return ResponseEntity.status(httpStatus).body(body);
+
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public final ResponseEntity<Map<String, Object>> handleDomainException(ValidationException ex, WebRequest request) {
 
         Map<String, Object> body = new HashMap<>();
 
         HttpStatus httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
 
         body.put("timestamp", new Date().getTime());
-        body.put("message", ex.getMessage());
-        body.put("error", httpStatus.getReasonPhrase());
+        body.put("message", "Validation Errors");
+        body.put("errors", ex.getErrors());
         body.put("path", httpServletRequest.getRequestURI());
         body.put("status", String.valueOf(httpStatus.value()));
 

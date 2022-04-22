@@ -2,6 +2,7 @@ package com.example.rmg.usecase.category.create;
 
 
 import com.example.rmg.domain.category.entity.Category;
+import com.example.rmg.domain.category.messages.CategoryMessages;
 import com.example.rmg.domain.category.persistence.CategoryPersistence;
 import com.example.rmg.domain.common.exception.DomainException;
 import com.example.rmg.usecase.common.UseCase;
@@ -9,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
 import java.util.UUID;
-
-import static com.example.rmg.domain.category.messages.CategoryMessages.*;
 
 
 @RequiredArgsConstructor
@@ -43,7 +42,7 @@ public class CreateCategoryUseCase implements UseCase<CreateCategoryUseCaseInput
         Optional<Category> optCategory = categoryPersistence.findByName(input.getName());
 
         if (optCategory.isPresent()) {
-            throw new DomainException(CATEGORY_NAME_EXISTS);
+            throw new DomainException(CategoryMessages.CATEGORY_NAME_EXISTS);
         }
     }
 }
