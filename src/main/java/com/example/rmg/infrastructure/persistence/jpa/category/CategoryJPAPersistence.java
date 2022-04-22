@@ -18,45 +18,28 @@ public class CategoryJPAPersistence implements CategoryPersistence {
 
     private final CategoryEntityRepository repository;
 
+    private final CategoryEntityMapper categoryEntityMapper;
+
 
     @Override
     public void save(Category category) {
-
-        CategoryEntity categoryEntity = CategoryEntity.builder()
-                .id(category.getId())
-                .name(category.getName())
-                .group(category.getGroup())
-                .build();
-
+        CategoryEntity categoryEntity = categoryEntityMapper.toCategoryEntity(category);
         repository.save(categoryEntity);
-
     }
 
     @Override
     public Optional<Category> findByName(String name) {
-        return repository.findByName(name).map((entity) -> Category.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .group(entity.getGroup())
-                .build());
+        return repository.findByName(name).map(categoryEntityMapper::toCategory);
     }
 
     @Override
     public List<Category> findAll() {
-        return repository.findAll().stream().map((entity) -> Category.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .group(entity.getGroup())
-                .build()).collect(Collectors.toList());
+        return repository.findAll().stream().map(categoryEntityMapper::toCategory).collect(Collectors.toList());
     }
 
     @Override
     public Optional<Category> findById(UUID categoryId) {
-        return repository.findById(categoryId).map((entity) -> Category.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .group(entity.getGroup())
-                .build());
+        return repository.findById(categoryId).map(categoryEntityMapper::toCategory);
     }
 
     @Override

@@ -70,27 +70,14 @@ class CategoryControllerTest {
 
         CategoryRequest request = CategoryRequest.builder().name("Category Name").group(CategoryGroup.DEVELOPMENT).build();
 
-        MvcResult response = mockMvc.perform(post(BASE_URI)
+        mockMvc.perform(post(BASE_URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(jsonPath("$.message").value(CategoryMessages.CATEGORY_NAME_EXISTS))
-                .andReturn();
-
-
-        System.out.println(response.getResponse().getContentAsString());
-
-
+                .andExpect(jsonPath("$.message").value(CategoryMessages.CATEGORY_NAME_EXISTS));
     }
 
-    private void givenCategoryEntity(String name, CategoryGroup group) {
-        categoryEntity = CategoryEntity.builder()
-                .id(UUID.randomUUID())
-                .group(group).name(name).build();
-
-        categoryEntityRepository.save(categoryEntity);
-    }
 
     @Test
     void should_create_category() throws Exception {
@@ -143,7 +130,6 @@ class CategoryControllerTest {
     void should_update_category() throws Exception {
 
 
-
         givenCategoryEntity("Category Name", CategoryGroup.DEVELOPMENT);
 
         UUID categoryId = categoryEntity.getId();
@@ -181,6 +167,14 @@ class CategoryControllerTest {
         boolean existsCategory = categoryEntityRepository.existsById(categoryId);
 
         assertFalse(existsCategory);
+    }
+
+    private void givenCategoryEntity(String name, CategoryGroup group) {
+        categoryEntity = CategoryEntity.builder()
+                .id(UUID.randomUUID())
+                .group(group).name(name).build();
+
+        categoryEntityRepository.save(categoryEntity);
     }
 
 }

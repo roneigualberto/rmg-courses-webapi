@@ -50,12 +50,10 @@ public class CategoryController {
 
         final CreateCategoryUseCaseInput input = categoryMapper.toCreateCategoryUseCaseInput(request);
         final CreateCategoryUseCaseOutput output = createCategoryUseCase.execute(input);
-        final CategoryResponse response = categoryMapper.toCategoryRequest(output.getCategory());
+        final CategoryResponse response = categoryMapper.toCategoryResponse(output.getCategory());
         final URI location = uriBuilder.buildAndExpand(response.getId()).toUri();
 
         return ResponseEntity.created(location).body(response);
-
-
     }
 
     @GetMapping
@@ -66,7 +64,7 @@ public class CategoryController {
 
         final ListCategoryUseCaseOutput output = listCategoryUseCase.execute(input);
 
-        final List<CategoryResponse> response = categoryMapper.toCategoryRequestList(output.getCategories());
+        final List<CategoryResponse> response = categoryMapper.toCategoryResponseList(output.getCategories());
 
         return ResponseEntity.ok(response);
 
@@ -81,7 +79,7 @@ public class CategoryController {
 
         FindCategoryUseCaseOutput output = findCategoryUseCase.execute(input);
 
-        final CategoryResponse response = categoryMapper.toCategoryRequest(output.getCategory());
+        final CategoryResponse response = categoryMapper.toCategoryResponse(output.getCategory());
 
         return ResponseEntity.ok(response);
 
@@ -96,7 +94,7 @@ public class CategoryController {
 
         UpdateCategoryUseCaseOutput output = updateCategoryUseCase.execute(input);
 
-        final CategoryResponse response = categoryMapper.toCategoryRequest(output.getCategory());
+        final CategoryResponse response = categoryMapper.toCategoryResponse(output.getCategory());
 
         return ResponseEntity.ok(response);
     }

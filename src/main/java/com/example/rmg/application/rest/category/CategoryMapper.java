@@ -16,8 +16,8 @@ public interface CategoryMapper {
     @Mapping(target = "categoryId", ignore = true)
     UpdateCategoryUseCaseInput toUpdateCategoryUseCaseInput(CategoryRequest request);
 
-    CategoryResponse toCategoryRequest(CategoryView categoryView);
+    CategoryResponse toCategoryResponse(CategoryView categoryView);
 
-    List<CategoryResponse> toCategoryRequestList(List<CategoryView> categoryViewList);
+    List<CategoryResponse> toCategoryResponseList(List<CategoryView> categoryViewList);
 
 }
