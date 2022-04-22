@@ -3,7 +3,7 @@ package com.example.rmg.usecase.category.find;
 
 import com.example.rmg.domain.category.entity.Category;
 import com.example.rmg.domain.category.persistence.CategoryPersistence;
-import com.example.rmg.usecase.category.common.UseCase;
+import com.example.rmg.usecase.common.UseCase;
 import lombok.RequiredArgsConstructor;
 
 

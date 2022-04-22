@@ -1,4 +1,4 @@
-package com.example.rmg.application.rest;
+package com.example.rmg.application.rest.category;
 
 import com.example.rmg.domain.category.valueobject.CategoryGroup;
 import lombok.AllArgsConstructor;

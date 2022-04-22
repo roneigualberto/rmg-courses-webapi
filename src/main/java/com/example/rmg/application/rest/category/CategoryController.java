@@ -1,7 +1,6 @@
-package com.example.rmg.application.rest;
+package com.example.rmg.application.rest.category;
 
 
-import com.example.rmg.usecase.category.common.ouput.CategoryView;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCaseInput;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCaseOutput;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCase;
@@ -26,7 +25,6 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/categories")

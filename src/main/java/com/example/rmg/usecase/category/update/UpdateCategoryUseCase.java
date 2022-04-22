@@ -4,7 +4,7 @@ import com.example.rmg.domain.category.entity.Category;
 import com.example.rmg.domain.category.messages.CategoryMessages;
 import com.example.rmg.domain.category.persistence.CategoryPersistence;
 import com.example.rmg.domain.common.exception.DomainException;
-import com.example.rmg.usecase.category.common.UseCase;
+import com.example.rmg.usecase.common.UseCase;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Objects;
@@ -20,13 +20,13 @@ public class UpdateCategoryUseCase implements UseCase<UpdateCategoryUseCaseInput
     @Override
     public UpdateCategoryUseCaseOutput execute(UpdateCategoryUseCaseInput input) {
 
-
         validInput(input);
 
         Category category = categoryPersistence.get(input.getCategoryId());
 
         category.setName(input.getName());
         category.setGroup(input.getGroup());
+        category.valid();
 
         categoryPersistence.update(category);
 
