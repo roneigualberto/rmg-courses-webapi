@@ -1,4 +1,4 @@
-package com.example.rmg.application.rest.category;
+package com.example.rmg.infrastructure.category;
 
 import com.example.rmg.domain.common.exception.DomainException;
 import lombok.RequiredArgsConstructor;

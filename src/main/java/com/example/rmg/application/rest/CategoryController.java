@@ -1,7 +1,6 @@
-package com.example.rmg.application.rest.category;
+package com.example.rmg.application.rest;
 
 
-import com.example.rmg.domain.common.exception.DomainException;
 import com.example.rmg.usecase.category.common.ouput.CategoryView;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCaseInput;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCaseOutput;
@@ -19,10 +18,8 @@ import com.example.rmg.usecase.category.update.UpdateCategoryUseCase;
 import com.example.rmg.usecase.category.update.UpdateCategoryUseCaseInput;
 import com.example.rmg.usecase.category.update.UpdateCategoryUseCaseOutput;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -47,25 +44,16 @@ public class CategoryController {
 
     private final DeleteCategoryUseCase deleteCategoryUseCase;
 
+    private final CategoryMapper categoryMapper;
+
 
     @PostMapping
     public ResponseEntity<CategoryResponse> create(@RequestBody @Valid CategoryRequest request, UriComponentsBuilder uriBuilder) {
-        CreateCategoryUseCaseInput input = CreateCategoryUseCaseInput.builder()
-                .name(request.getName())
-                .group(request.getGroup())
-                .build();
 
-        CreateCategoryUseCaseOutput output = createCategoryUseCase.execute(input);
-
-        CategoryView category = output.getCategory();
-
-        CategoryResponse response = CategoryResponse.builder()
-                .id(category.getId())
-                .name(category.getName())
-                .group(category.getGroup())
-                .build();
-
-        URI location = uriBuilder.buildAndExpand(response.getId()).toUri();
+        final CreateCategoryUseCaseInput input = categoryMapper.toCreateCategoryUseCaseInput(request);
+        final CreateCategoryUseCaseOutput output = createCategoryUseCase.execute(input);
+        final CategoryResponse response = categoryMapper.toCategoryRequest(output.getCategory());
+        final URI location = uriBuilder.buildAndExpand(response.getId()).toUri();
 
         return ResponseEntity.created(location).body(response);
 
@@ -75,71 +63,51 @@ public class CategoryController {
     @GetMapping
     public ResponseEntity<List<CategoryResponse>> list() {
 
-        ListCategoryUseCaseInput input = ListCategoryUseCaseInput.builder()
+        final ListCategoryUseCaseInput input = ListCategoryUseCaseInput.builder()
                 .build();
 
-        ListCategoryUseCaseOutput output = listCategoryUseCase.execute(input);
+        final ListCategoryUseCaseOutput output = listCategoryUseCase.execute(input);
 
-        List<CategoryResponse> response = output.getCategories().stream().map((categoryView) ->
-                CategoryResponse.builder()
-                        .id(categoryView.getId())
-                        .name(categoryView.getName())
-                        .group(categoryView.getGroup())
-                        .build()
-        ).collect(Collectors.toList());
+        final List<CategoryResponse> response = categoryMapper.toCategoryRequestList(output.getCategories());
 
         return ResponseEntity.ok(response);
 
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CategoryResponse> get(@PathVariable UUID id) {
+    @GetMapping("/{categoryId}")
+    public ResponseEntity<CategoryResponse> get(@PathVariable UUID categoryId) {
 
         FindCategoryUseCaseInput input = FindCategoryUseCaseInput.builder()
-                .categoryId(id)
+                .categoryId(categoryId)
                 .build();
 
         FindCategoryUseCaseOutput output = findCategoryUseCase.execute(input);
 
-        CategoryView category = output.getCategory();
-
-        CategoryResponse response = CategoryResponse.builder()
-                .id(category.getId())
-                .name(category.getName())
-                .group(category.getGroup())
-                .build();
+        final CategoryResponse response = categoryMapper.toCategoryRequest(output.getCategory());
 
         return ResponseEntity.ok(response);
 
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<CategoryResponse> update(@PathVariable UUID id, @RequestBody @Valid CategoryRequest request) {
+    @PutMapping("/{categoryId}")
+    public ResponseEntity<CategoryResponse> update(@PathVariable UUID categoryId, @RequestBody @Valid CategoryRequest request) {
 
-        UpdateCategoryUseCaseInput input = UpdateCategoryUseCaseInput.builder()
-                .categoryId(id)
-                .name(request.getName())
-                .group(request.getGroup())
-                .build();
+        UpdateCategoryUseCaseInput input = categoryMapper.toUpdateCategoryUseCaseInput(request);
+
+        input.setCategoryId(categoryId);
 
         UpdateCategoryUseCaseOutput output = updateCategoryUseCase.execute(input);
 
-        CategoryView category = output.getCategory();
-
-        CategoryResponse response = CategoryResponse.builder()
-                .id(category.getId())
-                .name(category.getName())
-                .group(category.getGroup())
-                .build();
+        final CategoryResponse response = categoryMapper.toCategoryRequest(output.getCategory());
 
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable UUID id) {
+    @DeleteMapping("/{categoryId}")
+    public ResponseEntity<?> delete(@PathVariable UUID categoryId) {
 
         DeleteCategoryUseCaseInput input = DeleteCategoryUseCaseInput.builder()
-                .categoryId(id)
+                .categoryId(categoryId)
                 .build();
 
         DeleteCategoryUseCaseOutput output = deleteCategoryUseCase.execute(input);

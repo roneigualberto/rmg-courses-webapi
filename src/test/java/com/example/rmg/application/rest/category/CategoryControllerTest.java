@@ -2,6 +2,7 @@ package com.example.rmg.application.rest.category;
 
 import com.example.rmg.domain.category.messages.CategoryMessages;
 import com.example.rmg.domain.category.valueobject.CategoryGroup;
+import com.example.rmg.application.rest.CategoryRequest;
 import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntity;
 import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntityRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
