@@ -10,6 +10,9 @@ import com.example.rmg.usecase.category.find.FindCategoryUseCaseInput;
 import com.example.rmg.usecase.category.find.FindCategoryUseCaseOutput;
 import com.example.rmg.usecase.category.list.ListCategoryUseCaseInput;
 import com.example.rmg.usecase.category.list.ListCategoryUseCaseOutput;
+import com.example.rmg.usecase.category.update.UpdateCategoryUseCase;
+import com.example.rmg.usecase.category.update.UpdateCategoryUseCaseInput;
+import com.example.rmg.usecase.category.update.UpdateCategoryUseCaseOutput;
 import com.example.rmg.usecase.course.create.CreateCourseUseCase;
 import com.example.rmg.usecase.course.create.CreateCourseUseCaseInput;
 import com.example.rmg.usecase.course.create.CreateCourseUseCaseOutput;
@@ -19,6 +22,9 @@ import com.example.rmg.usecase.course.find.FindCourseUseCaseOutput;
 import com.example.rmg.usecase.course.list.ListCourseUseCase;
 import com.example.rmg.usecase.course.list.ListCourseUseCaseInput;
 import com.example.rmg.usecase.course.list.ListCourseUseCaseOutput;
+import com.example.rmg.usecase.course.update.UpdateCourseUseCase;
+import com.example.rmg.usecase.course.update.UpdateCourseUseCaseInput;
+import com.example.rmg.usecase.course.update.UpdateCourseUseCaseOutput;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +45,8 @@ public class CourseController {
     private final ListCourseUseCase listCourseUseCase;
 
     private final FindCourseUseCase findCourseUseCase;
+
+    private final UpdateCourseUseCase updateCourseUseCase;
 
     private final CourseMapper courseMapper;
 
@@ -82,6 +90,20 @@ public class CourseController {
 
         return ResponseEntity.ok(response);
 
+    }
+
+    @PutMapping("/{courseId}")
+    public ResponseEntity<CourseResponse> update(@PathVariable UUID courseId, @RequestBody @Valid CourseRequest request) {
+
+        UpdateCourseUseCaseInput input = courseMapper.toUpdateCourseUseCaseInput(request);
+
+        input.setCourseId(courseId);
+
+        UpdateCourseUseCaseOutput output = updateCourseUseCase.execute(input);
+
+        final CourseResponse response = courseMapper.toCourseResponse(output.getCourse());
+
+        return ResponseEntity.ok(response);
     }
 
 }

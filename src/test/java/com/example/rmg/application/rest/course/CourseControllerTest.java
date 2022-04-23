@@ -30,8 +30,7 @@ import java.util.UUID;
 import static com.example.rmg.infrastructure.test.builders.Categories.aCategoryRequest;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -162,6 +161,42 @@ class CourseControllerTest {
                 .andExpect(jsonPath("$[0].instructor.firstName").value(userEntity.getFirstName()))
                 .andExpect(jsonPath("$[0].instructor.lastName").value(userEntity.getLastName()));
     }
+
+    @Test
+    @Transactional
+    void should_update_course() throws Exception {
+
+        givenCategoryEntity();
+        givenUserEntity();
+        givenCourseEntity();
+
+        CourseRequest request = Courses.aCourseRequest(categoryEntity.getId(), userEntity.getId())
+                .name("Course Updated")
+                .price(20.80)
+                .build();
+
+        mockMvc.perform(
+                        put(BASE_URI + "/" + courseEntity.getId())
+                                .contentType(APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(request))
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isNotEmpty())
+                .andExpect(jsonPath("$.name").value(request.getName()))
+                .andExpect(jsonPath("$.title").value(request.getTitle()))
+                .andExpect(jsonPath("$.price").value(request.getPrice()))
+                .andExpect(jsonPath("$.description").value(request.getDescription()))
+                .andExpect(jsonPath("$.skillLevel").value(request.getSkillLevel().name()))
+                .andExpect(jsonPath("$.category.id").value(categoryEntity.getId().toString()))
+                .andExpect(jsonPath("$.category.name").value(categoryEntity.getName()))
+                .andExpect(jsonPath("$.category.group").value(categoryEntity.getGroup().name()))
+                .andExpect(jsonPath("$.instructor.id").value(userEntity.getId().toString()))
+                .andExpect(jsonPath("$.instructor.email").value(userEntity.getEmail()))
+                .andExpect(jsonPath("$.instructor.firstName").value(userEntity.getFirstName()))
+                .andExpect(jsonPath("$.instructor.lastName").value(userEntity.getLastName()))
+                .andReturn();
+    }
+
 
     private void givenCourseEntity() {
         courseEntity = Courses.aCourseEntity(categoryEntity, userEntity).build();

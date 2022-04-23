@@ -13,6 +13,7 @@ import com.example.rmg.usecase.course.create.CreateCourseUseCase;
 import com.example.rmg.usecase.course.find.FindCourseUseCase;
 import com.example.rmg.usecase.course.list.ListCourseUseCase;
 import com.example.rmg.usecase.course.list.ListCourseUseCaseOutput;
+import com.example.rmg.usecase.course.update.UpdateCourseUseCase;
 import com.example.rmg.usecase.user.create.CreateUserUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -73,5 +74,13 @@ public class BeansConfig {
     ) {
         return new FindCourseUseCase(coursePersistence);
     }
+
+    @Bean
+    public UpdateCourseUseCase updateCourseUseCase(CoursePersistence coursePersistence,
+                                                   CategoryPersistence categoryPersistence,
+                                                   UserPersistence userPersistence) {
+        return new UpdateCourseUseCase(coursePersistence, categoryPersistence, userPersistence);
+    }
+
 
 }

@@ -8,6 +8,7 @@ import com.example.rmg.usecase.category.create.CreateCategoryUseCaseInput;
 import com.example.rmg.usecase.category.update.UpdateCategoryUseCaseInput;
 import com.example.rmg.usecase.course.common.output.CourseView;
 import com.example.rmg.usecase.course.create.CreateCourseUseCaseInput;
+import com.example.rmg.usecase.course.update.UpdateCourseUseCaseInput;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -21,5 +22,10 @@ public interface CourseMapper {
     CourseResponse toCourseResponse(CourseView course);
 
     List<CourseResponse> toCourseResponseList(List<CourseView> courseViewList);
+
+
+    @Mapping(target = "courseId", ignore = true)
+    UpdateCourseUseCaseInput toUpdateCourseUseCaseInput(CourseRequest request);
+
 
 }
