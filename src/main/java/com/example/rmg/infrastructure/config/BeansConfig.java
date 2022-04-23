@@ -10,6 +10,7 @@ import com.example.rmg.usecase.category.find.FindCategoryUseCase;
 import com.example.rmg.usecase.category.list.ListCategoryUseCase;
 import com.example.rmg.usecase.category.update.UpdateCategoryUseCase;
 import com.example.rmg.usecase.course.create.CreateCourseUseCase;
+import com.example.rmg.usecase.course.find.FindCourseUseCase;
 import com.example.rmg.usecase.course.list.ListCourseUseCase;
 import com.example.rmg.usecase.course.list.ListCourseUseCaseOutput;
 import com.example.rmg.usecase.user.create.CreateUserUseCase;
@@ -63,6 +64,14 @@ public class BeansConfig {
             CoursePersistence coursePersistence
     ) {
         return new ListCourseUseCase(coursePersistence);
+    }
+
+
+    @Bean
+    public FindCourseUseCase findCourseUseCase(
+            CoursePersistence coursePersistence
+    ) {
+        return new FindCourseUseCase(coursePersistence);
     }
 
 }

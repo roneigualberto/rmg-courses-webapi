@@ -6,11 +6,16 @@ import com.example.rmg.application.rest.category.CategoryResponse;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCase;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCaseInput;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCaseOutput;
+import com.example.rmg.usecase.category.find.FindCategoryUseCaseInput;
+import com.example.rmg.usecase.category.find.FindCategoryUseCaseOutput;
 import com.example.rmg.usecase.category.list.ListCategoryUseCaseInput;
 import com.example.rmg.usecase.category.list.ListCategoryUseCaseOutput;
 import com.example.rmg.usecase.course.create.CreateCourseUseCase;
 import com.example.rmg.usecase.course.create.CreateCourseUseCaseInput;
 import com.example.rmg.usecase.course.create.CreateCourseUseCaseOutput;
+import com.example.rmg.usecase.course.find.FindCourseUseCase;
+import com.example.rmg.usecase.course.find.FindCourseUseCaseInput;
+import com.example.rmg.usecase.course.find.FindCourseUseCaseOutput;
 import com.example.rmg.usecase.course.list.ListCourseUseCase;
 import com.example.rmg.usecase.course.list.ListCourseUseCaseInput;
 import com.example.rmg.usecase.course.list.ListCourseUseCaseOutput;
@@ -22,6 +27,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/courses")
@@ -31,6 +37,8 @@ public class CourseController {
     private final CreateCourseUseCase createCourseUseCase;
 
     private final ListCourseUseCase listCourseUseCase;
+
+    private final FindCourseUseCase findCourseUseCase;
 
     private final CourseMapper courseMapper;
 
@@ -55,6 +63,22 @@ public class CourseController {
         final ListCourseUseCaseOutput output = listCourseUseCase.execute(input);
 
         final List<CourseResponse> response = courseMapper.toCourseResponseList(output.getCourses());
+
+        return ResponseEntity.ok(response);
+
+    }
+
+
+    @GetMapping("/{courseId}")
+    public ResponseEntity<CourseResponse> get(@PathVariable UUID courseId) {
+
+        FindCourseUseCaseInput input = FindCourseUseCaseInput.builder()
+                .courseId(courseId)
+                .build();
+
+        FindCourseUseCaseOutput output = findCourseUseCase.execute(input);
+
+        final CourseResponse response = courseMapper.toCourseResponse(output.getCourse());
 
         return ResponseEntity.ok(response);
 

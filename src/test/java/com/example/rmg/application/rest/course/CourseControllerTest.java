@@ -25,6 +25,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 import static com.example.rmg.infrastructure.test.builders.Categories.aCategoryRequest;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -108,6 +110,32 @@ class CourseControllerTest {
 
         courseResponse = objectMapper.readValue(result.getResponse().getContentAsString(), CourseResponse.class);
 
+    }
+
+    @Test
+    @Transactional
+    void should_find_by_id() throws Exception {
+
+        givenCategoryEntity();
+        givenUserEntity();
+        givenCourseEntity();
+
+        mockMvc.perform(get(BASE_URI + "/" + courseEntity.getId()).contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isNotEmpty())
+                .andExpect(jsonPath("$.name").value(courseEntity.getName()))
+                .andExpect(jsonPath("$.title").value(courseEntity.getTitle()))
+                .andExpect(jsonPath("$.price").value(courseEntity.getPrice()))
+                .andExpect(jsonPath("$.description").value(courseEntity.getDescription()))
+                .andExpect(jsonPath("$.skillLevel").value(courseEntity.getSkillLevel().name()))
+                .andExpect(jsonPath("$.category.id").value(categoryEntity.getId().toString()))
+                .andExpect(jsonPath("$.category.name").value(categoryEntity.getName()))
+                .andExpect(jsonPath("$.category.group").value(categoryEntity.getGroup().name()))
+                .andExpect(jsonPath("$.instructor.id").value(userEntity.getId().toString()))
+                .andExpect(jsonPath("$.instructor.email").value(userEntity.getEmail()))
+                .andExpect(jsonPath("$.instructor.firstName").value(userEntity.getFirstName()))
+                .andExpect(jsonPath("$.instructor.lastName").value(userEntity.getLastName()))
+                .andReturn();
     }
 
     @Test
