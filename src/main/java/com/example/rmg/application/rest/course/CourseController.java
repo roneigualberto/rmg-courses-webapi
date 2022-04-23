@@ -6,6 +6,8 @@ import com.example.rmg.application.rest.category.CategoryResponse;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCase;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCaseInput;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCaseOutput;
+import com.example.rmg.usecase.category.delete.DeleteCategoryUseCaseInput;
+import com.example.rmg.usecase.category.delete.DeleteCategoryUseCaseOutput;
 import com.example.rmg.usecase.category.find.FindCategoryUseCaseInput;
 import com.example.rmg.usecase.category.find.FindCategoryUseCaseOutput;
 import com.example.rmg.usecase.category.list.ListCategoryUseCaseInput;
@@ -16,6 +18,9 @@ import com.example.rmg.usecase.category.update.UpdateCategoryUseCaseOutput;
 import com.example.rmg.usecase.course.create.CreateCourseUseCase;
 import com.example.rmg.usecase.course.create.CreateCourseUseCaseInput;
 import com.example.rmg.usecase.course.create.CreateCourseUseCaseOutput;
+import com.example.rmg.usecase.course.delete.DeleteCourseUseCase;
+import com.example.rmg.usecase.course.delete.DeleteCourseUseCaseInput;
+import com.example.rmg.usecase.course.delete.DeleteCourseUseCaseOutput;
 import com.example.rmg.usecase.course.find.FindCourseUseCase;
 import com.example.rmg.usecase.course.find.FindCourseUseCaseInput;
 import com.example.rmg.usecase.course.find.FindCourseUseCaseOutput;
@@ -47,6 +52,8 @@ public class CourseController {
     private final FindCourseUseCase findCourseUseCase;
 
     private final UpdateCourseUseCase updateCourseUseCase;
+
+    private final DeleteCourseUseCase deleteCourseUseCase;
 
     private final CourseMapper courseMapper;
 
@@ -104,6 +111,18 @@ public class CourseController {
         final CourseResponse response = courseMapper.toCourseResponse(output.getCourse());
 
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{courseId}")
+    public ResponseEntity<?> delete(@PathVariable UUID courseId) {
+
+        DeleteCourseUseCaseInput input = DeleteCourseUseCaseInput.builder()
+                .courseId(courseId)
+                .build();
+
+        DeleteCourseUseCaseOutput output = deleteCourseUseCase.execute(input);
+
+        return ResponseEntity.noContent().build();
     }
 
 }

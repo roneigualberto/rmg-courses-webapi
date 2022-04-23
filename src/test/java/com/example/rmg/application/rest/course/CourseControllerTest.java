@@ -197,6 +197,27 @@ class CourseControllerTest {
                 .andReturn();
     }
 
+    @Test
+    @Transactional
+    void should_delete_course() throws Exception {
+
+        givenCategoryEntity();
+        givenUserEntity();
+        givenCourseEntity();
+
+        UUID courseId = courseEntity.getId();
+
+        mockMvc.perform(
+                        delete(BASE_URI + "/" + courseId)
+                                .contentType(APPLICATION_JSON)
+                )
+                .andExpect(status().isNoContent());
+
+        boolean existsCourse = courseEntityRepository.existsById(courseId);
+
+        assertFalse(existsCourse);
+    }
+
 
     private void givenCourseEntity() {
         courseEntity = Courses.aCourseEntity(categoryEntity, userEntity).build();
