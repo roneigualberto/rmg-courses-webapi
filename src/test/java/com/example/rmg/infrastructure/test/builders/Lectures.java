@@ -4,7 +4,11 @@ import com.example.rmg.application.rest.course.LectureRequest;
 import com.example.rmg.domain.course.entity.Course;
 import com.example.rmg.domain.course.entity.Lecture;
 import com.example.rmg.domain.course.valueobject.LectureType;
+import com.example.rmg.infrastructure.persistence.jpa.course.CourseEntity;
+import com.example.rmg.infrastructure.persistence.jpa.lecture.LectureEntity;
 import com.example.rmg.usecase.course.lecture.common.input.LectureForm;
+
+import java.util.UUID;
 
 public class Lectures {
 
@@ -29,6 +33,16 @@ public class Lectures {
 
     public static Lecture.LectureBuilder aLecture(Course course) {
         return Lecture.builder()
+                .course(course)
+                .title(LECTURE_TITLE)
+                .order(LECTURE_ORDER)
+                .type(LECTURE_TYPE);
+    }
+
+
+    public static LectureEntity.LectureEntityBuilder aLectureEntity(CourseEntity course) {
+        return LectureEntity.builder()
+                .id(UUID.randomUUID())
                 .course(course)
                 .title(LECTURE_TITLE)
                 .order(LECTURE_ORDER)

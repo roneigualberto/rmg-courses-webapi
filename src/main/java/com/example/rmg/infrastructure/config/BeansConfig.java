@@ -14,6 +14,7 @@ import com.example.rmg.usecase.course.create.CreateCourseUseCase;
 import com.example.rmg.usecase.course.delete.DeleteCourseUseCase;
 import com.example.rmg.usecase.course.find.FindCourseUseCase;
 import com.example.rmg.usecase.course.lecture.create.CreateLectureUseCase;
+import com.example.rmg.usecase.course.lecture.list.ListLectureUseCase;
 import com.example.rmg.usecase.course.list.ListCourseUseCase;
 import com.example.rmg.usecase.course.list.ListCourseUseCaseOutput;
 import com.example.rmg.usecase.course.publish.PublishCourseUseCase;
@@ -106,6 +107,14 @@ public class BeansConfig {
             LecturePersistence lecturePersistence
     ) {
         return new CreateLectureUseCase(coursePersistence, lecturePersistence);
+    }
+
+    @Bean
+    public ListLectureUseCase listLectureUseCase(
+            CoursePersistence coursePersistence,
+            LecturePersistence lecturePersistence
+    ) {
+        return new ListLectureUseCase(coursePersistence, lecturePersistence);
     }
 
 

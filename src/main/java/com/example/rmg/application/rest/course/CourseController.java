@@ -27,6 +27,9 @@ import com.example.rmg.usecase.course.find.FindCourseUseCaseOutput;
 import com.example.rmg.usecase.course.lecture.create.CreateLectureUseCase;
 import com.example.rmg.usecase.course.lecture.create.CreateLectureUseCaseInput;
 import com.example.rmg.usecase.course.lecture.create.CreateLectureUseCaseOutput;
+import com.example.rmg.usecase.course.lecture.list.ListLectureUseCase;
+import com.example.rmg.usecase.course.lecture.list.ListLectureUseCaseInput;
+import com.example.rmg.usecase.course.lecture.list.ListLectureUseCaseOutput;
 import com.example.rmg.usecase.course.list.ListCourseUseCase;
 import com.example.rmg.usecase.course.list.ListCourseUseCaseInput;
 import com.example.rmg.usecase.course.list.ListCourseUseCaseOutput;
@@ -65,6 +68,8 @@ public class CourseController {
     private final PublishCourseUseCase publishCourseUseCase;
 
     private final CreateLectureUseCase createLectureUseCase;
+
+    private final ListLectureUseCase listLectureUseCase;
 
     private final CourseMapper courseMapper;
 
@@ -167,6 +172,22 @@ public class CourseController {
         final URI location = uriBuilder.buildAndExpand(response.getId()).toUri();
 
         return ResponseEntity.created(location).body(response);
+    }
+
+
+    @GetMapping("{courseId}/lectures")
+    public ResponseEntity<List<LectureResponse>> create(
+            @PathVariable UUID courseId) {
+
+        final ListLectureUseCaseInput input = ListLectureUseCaseInput.builder()
+                .courseId(courseId)
+                .build();
+
+        ListLectureUseCaseOutput output = listLectureUseCase.execute(input);
+
+        final List<LectureResponse> response = courseMapper.toLectureResponseList(output.getLectures());
+
+        return ResponseEntity.ok(response);
     }
 
 

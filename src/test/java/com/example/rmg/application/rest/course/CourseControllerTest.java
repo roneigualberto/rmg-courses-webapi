@@ -7,6 +7,8 @@ import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntity;
 import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntityRepository;
 import com.example.rmg.infrastructure.persistence.jpa.course.CourseEntity;
 import com.example.rmg.infrastructure.persistence.jpa.course.CourseEntityRepository;
+import com.example.rmg.infrastructure.persistence.jpa.lecture.LectureEntity;
+import com.example.rmg.infrastructure.persistence.jpa.lecture.LectureEntityRepository;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntity;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntityRepository;
 import com.example.rmg.infrastructure.test.builders.Categories;
@@ -29,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.UUID;
 
 import static com.example.rmg.infrastructure.test.builders.Categories.aCategoryRequest;
+import static com.example.rmg.infrastructure.test.builders.Lectures.aLectureEntity;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -59,10 +62,14 @@ class CourseControllerTest {
     @Autowired
     private UserEntityRepository userEntityRepository;
 
+    @Autowired
+    private LectureEntityRepository lectureEntityRepository;
+
     private CategoryEntity categoryEntity;
     private UserEntity userEntity;
     private CourseResponse courseResponse;
     private CourseEntity courseEntity;
+    private LectureEntity lectureEntity;
 
 
     @AfterEach
@@ -70,6 +77,10 @@ class CourseControllerTest {
 
         if (courseResponse != null) {
             courseEntityRepository.deleteById(courseResponse.getId());
+        }
+
+        if (lectureEntity != null) {
+            lectureEntityRepository.delete(lectureEntity);
         }
 
         if (categoryEntity != null) {
@@ -251,17 +262,36 @@ class CourseControllerTest {
         givenCourseEntity();
 
         UUID courseId = courseEntity.getId();
-
-
         LectureRequest lectureRequest = Lectures.aLectureRequest().build();
-
-
-        mockMvc.perform(
-                        post(BASE_URI + "/{courseId}/lectures", courseId)
-                                .contentType(APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(lectureRequest))
+        mockMvc.perform(post(BASE_URI + "/{courseId}/lectures", courseId)
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(lectureRequest))
                 )
                 .andExpect(status().isCreated());
+    }
+
+    @Test
+    @Transactional
+    void should_list_lectures() throws Exception {
+
+        givenCategoryEntity();
+        givenUserEntity();
+        givenCourseEntity();
+        givenLectureEntity();
+
+        mockMvc.perform(get(BASE_URI + "/{courseId}/lectures", courseEntity.getId()).contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(lectureEntity.getId().toString()))
+                .andExpect(jsonPath("$[0].title").value(lectureEntity.getTitle()))
+                .andExpect(jsonPath("$[0].order").value(lectureEntity.getOrder()))
+                .andExpect(jsonPath("$[0].type").value(lectureEntity.getType().name()));
+    }
+
+    private void givenLectureEntity() {
+
+        lectureEntity = aLectureEntity(courseEntity).build();
+
+        lectureEntityRepository.save(lectureEntity);
     }
 
 
