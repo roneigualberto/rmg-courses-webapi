@@ -6,6 +6,7 @@ import com.example.rmg.domain.course.entity.Course;
 import com.example.rmg.domain.course.entity.Lecture;
 import com.example.rmg.domain.course.messages.CourseMessages;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface LecturePersistence extends GenericPersistence<Lecture, UUID> {
@@ -16,4 +17,6 @@ public interface LecturePersistence extends GenericPersistence<Lecture, UUID> {
     default Lecture get(UUID lectureId) throws DomainException {
         return findById(lectureId).orElseThrow(() -> new DomainException(CourseMessages.LECTURE_NOT_FOUND));
     }
+
+    List<Lecture> findByCourse(Course course);
 }

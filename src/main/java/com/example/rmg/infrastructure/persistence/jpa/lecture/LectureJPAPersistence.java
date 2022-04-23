@@ -55,6 +55,17 @@ public class LectureJPAPersistence implements LecturePersistence {
     public boolean existsWithOrder(UUID courseId, Integer order) {
         return repository.existsByCourseIdAndOrder(courseId, order);
     }
+
+    @Override
+    public List<Lecture> findByCourse(Course course) {
+
+        CourseEntity courseEntity = CourseEntity.builder()
+                .id(course.getId())
+                .build();
+
+        return repository.findByCourse(courseEntity)
+                .stream().map(entityMapper::toLecture).collect(Collectors.toList());
+    }
 }
 
 
