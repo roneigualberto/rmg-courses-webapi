@@ -8,6 +8,7 @@ import com.example.rmg.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import org.apache.tomcat.jni.Local;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -52,6 +53,12 @@ public class Course {
 
     public void valid() {
         ValidatorUtil.validate(this);
+    }
+
+
+    public void publish() {
+        this.published = Boolean.TRUE;
+        this.publishDate = LocalDateTime.now();
     }
 
 }
