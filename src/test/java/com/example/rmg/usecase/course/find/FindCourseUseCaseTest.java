@@ -15,6 +15,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static com.example.rmg.domain.course.messages.CourseMessages.COURSE_NOT_FOUND;
+import static com.example.rmg.infrastructure.test.builders.Courses.aCourse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -38,7 +39,7 @@ class FindCourseUseCaseTest {
                 .courseId(UUID.randomUUID())
                 .build();
 
-        Course course = Courses.aCourse().build();
+        Course course = aCourse().build();
 
         when(coursePersistence.findById(any())).thenReturn(Optional.of(course));
 
