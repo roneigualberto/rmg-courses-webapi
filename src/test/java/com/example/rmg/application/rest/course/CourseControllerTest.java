@@ -219,6 +219,29 @@ class CourseControllerTest {
     }
 
 
+    @Test
+    @Transactional
+    void should_publish_course() throws Exception {
+
+        givenCategoryEntity();
+        givenUserEntity();
+        givenCourseEntity();
+
+        UUID courseId = courseEntity.getId();
+
+        mockMvc.perform(
+                        patch(BASE_URI + "/{courseId}/publish", courseId)
+                                .contentType(APPLICATION_JSON)
+                )
+                .andExpect(status().isNoContent());
+
+        CourseEntity courseEntityFind = courseEntityRepository.findById(courseId).orElse(new CourseEntity());
+
+        assertTrue(courseEntityFind.getPublished());
+        assertNotNull(courseEntityFind.getPublishDate());
+    }
+
+
     private void givenCourseEntity() {
         courseEntity = Courses.aCourseEntity(categoryEntity, userEntity).build();
         courseEntityRepository.save(courseEntity);

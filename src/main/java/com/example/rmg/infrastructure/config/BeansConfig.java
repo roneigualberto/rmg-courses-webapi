@@ -14,6 +14,7 @@ import com.example.rmg.usecase.course.delete.DeleteCourseUseCase;
 import com.example.rmg.usecase.course.find.FindCourseUseCase;
 import com.example.rmg.usecase.course.list.ListCourseUseCase;
 import com.example.rmg.usecase.course.list.ListCourseUseCaseOutput;
+import com.example.rmg.usecase.course.publish.PublishCourseUseCase;
 import com.example.rmg.usecase.course.update.UpdateCourseUseCase;
 import com.example.rmg.usecase.user.create.CreateUserUseCase;
 import org.springframework.context.annotation.Bean;
@@ -88,6 +89,13 @@ public class BeansConfig {
             CoursePersistence coursePersistence
     ) {
         return new DeleteCourseUseCase(coursePersistence);
+    }
+
+    @Bean
+    public PublishCourseUseCase publishCourseUseCase(
+            CoursePersistence coursePersistence
+    ) {
+        return new PublishCourseUseCase(coursePersistence);
     }
 
 

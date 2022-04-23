@@ -27,6 +27,9 @@ import com.example.rmg.usecase.course.find.FindCourseUseCaseOutput;
 import com.example.rmg.usecase.course.list.ListCourseUseCase;
 import com.example.rmg.usecase.course.list.ListCourseUseCaseInput;
 import com.example.rmg.usecase.course.list.ListCourseUseCaseOutput;
+import com.example.rmg.usecase.course.publish.PublishCourseUseCase;
+import com.example.rmg.usecase.course.publish.PublishCourseUseCaseInput;
+import com.example.rmg.usecase.course.publish.PublishCourseUseCaseOutput;
 import com.example.rmg.usecase.course.update.UpdateCourseUseCase;
 import com.example.rmg.usecase.course.update.UpdateCourseUseCaseInput;
 import com.example.rmg.usecase.course.update.UpdateCourseUseCaseOutput;
@@ -54,6 +57,8 @@ public class CourseController {
     private final UpdateCourseUseCase updateCourseUseCase;
 
     private final DeleteCourseUseCase deleteCourseUseCase;
+
+    private final PublishCourseUseCase publishCourseUseCase;
 
     private final CourseMapper courseMapper;
 
@@ -121,6 +126,18 @@ public class CourseController {
                 .build();
 
         DeleteCourseUseCaseOutput output = deleteCourseUseCase.execute(input);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{courseId}/publish")
+    public ResponseEntity<?> publish(@PathVariable UUID courseId) {
+
+        PublishCourseUseCaseInput input = PublishCourseUseCaseInput.builder()
+                .courseId(courseId)
+                .build();
+
+        PublishCourseUseCaseOutput output = publishCourseUseCase.execute(input);
 
         return ResponseEntity.noContent().build();
     }

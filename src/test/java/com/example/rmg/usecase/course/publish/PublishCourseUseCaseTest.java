@@ -49,6 +49,5 @@ class PublishCourseUseCaseTest {
 
         verify(coursePersistence).update(any());
 
-
     }
 }
