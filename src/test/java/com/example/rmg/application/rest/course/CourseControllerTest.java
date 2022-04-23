@@ -42,7 +42,6 @@ class CourseControllerTest {
 
     public static final String BASE_URI = "/api/v1/courses";
 
-
     @Autowired
     private MockMvc mockMvc;
 

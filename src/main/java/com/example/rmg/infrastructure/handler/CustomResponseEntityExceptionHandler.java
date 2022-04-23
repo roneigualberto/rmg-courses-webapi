@@ -1,4 +1,4 @@
-package com.example.rmg.infrastructure.category;
+package com.example.rmg.infrastructure.handler;
 
 import com.example.rmg.domain.common.exception.DomainException;
 import com.example.rmg.domain.common.exception.ValidationException;
