@@ -2,10 +2,12 @@ package com.example.rmg.infrastructure.test.builders;
 
 import com.example.rmg.application.rest.user.UserRequest;
 import com.example.rmg.domain.user.entity.User;
+import com.example.rmg.infrastructure.persistence.jpa.user.UserEntity;
 import com.example.rmg.usecase.user.create.CreateUserUseCaseInput;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.UUID;
 
 public class Users {
 
@@ -29,6 +31,17 @@ public class Users {
     public static User.UserBuilder anUser() {
         return User
                 .builder()
+                .firstName(USER_FIRST_NAME)
+                .lastName(USER_LAST_NAME)
+                .email(USER_EMAIL)
+                .password(USER_PASSWORD)
+                .birthDate(BIRTH_DATE);
+    }
+
+    public static UserEntity.UserEntityBuilder anUserEntity() {
+        return UserEntity
+                .builder()
+                .id(UUID.randomUUID())
                 .firstName(USER_FIRST_NAME)
                 .lastName(USER_LAST_NAME)
                 .email(USER_EMAIL)

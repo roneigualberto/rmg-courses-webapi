@@ -1,5 +1,6 @@
 package com.example.rmg.infrastructure.test.builders;
 
+import com.example.rmg.application.rest.course.CourseRequest;
 import com.example.rmg.domain.course.valueobject.SkillLevel;
 import com.example.rmg.usecase.course.create.CreateCourseUseCaseInput;
 
@@ -17,6 +18,19 @@ public class Courses {
     public static CreateCourseUseCaseInput.CreateCourseUseCaseInputBuilder aCreateCourseUseCaseInput(UUID categoryId, UUID instructorId) {
 
         return CreateCourseUseCaseInput.builder()
+                .categoryId(categoryId)
+                .name(COURSE_NAME)
+                .title(COURSE_TITLE)
+                .description(COURSE_DESCRIPTION)
+                .instructorId(instructorId)
+                .skillLevel(COURSE_SKILL_LEVEL)
+                .price(COURSE_PRICE);
+    }
+
+
+    public static CourseRequest.CourseRequestBuilder aCourseRequest(UUID categoryId, UUID instructorId) {
+
+        return CourseRequest.builder()
                 .categoryId(categoryId)
                 .name(COURSE_NAME)
                 .title(COURSE_TITLE)
