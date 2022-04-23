@@ -3,24 +3,14 @@ package com.example.rmg.usecase.category.delete;
 import com.example.rmg.domain.category.entity.Category;
 import com.example.rmg.domain.category.persistence.CategoryPersistence;
 import com.example.rmg.infrastructure.test.builders.Categories;
-import com.example.rmg.usecase.category.create.CreateCategoryUseCase;
-import com.example.rmg.usecase.category.create.CreateCategoryUseCaseInput;
-import com.example.rmg.usecase.category.delete.DeleteCategoryUseCase;
-import com.example.rmg.usecase.category.delete.DeleteCategoryUseCaseInput;
-import com.example.rmg.usecase.category.delete.DeleteCategoryUseCaseOutput;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
-import java.util.UUID;
 
-import static com.example.rmg.domain.category.valueobject.CategoryGroup.DEVELOPMENT;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
