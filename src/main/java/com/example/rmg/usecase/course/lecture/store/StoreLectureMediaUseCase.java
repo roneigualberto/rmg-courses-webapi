@@ -31,7 +31,7 @@ public class StoreLectureMediaUseCase implements UseCase<StoreLectureMediaUseCas
             throw new DomainException(LECTURE_DOES_NOT_BELONGS_TO_COURSE);
         }
 
-        storageService.store("lectures", lecture.getPath(), input.getContent());
+        storageService.store("lectures", lecture.getPath(), input.getMedia());
 
         return StoreLectureUseCaseOutput.builder().build();
     }

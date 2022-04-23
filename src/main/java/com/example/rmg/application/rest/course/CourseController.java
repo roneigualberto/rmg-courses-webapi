@@ -1,20 +1,6 @@
 package com.example.rmg.application.rest.course;
 
 
-import com.example.rmg.application.rest.category.CategoryRequest;
-import com.example.rmg.application.rest.category.CategoryResponse;
-import com.example.rmg.usecase.category.create.CreateCategoryUseCase;
-import com.example.rmg.usecase.category.create.CreateCategoryUseCaseInput;
-import com.example.rmg.usecase.category.create.CreateCategoryUseCaseOutput;
-import com.example.rmg.usecase.category.delete.DeleteCategoryUseCaseInput;
-import com.example.rmg.usecase.category.delete.DeleteCategoryUseCaseOutput;
-import com.example.rmg.usecase.category.find.FindCategoryUseCaseInput;
-import com.example.rmg.usecase.category.find.FindCategoryUseCaseOutput;
-import com.example.rmg.usecase.category.list.ListCategoryUseCaseInput;
-import com.example.rmg.usecase.category.list.ListCategoryUseCaseOutput;
-import com.example.rmg.usecase.category.update.UpdateCategoryUseCase;
-import com.example.rmg.usecase.category.update.UpdateCategoryUseCaseInput;
-import com.example.rmg.usecase.category.update.UpdateCategoryUseCaseOutput;
 import com.example.rmg.usecase.course.create.CreateCourseUseCase;
 import com.example.rmg.usecase.course.create.CreateCourseUseCaseInput;
 import com.example.rmg.usecase.course.create.CreateCourseUseCaseOutput;
@@ -30,6 +16,8 @@ import com.example.rmg.usecase.course.lecture.create.CreateLectureUseCaseOutput;
 import com.example.rmg.usecase.course.lecture.list.ListLectureUseCase;
 import com.example.rmg.usecase.course.lecture.list.ListLectureUseCaseInput;
 import com.example.rmg.usecase.course.lecture.list.ListLectureUseCaseOutput;
+import com.example.rmg.usecase.course.lecture.store.StoreLectureMediaUseCase;
+import com.example.rmg.usecase.course.lecture.store.StoreLectureMediaUseCaseInput;
 import com.example.rmg.usecase.course.list.ListCourseUseCase;
 import com.example.rmg.usecase.course.list.ListCourseUseCaseInput;
 import com.example.rmg.usecase.course.list.ListCourseUseCaseOutput;
@@ -40,12 +28,15 @@ import com.example.rmg.usecase.course.update.UpdateCourseUseCase;
 import com.example.rmg.usecase.course.update.UpdateCourseUseCaseInput;
 import com.example.rmg.usecase.course.update.UpdateCourseUseCaseOutput;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
@@ -70,6 +61,8 @@ public class CourseController {
     private final CreateLectureUseCase createLectureUseCase;
 
     private final ListLectureUseCase listLectureUseCase;
+
+    private final StoreLectureMediaUseCase storeLectureMediaUseCase;
 
     private final CourseMapper courseMapper;
 
@@ -150,6 +143,7 @@ public class CourseController {
 
         PublishCourseUseCaseOutput output = publishCourseUseCase.execute(input);
 
+
         return ResponseEntity.noContent().build();
     }
 
@@ -188,6 +182,22 @@ public class CourseController {
         final List<LectureResponse> response = courseMapper.toLectureResponseList(output.getLectures());
 
         return ResponseEntity.ok(response);
+    }
+
+
+    @PostMapping(value = "{courseId}/lectures/{lectureId}/media", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> create(
+            @PathVariable UUID courseId, @PathVariable UUID lectureId, @RequestParam("media") MultipartFile media) throws IOException {
+
+        final StoreLectureMediaUseCaseInput input = StoreLectureMediaUseCaseInput.builder()
+                .courseId(courseId)
+                .lectureId(lectureId)
+                .media(media.getInputStream())
+                .build();
+
+        storeLectureMediaUseCase.execute(input);
+
+        return ResponseEntity.noContent().build();
     }
 
 

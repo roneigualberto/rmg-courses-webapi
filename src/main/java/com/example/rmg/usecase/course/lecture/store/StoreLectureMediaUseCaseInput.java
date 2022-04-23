@@ -17,6 +17,6 @@ public class StoreLectureMediaUseCaseInput {
 
     private UUID lectureId;
 
-    private InputStream content;
+    private InputStream media;
 
 }

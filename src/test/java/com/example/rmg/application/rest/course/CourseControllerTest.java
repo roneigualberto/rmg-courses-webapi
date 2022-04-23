@@ -22,12 +22,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 import static com.example.rmg.infrastructure.test.builders.Categories.aCategoryRequest;
@@ -81,6 +84,10 @@ class CourseControllerTest {
 
         if (lectureEntity != null) {
             lectureEntityRepository.delete(lectureEntity);
+        }
+
+        if (courseEntity != null) {
+            courseEntityRepository.delete(courseEntity);
         }
 
         if (categoryEntity != null) {
@@ -285,6 +292,22 @@ class CourseControllerTest {
                 .andExpect(jsonPath("$[0].title").value(lectureEntity.getTitle()))
                 .andExpect(jsonPath("$[0].order").value(lectureEntity.getOrder()))
                 .andExpect(jsonPath("$[0].type").value(lectureEntity.getType().name()));
+    }
+
+    @Test
+    void should_store_lecture_media() throws Exception {
+        givenCategoryEntity();
+        givenUserEntity();
+        givenCourseEntity();
+        givenLectureEntity();
+
+        String url = BASE_URI + "/{courseId}/lectures/{lectureId}/media";
+
+        MockMultipartFile mockMultipartFile = new MockMultipartFile("media", "some-file.html", "text/html", "<p>Lecture Content</p>".getBytes(StandardCharsets.UTF_8));
+
+        mockMvc.perform(multipart(url, courseEntity.getId(), lectureEntity.getId())
+                .file(mockMultipartFile)
+        ).andExpect(status().isNoContent()).andDo(MockMvcResultHandlers.print());
     }
 
     private void givenLectureEntity() {

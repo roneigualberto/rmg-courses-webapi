@@ -15,7 +15,7 @@ public class Lectures {
 
     public static final String LECTURE_TITLE = "Lecture Title";
     public static final int LECTURE_ORDER = 1;
-    public static final LectureType LECTURE_TYPE = LectureType.VIDEO;
+    public static final LectureType LECTURE_TYPE = LectureType.HTML;
 
     public static LectureForm.LectureFormBuilder aLectureForm() {
         return LectureForm.builder()
