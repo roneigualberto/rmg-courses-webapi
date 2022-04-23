@@ -5,6 +5,7 @@ import com.example.rmg.application.rest.course.CourseRequest;
 import com.example.rmg.application.rest.course.CourseResponse;
 import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntity;
 import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntityRepository;
+import com.example.rmg.infrastructure.persistence.jpa.course.CourseEntity;
 import com.example.rmg.infrastructure.persistence.jpa.course.CourseEntityRepository;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntity;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntityRepository;
@@ -22,10 +23,12 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.example.rmg.infrastructure.test.builders.Categories.aCategoryRequest;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -58,6 +61,7 @@ class CourseControllerTest {
     private CategoryEntity categoryEntity;
     private UserEntity userEntity;
     private CourseResponse courseResponse;
+    private CourseEntity courseEntity;
 
 
     @AfterEach
@@ -105,6 +109,36 @@ class CourseControllerTest {
 
         courseResponse = objectMapper.readValue(result.getResponse().getContentAsString(), CourseResponse.class);
 
+    }
+
+    @Test
+    @Transactional
+    void should_list_categories() throws Exception {
+
+        givenCategoryEntity();
+        givenUserEntity();
+        givenCourseEntity();
+
+        mockMvc.perform(get(BASE_URI).contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(courseEntity.getId().toString()))
+                .andExpect(jsonPath("$[0].name").value(courseEntity.getName()))
+                .andExpect(jsonPath("$[0].title").value(courseEntity.getTitle()))
+                .andExpect(jsonPath("$[0].price").value(courseEntity.getPrice()))
+                .andExpect(jsonPath("$[0].description").value(courseEntity.getDescription()))
+                .andExpect(jsonPath("$[0].skillLevel").value(courseEntity.getSkillLevel().name()))
+                .andExpect(jsonPath("$[0].category.id").value(categoryEntity.getId().toString()))
+                .andExpect(jsonPath("$[0].category.name").value(categoryEntity.getName()))
+                .andExpect(jsonPath("$[0].category.group").value(categoryEntity.getGroup().name()))
+                .andExpect(jsonPath("$[0].instructor.id").value(userEntity.getId().toString()))
+                .andExpect(jsonPath("$[0].instructor.email").value(userEntity.getEmail()))
+                .andExpect(jsonPath("$[0].instructor.firstName").value(userEntity.getFirstName()))
+                .andExpect(jsonPath("$[0].instructor.lastName").value(userEntity.getLastName()));
+    }
+
+    private void givenCourseEntity() {
+        courseEntity = Courses.aCourseEntity(categoryEntity, userEntity).build();
+        courseEntityRepository.save(courseEntity);
     }
 
     private void givenUserEntity() {

@@ -10,6 +10,8 @@ import com.example.rmg.usecase.category.find.FindCategoryUseCase;
 import com.example.rmg.usecase.category.list.ListCategoryUseCase;
 import com.example.rmg.usecase.category.update.UpdateCategoryUseCase;
 import com.example.rmg.usecase.course.create.CreateCourseUseCase;
+import com.example.rmg.usecase.course.list.ListCourseUseCase;
+import com.example.rmg.usecase.course.list.ListCourseUseCaseOutput;
 import com.example.rmg.usecase.user.create.CreateUserUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -53,6 +55,14 @@ public class BeansConfig {
             CategoryPersistence categoryPersistence,
             UserPersistence userPersistence) {
         return new CreateCourseUseCase(coursePersistence, userPersistence, categoryPersistence);
+    }
+
+
+    @Bean
+    public ListCourseUseCase listCourseUseCase(
+            CoursePersistence coursePersistence
+    ) {
+        return new ListCourseUseCase(coursePersistence);
     }
 
 }

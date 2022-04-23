@@ -3,6 +3,9 @@ package com.example.rmg.infrastructure.test.builders;
 import com.example.rmg.application.rest.course.CourseRequest;
 import com.example.rmg.domain.course.entity.Course;
 import com.example.rmg.domain.course.valueobject.SkillLevel;
+import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntity;
+import com.example.rmg.infrastructure.persistence.jpa.course.CourseEntity;
+import com.example.rmg.infrastructure.persistence.jpa.user.UserEntity;
 import com.example.rmg.usecase.course.create.CreateCourseUseCaseInput;
 
 import java.util.UUID;
@@ -50,6 +53,19 @@ public class Courses {
                 .title(COURSE_TITLE)
                 .description(COURSE_DESCRIPTION)
                 .instructor(Users.anUser().build())
+                .skillLevel(COURSE_SKILL_LEVEL)
+                .price(COURSE_PRICE);
+    }
+
+    public static CourseEntity.CourseEntityBuilder aCourseEntity(CategoryEntity category, UserEntity instructor) {
+
+        return CourseEntity.builder()
+                .id(UUID.randomUUID())
+                .category(category)
+                .name(COURSE_NAME)
+                .title(COURSE_TITLE)
+                .description(COURSE_DESCRIPTION)
+                .instructor(instructor)
                 .skillLevel(COURSE_SKILL_LEVEL)
                 .price(COURSE_PRICE);
     }
