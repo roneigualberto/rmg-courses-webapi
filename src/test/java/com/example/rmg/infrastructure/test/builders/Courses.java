@@ -6,9 +6,13 @@ import com.example.rmg.domain.course.valueobject.SkillLevel;
 import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntity;
 import com.example.rmg.infrastructure.persistence.jpa.course.CourseEntity;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntity;
+import com.example.rmg.usecase.category.update.UpdateCategoryUseCaseInput;
 import com.example.rmg.usecase.course.create.CreateCourseUseCaseInput;
+import com.example.rmg.usecase.course.update.UpdateCourseUseCaseInput;
 
 import java.util.UUID;
+
+import static com.example.rmg.domain.category.valueobject.CategoryGroup.BUSINESS;
 
 public class Courses {
 
@@ -68,6 +72,17 @@ public class Courses {
                 .instructor(instructor)
                 .skillLevel(COURSE_SKILL_LEVEL)
                 .price(COURSE_PRICE);
+    }
+
+
+    public static UpdateCourseUseCaseInput.UpdateCourseUseCaseInputBuilder aUpdateCourseUseCaseInput(UUID courseId) {
+        return UpdateCourseUseCaseInput.builder()
+                .courseId(courseId)
+                .name("Course Name Updated")
+                .title("Course Title Updated")
+                .skillLevel(SkillLevel.ADVANCED)
+                .price(20.20)
+                .description("Description Updated");
     }
 
 
