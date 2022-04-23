@@ -1,6 +1,8 @@
 package com.example.rmg.application.rest.course;
 
 import com.example.rmg.application.rest.category.CategoryRequest;
+import com.example.rmg.application.rest.course.CourseRequest;
+import com.example.rmg.application.rest.course.CourseResponse;
 import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntity;
 import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntityRepository;
 import com.example.rmg.infrastructure.persistence.jpa.course.CourseEntityRepository;

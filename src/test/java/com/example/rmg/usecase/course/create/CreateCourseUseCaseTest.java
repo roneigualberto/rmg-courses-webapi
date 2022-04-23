@@ -1,4 +1,4 @@
-package com.example.rmg.application.rest.usecase.course.create;
+package com.example.rmg.usecase.course.create;
 
 import com.example.rmg.domain.category.entity.Category;
 import com.example.rmg.domain.category.persistence.CategoryPersistence;

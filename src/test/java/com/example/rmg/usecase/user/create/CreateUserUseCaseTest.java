@@ -1,4 +1,4 @@
-package com.example.rmg.application.rest.usecase.user.create;
+package com.example.rmg.usecase.user.create;
 
 import com.example.rmg.domain.common.exception.DomainException;
 import com.example.rmg.domain.user.entity.User;

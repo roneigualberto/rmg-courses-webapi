@@ -1,4 +1,4 @@
-package com.example.rmg.application.rest.usecase.category.update;
+package com.example.rmg.usecase.category.update;
 
 import com.example.rmg.domain.category.entity.Category;
 import com.example.rmg.domain.category.messages.CategoryMessages;

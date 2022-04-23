@@ -1,6 +1,7 @@
 package com.example.rmg.infrastructure.test.builders;
 
 import com.example.rmg.application.rest.course.CourseRequest;
+import com.example.rmg.domain.course.entity.Course;
 import com.example.rmg.domain.course.valueobject.SkillLevel;
 import com.example.rmg.usecase.course.create.CreateCourseUseCaseInput;
 
@@ -36,6 +37,19 @@ public class Courses {
                 .title(COURSE_TITLE)
                 .description(COURSE_DESCRIPTION)
                 .instructorId(instructorId)
+                .skillLevel(COURSE_SKILL_LEVEL)
+                .price(COURSE_PRICE);
+    }
+
+
+    public static Course.CourseBuilder aCourse() {
+
+        return Course.builder()
+                .category(Categories.aCategory().build())
+                .name(COURSE_NAME)
+                .title(COURSE_TITLE)
+                .description(COURSE_DESCRIPTION)
+                .instructor(Users.anUser().build())
                 .skillLevel(COURSE_SKILL_LEVEL)
                 .price(COURSE_PRICE);
     }
