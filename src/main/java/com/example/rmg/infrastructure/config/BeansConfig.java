@@ -3,6 +3,7 @@ package com.example.rmg.infrastructure.config;
 
 import com.example.rmg.domain.category.persistence.CategoryPersistence;
 import com.example.rmg.domain.course.persistence.CoursePersistence;
+import com.example.rmg.domain.course.persistence.LecturePersistence;
 import com.example.rmg.domain.user.persistence.UserPersistence;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCase;
 import com.example.rmg.usecase.category.delete.DeleteCategoryUseCase;
@@ -12,6 +13,7 @@ import com.example.rmg.usecase.category.update.UpdateCategoryUseCase;
 import com.example.rmg.usecase.course.create.CreateCourseUseCase;
 import com.example.rmg.usecase.course.delete.DeleteCourseUseCase;
 import com.example.rmg.usecase.course.find.FindCourseUseCase;
+import com.example.rmg.usecase.course.lecture.create.CreateLectureUseCase;
 import com.example.rmg.usecase.course.list.ListCourseUseCase;
 import com.example.rmg.usecase.course.list.ListCourseUseCaseOutput;
 import com.example.rmg.usecase.course.publish.PublishCourseUseCase;
@@ -96,6 +98,14 @@ public class BeansConfig {
             CoursePersistence coursePersistence
     ) {
         return new PublishCourseUseCase(coursePersistence);
+    }
+
+    @Bean
+    public CreateLectureUseCase createLectureUseCase(
+            CoursePersistence coursePersistence,
+            LecturePersistence lecturePersistence
+    ) {
+        return new CreateLectureUseCase(coursePersistence, lecturePersistence);
     }
 
 

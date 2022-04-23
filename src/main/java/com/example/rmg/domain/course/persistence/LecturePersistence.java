@@ -11,7 +11,7 @@ import java.util.UUID;
 public interface LecturePersistence extends GenericPersistence<Lecture, UUID> {
 
 
-    boolean existsWithOrder(Course course, Integer order);
+    boolean existsWithOrder(UUID courseId, Integer order);
 
     default Lecture get(UUID lectureId) throws DomainException {
         return findById(lectureId).orElseThrow(() -> new DomainException(CourseMessages.LECTURE_NOT_FOUND));

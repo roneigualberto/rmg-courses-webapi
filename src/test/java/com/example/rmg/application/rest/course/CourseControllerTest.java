@@ -11,6 +11,7 @@ import com.example.rmg.infrastructure.persistence.jpa.user.UserEntity;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntityRepository;
 import com.example.rmg.infrastructure.test.builders.Categories;
 import com.example.rmg.infrastructure.test.builders.Courses;
+import com.example.rmg.infrastructure.test.builders.Lectures;
 import com.example.rmg.infrastructure.test.builders.Users;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -239,6 +240,28 @@ class CourseControllerTest {
 
         assertTrue(courseEntityFind.getPublished());
         assertNotNull(courseEntityFind.getPublishDate());
+    }
+
+    @Test
+    @Transactional
+    void should_create_lecture() throws Exception {
+
+        givenCategoryEntity();
+        givenUserEntity();
+        givenCourseEntity();
+
+        UUID courseId = courseEntity.getId();
+
+
+        LectureRequest lectureRequest = Lectures.aLectureRequest().build();
+
+
+        mockMvc.perform(
+                        post(BASE_URI + "/{courseId}/lectures", courseId)
+                                .contentType(APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(lectureRequest))
+                )
+                .andExpect(status().isCreated());
     }
 
 

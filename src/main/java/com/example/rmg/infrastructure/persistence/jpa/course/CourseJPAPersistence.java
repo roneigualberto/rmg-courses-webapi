@@ -43,7 +43,7 @@ public class CourseJPAPersistence implements CoursePersistence {
     }
 
     @Override
-    public void deleteById(UUID course) {
-        this.repository.deleteById(course);
+    public void deleteById(UUID courseId) {
+        this.repository.deleteById(courseId);
     }
 }

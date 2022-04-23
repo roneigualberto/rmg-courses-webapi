@@ -9,6 +9,8 @@ import com.example.rmg.usecase.common.UseCase;
 import com.example.rmg.usecase.course.lecture.common.input.LectureForm;
 import lombok.RequiredArgsConstructor;
 
+import java.util.UUID;
+
 import static com.example.rmg.domain.course.messages.CourseMessages.LECTURE_ORDER_EXISTS;
 
 @RequiredArgsConstructor
@@ -26,7 +28,7 @@ public class CreateLectureUseCase implements UseCase<CreateLectureUseCaseInput, 
         Course course = coursePersistence.get(input.getCourseId());
         LectureForm form = input.getLecture();
 
-        validate(course, form);
+        validate(course.getId(), form);
 
         Lecture lecture = Lecture.builder()
                 .course(course)
@@ -43,8 +45,8 @@ public class CreateLectureUseCase implements UseCase<CreateLectureUseCaseInput, 
         return CreateLectureUseCaseOutput.of(lecture);
     }
 
-    private void validate(Course course, LectureForm form) {
-        boolean existsWithOrder = lecturePersistence.existsWithOrder(course, form.getOrder());
+    private void validate(UUID courseId, LectureForm form) {
+        boolean existsWithOrder = lecturePersistence.existsWithOrder(courseId, form.getOrder());
 
         if (existsWithOrder) {
             throw new DomainException(LECTURE_ORDER_EXISTS);

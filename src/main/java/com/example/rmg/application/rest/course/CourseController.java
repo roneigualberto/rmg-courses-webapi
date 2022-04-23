@@ -24,6 +24,9 @@ import com.example.rmg.usecase.course.delete.DeleteCourseUseCaseOutput;
 import com.example.rmg.usecase.course.find.FindCourseUseCase;
 import com.example.rmg.usecase.course.find.FindCourseUseCaseInput;
 import com.example.rmg.usecase.course.find.FindCourseUseCaseOutput;
+import com.example.rmg.usecase.course.lecture.create.CreateLectureUseCase;
+import com.example.rmg.usecase.course.lecture.create.CreateLectureUseCaseInput;
+import com.example.rmg.usecase.course.lecture.create.CreateLectureUseCaseOutput;
 import com.example.rmg.usecase.course.list.ListCourseUseCase;
 import com.example.rmg.usecase.course.list.ListCourseUseCaseInput;
 import com.example.rmg.usecase.course.list.ListCourseUseCaseOutput;
@@ -35,6 +38,7 @@ import com.example.rmg.usecase.course.update.UpdateCourseUseCaseInput;
 import com.example.rmg.usecase.course.update.UpdateCourseUseCaseOutput;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -59,6 +63,8 @@ public class CourseController {
     private final DeleteCourseUseCase deleteCourseUseCase;
 
     private final PublishCourseUseCase publishCourseUseCase;
+
+    private final CreateLectureUseCase createLectureUseCase;
 
     private final CourseMapper courseMapper;
 
@@ -141,5 +147,27 @@ public class CourseController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @Transactional
+    @PostMapping("{courseId}/lectures")
+    public ResponseEntity<LectureResponse> create(
+            @PathVariable UUID courseId,
+            @RequestBody @Valid LectureRequest request, UriComponentsBuilder uriBuilder) {
+
+
+        final CreateLectureUseCaseInput input = CreateLectureUseCaseInput.builder()
+                .courseId(courseId)
+                .lecture(courseMapper.toLectureForm(request))
+                .build();
+
+        final CreateLectureUseCaseOutput output = createLectureUseCase.execute(input);
+
+        final LectureResponse response = courseMapper.toLectureResponse(output.getLecture());
+
+        final URI location = uriBuilder.buildAndExpand(response.getId()).toUri();
+
+        return ResponseEntity.created(location).body(response);
+    }
+
 
 }

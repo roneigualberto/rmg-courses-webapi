@@ -1,9 +1,10 @@
-package com.example.rmg.infrastructure.persistence.jpa.course;
+package com.example.rmg.infrastructure.persistence.jpa.lecture;
 
 
-import com.example.rmg.domain.category.valueobject.CategoryGroup;
+import com.example.rmg.domain.course.valueobject.LectureType;
 import com.example.rmg.domain.course.valueobject.SkillLevel;
 import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntity;
+import com.example.rmg.infrastructure.persistence.jpa.course.CourseEntity;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,51 +13,34 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "course")
+@Table(name = "lecture", uniqueConstraints = {
+        @UniqueConstraint(name = "lecture_un", columnNames = {"course_id", "lecture_order"})
+})
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CourseEntity {
+public class LectureEntity {
 
     @Id
     @GenericGenerator(name = "uuid", strategy = "uuid4")
     private UUID id;
 
     @Column(nullable = false)
-    private String name;
-
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private UserEntity instructor;
-
-    @Column(nullable = false)
     private String title;
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private CategoryEntity category;
-
-    @Column
-    private String description;
+    private CourseEntity course;
 
     @Enumerated(EnumType.STRING)
-    private SkillLevel skillLevel;
+    private LectureType type;
 
-    @Column(nullable = false, length = 12, scale = 2)
-    private Double price;
-
-    @Column
-    @Builder.Default
-    private Boolean published = Boolean.FALSE;
-
-    @Column
-    private LocalDateTime publishDate;
-
+    @Column(nullable = false, name = "lecture_order")
+    private Integer order;
 
 }

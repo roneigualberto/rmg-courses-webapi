@@ -81,12 +81,12 @@ class CreateLectureUseCaseTest {
                 .lecture(form)
                 .build();
 
-        when(lecturePersistence.existsWithOrder(course,form.getOrder())).thenReturn(true);
+        when(lecturePersistence.existsWithOrder(course.getId(), form.getOrder())).thenReturn(true);
 
         DomainException exc = assertThrows(DomainException.class, () -> useCase.execute(input));
 
 
-        assertEquals(LECTURE_ORDER_EXISTS,exc.getMessage());
+        assertEquals(LECTURE_ORDER_EXISTS, exc.getMessage());
 
     }
 }
