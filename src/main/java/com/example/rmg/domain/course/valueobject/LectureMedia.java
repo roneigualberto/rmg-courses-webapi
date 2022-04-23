@@ -1,4 +1,4 @@
-package com.example.rmg.domain.course.entity;
+package com.example.rmg.domain.course.valueobject;
 
 import com.example.rmg.domain.common.validator.ValidatorUtil;
 import com.example.rmg.domain.course.valueobject.LectureType;
@@ -14,18 +14,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @Data
 @Builder
-public class Lecture {
+public class LectureMedia {
 
-    @Builder.Default
-    private UUID id = UUID.randomUUID();
+    private String path;
 
-    @NotNull
-    private Course course;
-
-    @NotEmpty(message = "Title is required")
-    private String title;
-
-    @NotNull
     private Integer order;
 
     @NotNull
@@ -33,14 +25,5 @@ public class Lecture {
 
     public void valid() {
         ValidatorUtil.validate(this);
-    }
-
-    public boolean belongsTo(Course course) {
-        return this.course.equals(course);
-    }
-
-    public String getPath() {
-
-        return "lecture-" + getId();
     }
 }
