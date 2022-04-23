@@ -1,6 +1,7 @@
 package com.example.rmg.application.rest.user;
 
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntityRepository;
+import com.example.rmg.infrastructure.test.builders.Users;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 import java.time.Month;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -43,16 +45,10 @@ class UserControllerTest {
     @Test
     void should_create_user() throws Exception {
 
-        UserRequest request = UserRequest.builder()
-                .firstName("First Name")
-                .lastName("Last Name")
-                .email("ronei@example.com")
-                .password("strong-password")
-                .birthDate(LocalDate.of(1991, Month.AUGUST, 17))
-                .build();
+        UserRequest request = Users.anUserRequest().build();
 
         mockMvc.perform(post(BASE_URI)
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNotEmpty())

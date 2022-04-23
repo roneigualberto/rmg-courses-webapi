@@ -1,8 +1,13 @@
-package com.example.rmg.usecase.category.list;
+package com.example.rmg.application.rest.usecase.category.list;
 
 import com.example.rmg.domain.category.entity.Category;
 import com.example.rmg.domain.category.persistence.CategoryPersistence;
 import com.example.rmg.domain.category.valueobject.CategoryGroup;
+import com.example.rmg.infrastructure.test.builders.Categories;
+import com.example.rmg.usecase.category.common.ouput.CategoryView;
+import com.example.rmg.usecase.category.list.ListCategoryUseCase;
+import com.example.rmg.usecase.category.list.ListCategoryUseCaseInput;
+import com.example.rmg.usecase.category.list.ListCategoryUseCaseOutput;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,31 +46,34 @@ class ListCategoryUseCaseTest {
 
         ListCategoryUseCaseOutput output = useCase.execute(input);
 
-        assertEquals(output.getCategories().size(), 3);
-        assertEquals(output.getCategories().get(0).getName(), "Category 1");
-        assertEquals(output.getCategories().get(0).getGroup(), CategoryGroup.DEVELOPMENT);
+        for (int i = 0; i < output.getCategories().size(); i++) {
+            CategoryView categoryResult = output.getCategories().get(i);
+            Category categoryExpected = categoriesMock.get(i);
+            assertEquals(categoryExpected.getName(), categoryResult.getName());
+            assertEquals(categoryExpected.getGroup(), categoryResult.getGroup());
+        }
 
     }
 
     private List<Category> createCategoriesMock() {
         List<Category> categoriesMock = new ArrayList<>();
-        Category category1 = Category.builder().id(UUID.randomUUID())
+        Category category1 = Categories.aCategory()
                 .name("Category 1")
                 .group(CategoryGroup.DEVELOPMENT)
                 .build();
 
         categoriesMock.add(category1);
 
-        Category category2 = Category.builder().id(UUID.randomUUID())
+        Category category2 = Categories.aCategory()
                 .name("Category 2")
-                .group(CategoryGroup.BUSINESS)
+                .group(CategoryGroup.DESIGN)
                 .build();
 
         categoriesMock.add(category2);
 
-        Category category3 = Category.builder().id(UUID.randomUUID())
+        Category category3 = Categories.aCategory()
                 .name("Category 3")
-                .group(CategoryGroup.DESIGN)
+                .group(CategoryGroup.BUSINESS)
                 .build();
         categoriesMock.add(category3);
 

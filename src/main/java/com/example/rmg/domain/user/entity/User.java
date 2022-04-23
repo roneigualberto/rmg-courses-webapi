@@ -16,7 +16,8 @@ import java.util.UUID;
 @Builder
 public class User {
 
-    private UUID id;
+    @Builder.Default
+    private UUID id = UUID.randomUUID();
 
     @NotBlank(message = "First name is required")
     private String firstName;
@@ -37,7 +38,6 @@ public class User {
     public void valid() {
         ValidatorUtil.validate(this);
     }
-
 
 
 }

@@ -1,10 +1,14 @@
-package com.example.rmg.usecase.category.update;
+package com.example.rmg.application.rest.usecase.category.update;
 
 import com.example.rmg.domain.category.entity.Category;
 import com.example.rmg.domain.category.messages.CategoryMessages;
 import com.example.rmg.domain.category.persistence.CategoryPersistence;
 import com.example.rmg.domain.common.exception.DomainException;
+import com.example.rmg.infrastructure.test.builders.Categories;
 import com.example.rmg.usecase.category.common.ouput.CategoryView;
+import com.example.rmg.usecase.category.update.UpdateCategoryUseCase;
+import com.example.rmg.usecase.category.update.UpdateCategoryUseCaseInput;
+import com.example.rmg.usecase.category.update.UpdateCategoryUseCaseOutput;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.example.rmg.domain.category.messages.CategoryMessages.CATEGORY_NAME_EXISTS;
 import static com.example.rmg.domain.category.valueobject.CategoryGroup.BUSINESS;
 import static com.example.rmg.domain.category.valueobject.CategoryGroup.DEVELOPMENT;
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,54 +38,35 @@ class UpdateCategoryUseCaseTest {
     @Test
     void execute_should_update_category() {
 
-        UUID categoryId = UUID.randomUUID();
 
-        UpdateCategoryUseCaseInput input = UpdateCategoryUseCaseInput.builder()
-                .categoryId(categoryId)
-                .name("Category Updated")
-                .group(BUSINESS)
-                .build();
+        Category categoryMock = Categories.aCategory().build();
 
-        Category categoryMock = Category.builder()
-                .id(categoryId)
-                .name("Category 1")
-                .group(DEVELOPMENT)
-                .build();
+        when(categoryPersistence.findById(any())).thenReturn(Optional.of(categoryMock));
 
-        when(categoryPersistence.findById(Mockito.any())).thenReturn(Optional.of(categoryMock));
+        UpdateCategoryUseCaseInput input = Categories.aCreateCategoryUseCaseInput(categoryMock.getId()).build();
 
         UpdateCategoryUseCaseOutput output = useCase.execute(input);
 
         CategoryView categoryView = output.getCategory();
 
-        assertEquals(categoryView.getId(), categoryId);
-        assertEquals(categoryView.getName(), "Category Updated");
-        assertEquals(categoryView.getGroup(), BUSINESS);
+        assertEquals(categoryView.getId(), categoryMock.getId());
+        assertEquals(categoryView.getName(), input.getName());
+        assertEquals(categoryView.getGroup(), input.getGroup());
     }
 
     @Test
     void execute_should_not_update_category_with_same_name() {
 
+        Category categoryMock = Categories.aCategory().build();
         UUID categoryId = UUID.randomUUID();
-
-        UpdateCategoryUseCaseInput input = UpdateCategoryUseCaseInput.builder()
-                .categoryId(categoryId)
-                .name("Category Updated")
-                .group(BUSINESS)
-                .build();
-
-        Category categoryMock = Category.builder()
-                .id(UUID.randomUUID())
-                .name("Category Updated")
-                .group(DEVELOPMENT)
-                .build();
+        UpdateCategoryUseCaseInput input = Categories.aCreateCategoryUseCaseInput(categoryId).build();
 
 
-        when(categoryPersistence.findByName(Mockito.any())).thenReturn(Optional.of(categoryMock));
+        when(categoryPersistence.findByName(any())).thenReturn(Optional.of(categoryMock));
 
         // Execute Use Case
         DomainException exc = assertThrows(DomainException.class, () -> useCase.execute(input));
 
-        assertEquals(CategoryMessages.CATEGORY_NAME_EXISTS, exc.getMessage());
+        assertEquals(CATEGORY_NAME_EXISTS, exc.getMessage());
     }
 }

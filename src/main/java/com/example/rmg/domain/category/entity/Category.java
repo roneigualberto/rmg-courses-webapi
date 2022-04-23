@@ -19,7 +19,8 @@ import static com.example.rmg.domain.category.messages.CategoryMessages.CATEGORY
 @Builder
 public class Category {
 
-    private UUID id;
+    @Builder.Default
+    private UUID id = UUID.randomUUID();
 
     @NotEmpty(message = CATEGORY_NAME_REQUIRED)
     private String name;

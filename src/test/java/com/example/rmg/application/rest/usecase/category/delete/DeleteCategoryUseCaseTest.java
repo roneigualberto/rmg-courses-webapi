@@ -1,9 +1,13 @@
-package com.example.rmg.usecase.category.delete;
+package com.example.rmg.application.rest.usecase.category.delete;
 
 import com.example.rmg.domain.category.entity.Category;
 import com.example.rmg.domain.category.persistence.CategoryPersistence;
+import com.example.rmg.infrastructure.test.builders.Categories;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCase;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCaseInput;
+import com.example.rmg.usecase.category.delete.DeleteCategoryUseCase;
+import com.example.rmg.usecase.category.delete.DeleteCategoryUseCaseInput;
+import com.example.rmg.usecase.category.delete.DeleteCategoryUseCaseOutput;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,6 +21,7 @@ import java.util.UUID;
 
 import static com.example.rmg.domain.category.valueobject.CategoryGroup.DEVELOPMENT;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -34,23 +39,18 @@ class DeleteCategoryUseCaseTest {
 
     @Test
     void execute_should_delete_category() {
-        UUID categoryId = UUID.randomUUID();
 
+        Category categoryMock = Categories.aCategory().build();
 
-        Category categoryMock = Category.builder()
-                .id(categoryId)
-                .name("Category 1")
-                .group(DEVELOPMENT)
-                .build();
-        when(categoryPersistence.findById(Mockito.any())).thenReturn(Optional.of(categoryMock));
+        when(categoryPersistence.findById(any())).thenReturn(Optional.of(categoryMock));
 
         DeleteCategoryUseCaseInput input = DeleteCategoryUseCaseInput.builder()
-                .categoryId(categoryId)
+                .categoryId(categoryMock.getId())
                 .build();
 
         DeleteCategoryUseCaseOutput output = useCase.execute(input);
 
-        verify(categoryPersistence).deleteById(Mockito.any());
+        verify(categoryPersistence).deleteById(any());
 
 
     }

@@ -4,6 +4,7 @@ import com.example.rmg.domain.category.messages.CategoryMessages;
 import com.example.rmg.domain.category.valueobject.CategoryGroup;
 import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntity;
 import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntityRepository;
+import com.example.rmg.infrastructure.test.builders.Categories;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +23,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
+import static com.example.rmg.infrastructure.test.builders.Categories.aCategoryEntity;
+import static com.example.rmg.infrastructure.test.builders.Categories.aCategoryRequest;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -46,9 +50,7 @@ class CategoryControllerTest {
     @Autowired
     private CategoryEntityRepository categoryEntityRepository;
 
-
     private CategoryEntity categoryEntity;
-
 
     @BeforeEach
     void setUp() {
@@ -66,31 +68,30 @@ class CategoryControllerTest {
     @Test
     void should_create_category_with_existent_name() throws Exception {
 
-        givenCategoryEntity("Category Name", CategoryGroup.BUSINESS);
+        givenCategoryEntity();
 
-        CategoryRequest request = CategoryRequest.builder().name("Category Name").group(CategoryGroup.DEVELOPMENT).build();
+        CategoryRequest request = aCategoryRequest().build();
 
         mockMvc.perform(post(BASE_URI)
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(jsonPath("$.message").value(CategoryMessages.CATEGORY_NAME_EXISTS));
     }
 
-
     @Test
     void should_create_category() throws Exception {
 
-        CategoryRequest request = CategoryRequest.builder().name("Category Name").group(CategoryGroup.DEVELOPMENT).build();
+        CategoryRequest request = aCategoryRequest().build();
 
         mockMvc.perform(post(BASE_URI)
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNotEmpty())
-                .andExpect(jsonPath("$.name").value("Category Name"))
-                .andExpect(jsonPath("$.group").value(CategoryGroup.DEVELOPMENT.name()));
+                .andExpect(jsonPath("$.name").value(request.getName()))
+                .andExpect(jsonPath("$.group").value(request.getGroup().name()));
     }
 
 
@@ -98,10 +99,9 @@ class CategoryControllerTest {
     @Transactional
     void should_list_categories() throws Exception {
 
+        givenCategoryEntity();
 
-        givenCategoryEntity("Category Name", CategoryGroup.DEVELOPMENT);
-
-        mockMvc.perform(get(BASE_URI).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(BASE_URI).contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(categoryEntity.getId().toString()))
                 .andExpect(jsonPath("$[0].name").value(categoryEntity.getName()))
@@ -112,13 +112,13 @@ class CategoryControllerTest {
     @Transactional
     void should_find_by_id() throws Exception {
 
-        givenCategoryEntity("Category Name", CategoryGroup.DEVELOPMENT);
+        givenCategoryEntity();
 
         UUID categoryId = categoryEntity.getId();
 
         categoryEntityRepository.save(categoryEntity);
 
-        mockMvc.perform(get(BASE_URI + "/" + categoryId).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(BASE_URI + "/" + categoryId).contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(categoryEntity.getId().toString()))
                 .andExpect(jsonPath("$.name").value(categoryEntity.getName()))
@@ -129,16 +129,15 @@ class CategoryControllerTest {
     @Transactional
     void should_update_category() throws Exception {
 
-
-        givenCategoryEntity("Category Name", CategoryGroup.DEVELOPMENT);
+        givenCategoryEntity();
 
         UUID categoryId = categoryEntity.getId();
 
-        CategoryRequest request = CategoryRequest.builder().name("Category Updated").group(CategoryGroup.BUSINESS).build();
+        CategoryRequest request = aCategoryRequest().build();
 
         mockMvc.perform(
                         put(BASE_URI + "/" + categoryId)
-                                .contentType(MediaType.APPLICATION_JSON)
+                                .contentType(APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(request))
                 )
                 .andExpect(status().isOk())
@@ -153,14 +152,14 @@ class CategoryControllerTest {
     void should_delete_category() throws Exception {
 
 
-        givenCategoryEntity("Category Name", CategoryGroup.DEVELOPMENT);
+        givenCategoryEntity();
 
 
         UUID categoryId = categoryEntity.getId();
 
         mockMvc.perform(
                         delete(BASE_URI + "/" + categoryId)
-                                .contentType(MediaType.APPLICATION_JSON)
+                                .contentType(APPLICATION_JSON)
                 )
                 .andExpect(status().isNoContent());
 
@@ -169,12 +168,9 @@ class CategoryControllerTest {
         assertFalse(existsCategory);
     }
 
-    private void givenCategoryEntity(String name, CategoryGroup group) {
-        categoryEntity = CategoryEntity.builder()
-                .id(UUID.randomUUID())
-                .group(group).name(name).build();
-
-        categoryEntityRepository.save(categoryEntity);
+    private void givenCategoryEntity() {
+        categoryEntity = aCategoryEntity().build();
+        categoryEntity = categoryEntityRepository.save(categoryEntity);
     }
 
 }

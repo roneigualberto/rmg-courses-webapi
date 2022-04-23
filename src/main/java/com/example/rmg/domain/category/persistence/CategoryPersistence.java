@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface CategoryPersistence extends GenericPersistence<Category, UUID> {
 
-    public Optional<Category> findByName(String name);
+    Optional<Category> findByName(String name);
 
     default Category get(UUID categoryId) throws DomainException {
         return findById(categoryId).orElseThrow(() -> new DomainException(CategoryMessages.CATEGORY_NOT_FOUND));
