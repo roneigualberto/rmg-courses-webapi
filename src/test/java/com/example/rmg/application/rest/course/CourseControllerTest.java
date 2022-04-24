@@ -3,6 +3,7 @@ package com.example.rmg.application.rest.course;
 import com.example.rmg.application.rest.category.CategoryRequest;
 import com.example.rmg.application.rest.course.CourseRequest;
 import com.example.rmg.application.rest.course.CourseResponse;
+import com.example.rmg.domain.course.storage.StorageService;
 import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntity;
 import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntityRepository;
 import com.example.rmg.infrastructure.persistence.jpa.course.CourseEntity;
@@ -19,9 +20,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -30,16 +33,17 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 import static com.example.rmg.infrastructure.test.builders.Categories.aCategoryRequest;
 import static com.example.rmg.infrastructure.test.builders.Lectures.aLectureEntity;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @ExtendWith(SpringExtension.class)
@@ -67,6 +71,9 @@ class CourseControllerTest {
 
     @Autowired
     private LectureEntityRepository lectureEntityRepository;
+
+    @MockBean
+    private StorageService storageService;
 
     private CategoryEntity categoryEntity;
     private UserEntity userEntity;
@@ -308,6 +315,30 @@ class CourseControllerTest {
         mockMvc.perform(multipart(url, courseEntity.getId(), lectureEntity.getId())
                 .file(mockMultipartFile)
         ).andExpect(status().isNoContent()).andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    void should_retrieve_lecture_media() throws Exception {
+        givenCategoryEntity();
+        givenUserEntity();
+        givenCourseEntity();
+        givenLectureEntity();
+
+
+        final byte[] mediaBytes = "<p> Lecture Content </p>".getBytes(StandardCharsets.UTF_8);
+
+        final ByteArrayInputStream media = new ByteArrayInputStream(mediaBytes);
+
+
+        when(storageService.get(Mockito.any(), Mockito.any())).thenReturn(media);
+
+        final String url = BASE_URI + "/{courseId}/lectures/{lectureId}/media";
+
+        mockMvc.perform(get(url, courseEntity.getId(), lectureEntity.getId()))
+                .andExpect(status().isOk())
+                .andExpect(content().bytes(mediaBytes))
+               .andExpect(header().string("Content-Type", lectureEntity.getType().getMimeType()));
+
     }
 
     private void givenLectureEntity() {

@@ -16,6 +16,7 @@ import com.example.rmg.usecase.course.delete.DeleteCourseUseCase;
 import com.example.rmg.usecase.course.find.FindCourseUseCase;
 import com.example.rmg.usecase.course.lecture.create.CreateLectureUseCase;
 import com.example.rmg.usecase.course.lecture.list.ListLectureUseCase;
+import com.example.rmg.usecase.course.lecture.retrieve.RetrieveLectureMediaUseCase;
 import com.example.rmg.usecase.course.lecture.store.StoreLectureMediaUseCase;
 import com.example.rmg.usecase.course.list.ListCourseUseCase;
 import com.example.rmg.usecase.course.list.ListCourseUseCaseOutput;
@@ -126,6 +127,16 @@ public class BeansConfig {
             StorageService storageService
     ) {
         return new StoreLectureMediaUseCase(coursePersistence, lecturePersistence, storageService);
+    }
+
+
+    @Bean
+    public RetrieveLectureMediaUseCase retrieveLectureMediaUseCase(
+            CoursePersistence coursePersistence,
+            LecturePersistence lecturePersistence,
+            StorageService storageService
+    ) {
+        return new RetrieveLectureMediaUseCase(coursePersistence, lecturePersistence, storageService);
     }
 
 

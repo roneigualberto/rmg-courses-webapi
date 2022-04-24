@@ -10,12 +10,16 @@ import com.example.rmg.usecase.course.delete.DeleteCourseUseCaseOutput;
 import com.example.rmg.usecase.course.find.FindCourseUseCase;
 import com.example.rmg.usecase.course.find.FindCourseUseCaseInput;
 import com.example.rmg.usecase.course.find.FindCourseUseCaseOutput;
+import com.example.rmg.usecase.course.lecture.common.output.LectureView;
 import com.example.rmg.usecase.course.lecture.create.CreateLectureUseCase;
 import com.example.rmg.usecase.course.lecture.create.CreateLectureUseCaseInput;
 import com.example.rmg.usecase.course.lecture.create.CreateLectureUseCaseOutput;
 import com.example.rmg.usecase.course.lecture.list.ListLectureUseCase;
 import com.example.rmg.usecase.course.lecture.list.ListLectureUseCaseInput;
 import com.example.rmg.usecase.course.lecture.list.ListLectureUseCaseOutput;
+import com.example.rmg.usecase.course.lecture.retrieve.RetrieveLectureMediaUseCase;
+import com.example.rmg.usecase.course.lecture.retrieve.RetrieveLectureMediaUseCaseInput;
+import com.example.rmg.usecase.course.lecture.retrieve.RetrieveLectureMediaUseCaseOutput;
 import com.example.rmg.usecase.course.lecture.store.StoreLectureMediaUseCase;
 import com.example.rmg.usecase.course.lecture.store.StoreLectureMediaUseCaseInput;
 import com.example.rmg.usecase.course.list.ListCourseUseCase;
@@ -28,6 +32,8 @@ import com.example.rmg.usecase.course.update.UpdateCourseUseCase;
 import com.example.rmg.usecase.course.update.UpdateCourseUseCaseInput;
 import com.example.rmg.usecase.course.update.UpdateCourseUseCaseOutput;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,6 +69,8 @@ public class CourseController {
     private final ListLectureUseCase listLectureUseCase;
 
     private final StoreLectureMediaUseCase storeLectureMediaUseCase;
+
+    private final RetrieveLectureMediaUseCase retrieveLectureMediaUseCase;
 
     private final CourseMapper courseMapper;
 
@@ -198,6 +206,26 @@ public class CourseController {
         storeLectureMediaUseCase.execute(input);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("{courseId}/lectures/{lectureId}/media")
+    public ResponseEntity<Resource> retrieveLectureMedia(@PathVariable UUID courseId, @PathVariable UUID lectureId) {
+
+        final RetrieveLectureMediaUseCaseInput input = RetrieveLectureMediaUseCaseInput.builder()
+                .courseId(courseId)
+                .lectureId(lectureId)
+                .build();
+
+        final RetrieveLectureMediaUseCaseOutput output = retrieveLectureMediaUseCase.execute(input);
+
+        final LectureView lectureView = output.getLecture();
+
+        final Resource body = new InputStreamResource(output.getMedia());
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(lectureView.getType().getMimeType()))
+                .body(body);
+
     }
 
 

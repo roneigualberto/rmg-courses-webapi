@@ -7,6 +7,8 @@ import com.example.rmg.domain.course.persistence.CoursePersistence;
 import com.example.rmg.domain.course.persistence.LecturePersistence;
 import com.example.rmg.domain.course.storage.StorageService;
 import com.example.rmg.usecase.common.UseCase;
+import com.example.rmg.usecase.course.lecture.common.mappers.LectureMapper;
+import com.example.rmg.usecase.course.lecture.common.output.LectureView;
 import com.example.rmg.usecase.course.lecture.store.StoreLectureMediaUseCaseInput;
 import com.example.rmg.usecase.course.lecture.store.StoreLectureUseCaseOutput;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +34,9 @@ public class RetrieveLectureMediaUseCase implements UseCase<RetrieveLectureMedia
         Course course = coursePersistence.get(input.getCourseId());
         Lecture lecture = lecturePersistence.get(input.getLectureId());
 
+
+        LectureView lectureView = LectureMapper.INSTANCE.toLectureView(lecture);
+
         if (!lecture.belongsTo(course)) {
             throw new DomainException(LECTURE_DOES_NOT_BELONGS_TO_COURSE);
         }
@@ -39,6 +44,7 @@ public class RetrieveLectureMediaUseCase implements UseCase<RetrieveLectureMedia
         InputStream media = storageService.get("lectures", lecture.getPath());
 
         return RetrieveLectureMediaUseCaseOutput.builder()
+                .lecture(lectureView)
                 .media(media)
                 .build();
     }

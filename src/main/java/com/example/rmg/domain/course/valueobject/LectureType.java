@@ -7,9 +7,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum LectureType {
 
-    VIDEO("mp4"),
-    PDF("pdf"),
-    HTML("html");
+    VIDEO("mp4", "video/mp4"),
+    PDF("pdf", "application/pdf"),
+    HTML("html", "text/html");
 
     private final String extension;
+
+    private final String mimeType;
 }
