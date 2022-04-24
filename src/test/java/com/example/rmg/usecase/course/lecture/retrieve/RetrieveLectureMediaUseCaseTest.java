@@ -1,10 +1,14 @@
-package com.example.rmg.usecase.course.lecture.store;
+package com.example.rmg.usecase.course.lecture.retrieve;
 
 import com.example.rmg.domain.course.entity.Course;
 import com.example.rmg.domain.course.entity.Lecture;
 import com.example.rmg.domain.course.persistence.CoursePersistence;
 import com.example.rmg.domain.course.persistence.LecturePersistence;
 import com.example.rmg.domain.course.storage.StorageService;
+import com.example.rmg.usecase.course.lecture.store.StoreLectureMediaUseCase;
+import com.example.rmg.usecase.course.lecture.store.StoreLectureMediaUseCaseInput;
+import com.example.rmg.usecase.course.lecture.store.StoreLectureUseCaseOutput;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,19 +20,19 @@ import java.nio.charset.StandardCharsets;
 
 import static com.example.rmg.infrastructure.test.builders.Courses.aCourse;
 import static com.example.rmg.infrastructure.test.builders.Lectures.aLecture;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
-class StoreLectureMediaUseCaseTest {
+class RetrieveLectureMediaUseCaseTest {
 
     public static final String LECTURE_MEDIA_CONTENT = "<p>Lecture Content</p>";
 
     @InjectMocks
-    private StoreLectureMediaUseCase useCase;
+    private RetrieveLectureMediaUseCase useCase;
 
     @Mock
     private CoursePersistence coursePersistence;
@@ -39,26 +43,28 @@ class StoreLectureMediaUseCaseTest {
     @Mock
     private StorageService storageService;
 
+
     @Test
-    public void should_store_lecture() {
+    public void should_retrieve_lecture_media() {
         final Course course = aCourse().build();
         when(coursePersistence.get(any())).thenReturn(course);
 
         final Lecture lecture = aLecture(course).build();
         when(lecturePersistence.get(any())).thenReturn(lecture);
-
         final ByteArrayInputStream media = new ByteArrayInputStream(LECTURE_MEDIA_CONTENT.getBytes(StandardCharsets.UTF_8));
 
-        final StoreLectureMediaUseCaseInput input = StoreLectureMediaUseCaseInput.builder()
+        when(storageService.get(any(), any())).thenReturn(media);
+
+        final RetrieveLectureMediaUseCaseInput input = RetrieveLectureMediaUseCaseInput.builder()
                 .courseId(course.getId())
                 .lectureId(lecture.getId())
-                .media(media)
                 .build();
 
-        final StoreLectureUseCaseOutput output = useCase.execute(input);
+        final RetrieveLectureMediaUseCaseOutput output = useCase.execute(input);
 
-        assertNotNull(output);
-        verify(storageService).store(any(), any(), any());
+        assertEquals(media, output.getMedia());
+
 
     }
+
 }

@@ -10,7 +10,6 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Objects;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static java.util.Objects.requireNonNull;
@@ -23,19 +22,36 @@ public class FileSystemStorageService implements StorageService {
 
         requireNonNull(content, "required");
 
+        final Path locationPath = getLocationFilePath(bucket, path);
+
+        try (InputStream in = content) {
+            Files.createDirectories(locationPath.getParent());
+            Files.copy(in, locationPath, REPLACE_EXISTING);
+        } catch (IOException ex) {
+            throw new StorageException("Failed to storage file");
+        }
+    }
+
+    private Path getLocationFilePath(String bucket, String path) {
         final String tmpDir = System.getProperty("java.io.tmpdir");
 
         final String crossPlatformPath = bucket + File.separator + path.replace("/", File.separator);
 
         final Path locationPath = Paths.get(tmpDir);
 
-        final Path destinationPath = locationPath.resolve(crossPlatformPath).normalize().toAbsolutePath();
+        return locationPath.resolve(crossPlatformPath).normalize().toAbsolutePath();
 
-        try (InputStream in = content) {
-            Files.createDirectories(destinationPath.getParent());
-            Files.copy(in, destinationPath, REPLACE_EXISTING);
-        } catch (IOException ex) {
-            throw new StorageException("Failed to storage file");
+    }
+
+
+    @Override
+    public InputStream get(String bucket, String path) {
+
+        try {
+            Path file = getLocationFilePath(bucket, path);
+            return Files.newInputStream(file);
+        } catch (IOException e) {
+            throw new StorageException("Could not read file: " + path);
         }
     }
 }

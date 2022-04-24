@@ -6,4 +6,6 @@ public interface StorageService {
 
     void store(String bucket, String path, InputStream in);
 
+
+    InputStream get(String bucket, String path);
 }
