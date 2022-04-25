@@ -1,6 +1,7 @@
 package com.example.rmg.infrastructure.test.builders;
 
 import com.example.rmg.application.rest.course.LectureRequest;
+import com.example.rmg.application.rest.user.PaymentMethodRequest;
 import com.example.rmg.domain.course.entity.Course;
 import com.example.rmg.domain.course.entity.Lecture;
 import com.example.rmg.domain.course.valueobject.LectureType;
@@ -24,6 +25,16 @@ public class PaymentMethods {
 
     public static PaymentMethodForm.PaymentMethodFormBuilder aPaymentMethodForm() {
         return PaymentMethodForm.builder()
+                .brand(BRAND)
+                .cardNumber(CARD_NUMBER)
+                .expirationMonth(EXPIRATION_MONTH)
+                .expirationYear(EXPIRATION_YEAR)
+                .cvv(671)
+                .nameOnCard(NAME_ON_CARD);
+    }
+
+    public static PaymentMethodRequest.PaymentMethodRequestBuilder aPaymentRequest() {
+        return PaymentMethodRequest.builder()
                 .brand(BRAND)
                 .cardNumber(CARD_NUMBER)
                 .expirationMonth(EXPIRATION_MONTH)

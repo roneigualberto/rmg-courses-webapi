@@ -5,6 +5,7 @@ import com.example.rmg.domain.category.persistence.CategoryPersistence;
 import com.example.rmg.domain.course.persistence.CoursePersistence;
 import com.example.rmg.domain.course.persistence.LecturePersistence;
 import com.example.rmg.domain.course.storage.StorageService;
+import com.example.rmg.domain.paymentmethod.persistence.PaymentMethodPersistence;
 import com.example.rmg.domain.user.persistence.UserPersistence;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCase;
 import com.example.rmg.usecase.category.delete.DeleteCategoryUseCase;
@@ -22,6 +23,7 @@ import com.example.rmg.usecase.course.list.ListCourseUseCase;
 import com.example.rmg.usecase.course.list.ListCourseUseCaseOutput;
 import com.example.rmg.usecase.course.publish.PublishCourseUseCase;
 import com.example.rmg.usecase.course.update.UpdateCourseUseCase;
+import com.example.rmg.usecase.paymentmethod.create.CreatePaymentMethodUseCase;
 import com.example.rmg.usecase.user.create.CreateUserUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -137,6 +139,15 @@ public class BeansConfig {
             StorageService storageService
     ) {
         return new RetrieveLectureMediaUseCase(coursePersistence, lecturePersistence, storageService);
+    }
+
+
+    @Bean
+    public CreatePaymentMethodUseCase createPaymentMethodUseCase(
+            PaymentMethodPersistence paymentMethodPersistence,
+            UserPersistence userPersistence
+    ) {
+        return new CreatePaymentMethodUseCase(paymentMethodPersistence, userPersistence);
     }
 
 
