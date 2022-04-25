@@ -2,8 +2,7 @@ package com.example.rmg.domain.user.messages;
 
 public class UserMessages {
 
-    public static final String CATEGORY_NAME_REQUIRED = "Category name is required";
-    public static final String CATEGORY_GROUP_REQUIRED = "Category group is required";
+
     public static final String USER_EMAIL_EXISTS = "Email already exists";
     public static final String USER_NOT_FOUND = "Category not found";
 }
