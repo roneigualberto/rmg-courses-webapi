@@ -1,6 +1,5 @@
 package com.example.rmg.infrastructure.persistence.jpa.paymentmethod;
 
-import com.example.rmg.domain.paymentmethod.entity.PaymentMethod;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 

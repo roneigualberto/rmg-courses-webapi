@@ -17,3 +17,4 @@ public interface PaymentMethodPersistence extends GenericPersistence<PaymentMeth
     }
 
     List<PaymentMethod> findByOwner(User owner);
+}

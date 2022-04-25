@@ -5,7 +5,9 @@ import com.example.rmg.application.rest.user.PaymentMethodRequest;
 import com.example.rmg.domain.course.entity.Course;
 import com.example.rmg.domain.course.entity.Lecture;
 import com.example.rmg.domain.course.valueobject.LectureType;
+import com.example.rmg.domain.paymentmethod.entity.PaymentMethod;
 import com.example.rmg.domain.paymentmethod.valueobject.Brand;
+import com.example.rmg.domain.user.entity.User;
 import com.example.rmg.infrastructure.persistence.jpa.course.CourseEntity;
 import com.example.rmg.infrastructure.persistence.jpa.lecture.LectureEntity;
 import com.example.rmg.usecase.course.lecture.common.input.LectureForm;
@@ -22,6 +24,7 @@ public class PaymentMethods {
     public static final int EXPIRATION_YEAR = 2030;
     public static final Brand BRAND = Brand.MASTERCARD;
     public static final String NAME_ON_CARD = "User name";
+    public static final int CVV = 671;
 
     public static PaymentMethodForm.PaymentMethodFormBuilder aPaymentMethodForm() {
         return PaymentMethodForm.builder()
@@ -29,7 +32,7 @@ public class PaymentMethods {
                 .cardNumber(CARD_NUMBER)
                 .expirationMonth(EXPIRATION_MONTH)
                 .expirationYear(EXPIRATION_YEAR)
-                .cvv(671)
+                .cvv(CVV)
                 .nameOnCard(NAME_ON_CARD);
     }
 
@@ -39,7 +42,18 @@ public class PaymentMethods {
                 .cardNumber(CARD_NUMBER)
                 .expirationMonth(EXPIRATION_MONTH)
                 .expirationYear(EXPIRATION_YEAR)
-                .cvv(671)
+                .cvv(CVV)
+                .nameOnCard(NAME_ON_CARD);
+    }
+
+    public static PaymentMethod.PaymentMethodBuilder aPaymentMethod(User owner) {
+        return PaymentMethod.builder()
+                .owner(owner)
+                .brand(BRAND)
+                .cardNumber(CARD_NUMBER)
+                .expirationMonth(EXPIRATION_MONTH)
+                .expirationYear(EXPIRATION_YEAR)
+                .cvv(CVV)
                 .nameOnCard(NAME_ON_CARD);
     }
 
