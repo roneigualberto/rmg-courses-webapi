@@ -1,8 +1,10 @@
 package com.example.rmg.application.rest.user;
 
+import com.example.rmg.infrastructure.persistence.jpa.paymentmethod.PaymentMethodEntity;
 import com.example.rmg.infrastructure.persistence.jpa.paymentmethod.PaymentMethodEntityRepository;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntity;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntityRepository;
+import com.example.rmg.infrastructure.test.builders.PaymentMethods;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -16,10 +18,12 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.example.rmg.infrastructure.test.builders.PaymentMethods.aPaymentMethodEntity;
 import static com.example.rmg.infrastructure.test.builders.PaymentMethods.aPaymentRequest;
 import static com.example.rmg.infrastructure.test.builders.Users.anUserEntity;
 import static com.example.rmg.infrastructure.test.builders.Users.anUserRequest;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -50,9 +54,15 @@ class UserControllerTest {
     private UserEntity userEntity;
     private PaymentMethodResponse paymentMethodResponse;
     private UserResponse userResponse;
+    private PaymentMethodEntity paymentMethodEntity;
+
 
     @AfterEach
     void tearDown() {
+
+        if (paymentMethodEntity != null) {
+            paymentMethodEntityRepository.delete(paymentMethodEntity);
+        }
 
         if (paymentMethodResponse != null) {
             paymentMethodEntityRepository.deleteById(paymentMethodResponse.getId());
@@ -107,6 +117,31 @@ class UserControllerTest {
                 .andReturn().getResponse();
 
         paymentMethodResponse = objectMapper.readValue(response.getContentAsString(), PaymentMethodResponse.class);
+    }
+
+    @Test
+    @Transactional
+    void should_list_payment_methods() throws Exception {
+        givenUserEntity();
+        givenPaymentEntity();
+        mockMvc.perform(get(BASE_URI + "/{userId}/payment-methods", userEntity.getId())
+                        .contentType(APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(paymentMethodEntity.getId().toString()))
+                .andExpect(jsonPath("$[0].ownerId").value(userEntity.getId().toString()))
+                .andExpect(jsonPath("$[0].brand").value(paymentMethodEntity.getBrand().name()))
+                .andExpect(jsonPath("$[0].cardNumber").value(paymentMethodEntity.getCardNumber()))
+                .andExpect(jsonPath("$[0].nameOnCard").value(paymentMethodEntity.getNameOnCard()))
+                .andExpect(jsonPath("$[0].expirationYear").value(paymentMethodEntity.getExpirationYear()))
+                .andExpect(jsonPath("$[0].expirationMonth").value(paymentMethodEntity.getExpirationMonth()));
+
+
+    }
+
+    private void givenPaymentEntity() {
+        paymentMethodEntity = aPaymentMethodEntity(userEntity).build();
+        paymentMethodEntityRepository.save(paymentMethodEntity);
     }
 
     private void givenUserEntity() {
