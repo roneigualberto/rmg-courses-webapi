@@ -1,33 +1,22 @@
 package com.example.rmg.usecase.paymentmethod.list;
 
-import com.example.rmg.domain.course.entity.Course;
 import com.example.rmg.domain.paymentmethod.entity.PaymentMethod;
 import com.example.rmg.domain.paymentmethod.persistence.PaymentMethodPersistence;
 import com.example.rmg.domain.user.entity.User;
 import com.example.rmg.domain.user.persistence.UserPersistence;
-import com.example.rmg.infrastructure.test.builders.PaymentMethods;
-import com.example.rmg.usecase.course.common.output.CourseView;
-import com.example.rmg.usecase.paymentmethod.common.input.PaymentMethodForm;
 import com.example.rmg.usecase.paymentmethod.common.output.PaymentMethodView;
-import com.example.rmg.usecase.paymentmethod.create.CreatePaymentMethodUseCase;
-import com.example.rmg.usecase.paymentmethod.create.CreatePaymentMethodUseCaseInput;
-import com.example.rmg.usecase.paymentmethod.create.CreatePaymentMethodUseCaseOutput;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
 import static com.example.rmg.infrastructure.test.builders.PaymentMethods.aPaymentMethod;
-import static com.example.rmg.infrastructure.test.builders.PaymentMethods.aPaymentMethodForm;
 import static com.example.rmg.infrastructure.test.builders.Users.anUser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
