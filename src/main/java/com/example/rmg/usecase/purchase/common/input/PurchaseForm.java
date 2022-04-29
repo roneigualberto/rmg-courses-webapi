@@ -14,4 +14,6 @@ import java.util.UUID;
 public class PurchaseForm {
 
     private Set<UUID> coursesId;
+
+    private UUID paymentMethodId;
 }

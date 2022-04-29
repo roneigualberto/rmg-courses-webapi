@@ -1,10 +1,15 @@
 package com.example.rmg.application.rest.user;
 
+import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntity;
+import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntityRepository;
+import com.example.rmg.infrastructure.persistence.jpa.course.CourseEntity;
+import com.example.rmg.infrastructure.persistence.jpa.course.CourseEntityRepository;
 import com.example.rmg.infrastructure.persistence.jpa.paymentmethod.PaymentMethodEntity;
 import com.example.rmg.infrastructure.persistence.jpa.paymentmethod.PaymentMethodEntityRepository;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntity;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntityRepository;
-import com.example.rmg.infrastructure.test.builders.PaymentMethods;
+import com.example.rmg.infrastructure.test.builders.Categories;
+import com.example.rmg.infrastructure.test.builders.Courses;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +22,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Set;
 
 import static com.example.rmg.infrastructure.test.builders.PaymentMethods.aPaymentMethodEntity;
 import static com.example.rmg.infrastructure.test.builders.PaymentMethods.aPaymentRequest;
@@ -51,10 +58,19 @@ class UserControllerTest {
     @Autowired
     private PaymentMethodEntityRepository paymentMethodEntityRepository;
 
+    @Autowired
+    private CategoryEntityRepository categoryEntityRepository;
+
+    @Autowired
+    private CourseEntityRepository courseEntityRepository;
+
     private UserEntity userEntity;
     private PaymentMethodResponse paymentMethodResponse;
     private UserResponse userResponse;
     private PaymentMethodEntity paymentMethodEntity;
+    private CategoryEntity categoryEntity;
+    private CourseEntity courseEntity;
+    private PurchaseResponse purchaseResponse;
 
 
     @AfterEach
@@ -121,9 +137,34 @@ class UserControllerTest {
 
     @Test
     @Transactional
+    void should_make_purchase() throws Exception {
+        givenUserEntity();
+        givenPaymentMethodEntity();
+        givenCategoryEntity();
+        givenCourseEntity();
+
+
+        final PurchaseRequest request = PurchaseRequest.builder()
+                .coursesId(Set.of(courseEntity.getId()))
+                .paymentMethodId(paymentMethodEntity.getId())
+                .build();
+
+        MockHttpServletResponse response = mockMvc.perform(post(BASE_URI + "/{userId}/purchases", userEntity.getId())
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").isNotEmpty())
+                .andExpect(jsonPath("$.buyerId").value(userEntity.getId().toString()))
+                .andReturn().getResponse();
+
+        purchaseResponse = objectMapper.readValue(response.getContentAsString(), PurchaseResponse.class);
+    }
+
+    @Test
+    @Transactional
     void should_list_payment_methods() throws Exception {
         givenUserEntity();
-        givenPaymentEntity();
+        givenPaymentMethodEntity();
         mockMvc.perform(get(BASE_URI + "/{userId}/payment-methods", userEntity.getId())
                         .contentType(APPLICATION_JSON)
                 )
@@ -139,14 +180,24 @@ class UserControllerTest {
 
     }
 
-    private void givenPaymentEntity() {
+    private void givenPaymentMethodEntity() {
         paymentMethodEntity = aPaymentMethodEntity(userEntity).build();
-        paymentMethodEntityRepository.save(paymentMethodEntity);
+        paymentMethodEntity = paymentMethodEntityRepository.save(paymentMethodEntity);
     }
 
     private void givenUserEntity() {
         userEntity = anUserEntity().build();
-        userEntityRepository.save(userEntity);
+        userEntity = userEntityRepository.save(userEntity);
+    }
+
+    private void givenCourseEntity() {
+        courseEntity = Courses.aCourseEntity(categoryEntity, userEntity).build();
+        courseEntityRepository.save(courseEntity);
+    }
+
+    private void givenCategoryEntity() {
+        categoryEntity = Categories.aCategoryEntity().build();
+        categoryEntityRepository.save(categoryEntity);
     }
 
 }

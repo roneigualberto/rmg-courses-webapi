@@ -1,20 +1,13 @@
-package com.example.rmg.usecase.purchase.create;
+package com.example.rmg.usecase.purchase.make;
 
 import com.example.rmg.domain.course.entity.Course;
 import com.example.rmg.domain.course.persistence.CoursePersistence;
 import com.example.rmg.domain.paymentmethod.entity.PaymentMethod;
 import com.example.rmg.domain.paymentmethod.persistence.PaymentMethodPersistence;
-import com.example.rmg.domain.purchase.entity.Purchase;
 import com.example.rmg.domain.purchase.persistence.PurchasePersistence;
 import com.example.rmg.domain.user.entity.User;
 import com.example.rmg.domain.user.persistence.UserPersistence;
 import com.example.rmg.infrastructure.test.builders.Courses;
-import com.example.rmg.infrastructure.test.builders.PaymentMethods;
-import com.example.rmg.usecase.paymentmethod.common.input.PaymentMethodForm;
-import com.example.rmg.usecase.paymentmethod.common.output.PaymentMethodView;
-import com.example.rmg.usecase.paymentmethod.create.CreatePaymentMethodUseCase;
-import com.example.rmg.usecase.paymentmethod.create.CreatePaymentMethodUseCaseInput;
-import com.example.rmg.usecase.paymentmethod.create.CreatePaymentMethodUseCaseOutput;
 import com.example.rmg.usecase.purchase.common.input.PurchaseForm;
 import com.example.rmg.usecase.purchase.common.output.PurchaseView;
 import org.junit.jupiter.api.Test;
@@ -29,7 +22,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.example.rmg.infrastructure.test.builders.PaymentMethods.aPaymentMethod;
-import static com.example.rmg.infrastructure.test.builders.PaymentMethods.aPaymentMethodForm;
 import static com.example.rmg.infrastructure.test.builders.Users.anUser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -38,11 +30,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class CreatePurchaseUseCaseTest {
+class MakePurchaseUseCaseTest {
 
 
     @InjectMocks
-    private CreatePurchaseUseCase useCase;
+    private MakePurchaseUseCase useCase;
 
     @Mock
     private PurchasePersistence purchasePersistence;
@@ -64,14 +56,15 @@ class CreatePurchaseUseCaseTest {
         final PaymentMethod paymentMethod = givenPaymentMethod(buyer);
         final List<Course> courses = givenCourses();
         final Set<UUID> coursesId = courses.stream().map(Course::getId).collect(Collectors.toSet());
-        final PurchaseForm form = PurchaseForm.builder().coursesId(coursesId).build();
-        final CreatePurchaseUseCaseInput input = CreatePurchaseUseCaseInput.builder()
+        final PurchaseForm form = PurchaseForm.builder().coursesId(coursesId)
+                .paymentMethodId(paymentMethod.getId()).build();
+
+        final MakePurchaseUseCaseInput input = MakePurchaseUseCaseInput.builder()
                 .buyerId(buyer.getId())
-                .paymentMethodId(paymentMethod.getId())
                 .purchase(form)
                 .build();
 
-        final CreatePurchaseUseCaseOutput output = useCase.execute(input);
+        final MakePurchaseUseCaseOutput output = useCase.execute(input);
 
         final PurchaseView purchaseView = output.getPurchase();
 

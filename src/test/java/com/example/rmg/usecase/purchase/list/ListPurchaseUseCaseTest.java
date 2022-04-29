@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
+import static com.example.rmg.infrastructure.test.builders.Courses.aCourse;
 import static com.example.rmg.infrastructure.test.builders.Users.anUser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -42,15 +43,15 @@ class ListPurchaseUseCaseTest {
         when(userPersistence.get(any())).thenReturn(buyer);
 
         Purchase purchase1 = Purchases.aPurchase(buyer).build();
-        Course course1 = Courses.aCourse().price(10.20).build();
-        Course course2 = Courses.aCourse().price(22.20).build();
+        Course course1 = aCourse().price(10.20).build();
+        Course course2 = aCourse().price(22.20).build();
         purchase1.addCourse(course1);
         purchase1.addCourse(course2);
 
 
         Purchase purchase2 = Purchases.aPurchase(buyer).build();
-        Course course3 = Courses.aCourse().price(11.25).build();
-        Course course4 = Courses.aCourse().price(21.50).build();
+        Course course3 = aCourse().price(11.25).build();
+        Course course4 = aCourse().price(21.50).build();
         purchase1.addCourse(course3);
         purchase1.addCourse(course4);
 

@@ -38,8 +38,8 @@ public class PaymentMethodJPAPersistence implements PaymentMethodPersistence {
     }
 
     @Override
-    public Optional<PaymentMethod> findById(UUID uuid) {
-        return Optional.empty();
+    public Optional<PaymentMethod> findById(UUID paymentMethodId) {
+        return repository.findById(paymentMethodId).map(entityMapper::toPaymentMethod);
     }
 
     @Override

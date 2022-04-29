@@ -1,4 +1,4 @@
-package com.example.rmg.usecase.purchase.create;
+package com.example.rmg.usecase.purchase.make;
 
 
 import com.example.rmg.domain.course.persistence.CoursePersistence;
@@ -13,7 +13,7 @@ import com.example.rmg.usecase.purchase.common.input.PurchaseForm;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class CreatePurchaseUseCase implements UseCase<CreatePurchaseUseCaseInput, CreatePurchaseUseCaseOutput> {
+public class MakePurchaseUseCase implements UseCase<MakePurchaseUseCaseInput, MakePurchaseUseCaseOutput> {
 
     private final PurchasePersistence purchasePersistence;
 
@@ -24,14 +24,14 @@ public class CreatePurchaseUseCase implements UseCase<CreatePurchaseUseCaseInput
     private final CoursePersistence coursePersistence;
 
     @Override
-    public CreatePurchaseUseCaseOutput execute(CreatePurchaseUseCaseInput input) {
+    public MakePurchaseUseCaseOutput execute(MakePurchaseUseCaseInput input) {
 
 
         final PurchaseForm form = input.getPurchase();
 
         final User buyer = userPersistence.get(input.getBuyerId());
 
-        final PaymentMethod paymentMethod = paymentMethodPersistence.get(input.getPaymentMethodId());
+        final PaymentMethod paymentMethod = paymentMethodPersistence.get(form.getPaymentMethodId());
 
         final Purchase purchase = Purchase.builder()
                 .buyer(buyer)
@@ -44,6 +44,6 @@ public class CreatePurchaseUseCase implements UseCase<CreatePurchaseUseCaseInput
 
         purchasePersistence.save(purchase);
 
-        return CreatePurchaseUseCaseOutput.of(purchase);
+        return MakePurchaseUseCaseOutput.of(purchase);
     }
 }

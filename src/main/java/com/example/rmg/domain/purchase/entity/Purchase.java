@@ -41,17 +41,16 @@ public class Purchase {
     private List<PurchaseItem> items = new ArrayList<>();
 
     public void addCourse(Course course) {
-        final PurchaseItem item = buildItem(course);
+        final PurchaseItem item = addItem(course);
         this.items.add(item);
         this.total += item.getPrice();
     }
 
-    private PurchaseItem buildItem(Course course) {
+    public PurchaseItem addItem(Course course) {
         return PurchaseItem.builder()
                 .purchase(this)
                 .course(course)
                 .price(course.getPrice())
                 .build();
     }
-
 }

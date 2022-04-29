@@ -1,4 +1,4 @@
-package com.example.rmg.usecase.purchase.create;
+package com.example.rmg.usecase.purchase.make;
 
 
 import com.example.rmg.usecase.purchase.common.input.PurchaseForm;
@@ -11,11 +11,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @Data
 @Builder
-public class CreatePurchaseUseCaseInput {
+public class MakePurchaseUseCaseInput {
 
     private UUID buyerId;
-
-    private UUID paymentMethodId;
 
     private PurchaseForm purchase;
 }

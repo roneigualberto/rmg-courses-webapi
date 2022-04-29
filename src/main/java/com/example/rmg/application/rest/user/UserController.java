@@ -8,6 +8,10 @@ import com.example.rmg.usecase.paymentmethod.create.CreatePaymentMethodUseCaseOu
 import com.example.rmg.usecase.paymentmethod.list.ListPaymentMethodUseCase;
 import com.example.rmg.usecase.paymentmethod.list.ListPaymentMethodUseCaseInput;
 import com.example.rmg.usecase.paymentmethod.list.ListPaymentMethodUseCaseOutput;
+import com.example.rmg.usecase.purchase.common.input.PurchaseForm;
+import com.example.rmg.usecase.purchase.make.MakePurchaseUseCase;
+import com.example.rmg.usecase.purchase.make.MakePurchaseUseCaseInput;
+import com.example.rmg.usecase.purchase.make.MakePurchaseUseCaseOutput;
 import com.example.rmg.usecase.user.create.CreateUserUseCase;
 import com.example.rmg.usecase.user.create.CreateUserUseCaseInput;
 import com.example.rmg.usecase.user.create.CreateUserUseCaseOutput;
@@ -32,6 +36,8 @@ public class UserController {
     private final CreatePaymentMethodUseCase createPaymentMethodUseCase;
 
     private final ListPaymentMethodUseCase listPaymentMethodUseCase;
+
+    private final MakePurchaseUseCase makePurchaseUseCase;
 
     private final UserMapper userMapper;
 
@@ -73,6 +79,24 @@ public class UserController {
         final List<PaymentMethodResponse> response = userMapper.toPaymentMethodResponseList(output.getPaymentMethods());
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("{userId}/purchases")
+    public ResponseEntity<PurchaseResponse> makePurchase(@PathVariable UUID userId, @RequestBody @Valid PurchaseRequest request, UriComponentsBuilder uriBuilder) {
+
+        final PurchaseForm form = userMapper.toPurchaseForm(request);
+
+        final MakePurchaseUseCaseInput input = MakePurchaseUseCaseInput.builder()
+                .buyerId(userId)
+                .purchase(form)
+                .build();
+
+        final MakePurchaseUseCaseOutput output = makePurchaseUseCase.execute(input);
+
+        final PurchaseResponse response = userMapper.toPurchaseResponse(output.getPurchase());
+        final URI location = uriBuilder.buildAndExpand(response.getId()).toUri();
+
+        return ResponseEntity.created(location).body(response);
     }
 
 
