@@ -45,4 +45,8 @@ public class PurchaseEntity {
     @Builder.Default
     private List<PurchaseItemEntity> items = new ArrayList<>();
 
+    public void addItem(PurchaseItemEntity item) {
+        item.setPurchase(this);
+        this.items.add(item);
+    }
 }

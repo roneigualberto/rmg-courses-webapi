@@ -25,6 +25,7 @@ import com.example.rmg.usecase.course.publish.PublishCourseUseCase;
 import com.example.rmg.usecase.course.update.UpdateCourseUseCase;
 import com.example.rmg.usecase.paymentmethod.create.CreatePaymentMethodUseCase;
 import com.example.rmg.usecase.paymentmethod.list.ListPaymentMethodUseCase;
+import com.example.rmg.usecase.purchase.list.ListPurchaseUseCase;
 import com.example.rmg.usecase.purchase.make.MakePurchaseUseCase;
 import com.example.rmg.usecase.user.create.CreateUserUseCase;
 import org.springframework.context.annotation.Bean;
@@ -173,6 +174,14 @@ public class BeansConfig {
                 userPersistence,
                 paymentMethodPersistence,
                 coursePersistence);
+    }
+
+    @Bean
+    public ListPurchaseUseCase listPurchaseUseCase(
+            PurchasePersistence purchasePersistence,
+            UserPersistence userPersistence
+    ) {
+        return new ListPurchaseUseCase(purchasePersistence, userPersistence);
     }
 
 

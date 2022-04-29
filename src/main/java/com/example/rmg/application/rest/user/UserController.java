@@ -9,6 +9,9 @@ import com.example.rmg.usecase.paymentmethod.list.ListPaymentMethodUseCase;
 import com.example.rmg.usecase.paymentmethod.list.ListPaymentMethodUseCaseInput;
 import com.example.rmg.usecase.paymentmethod.list.ListPaymentMethodUseCaseOutput;
 import com.example.rmg.usecase.purchase.common.input.PurchaseForm;
+import com.example.rmg.usecase.purchase.list.ListPurchaseUseCase;
+import com.example.rmg.usecase.purchase.list.ListPurchaseUseCaseInput;
+import com.example.rmg.usecase.purchase.list.ListPurchaseUseCaseOutput;
 import com.example.rmg.usecase.purchase.make.MakePurchaseUseCase;
 import com.example.rmg.usecase.purchase.make.MakePurchaseUseCaseInput;
 import com.example.rmg.usecase.purchase.make.MakePurchaseUseCaseOutput;
@@ -38,6 +41,8 @@ public class UserController {
     private final ListPaymentMethodUseCase listPaymentMethodUseCase;
 
     private final MakePurchaseUseCase makePurchaseUseCase;
+
+    private final ListPurchaseUseCase listPurchaseUseCase;
 
     private final UserMapper userMapper;
 
@@ -97,6 +102,20 @@ public class UserController {
         final URI location = uriBuilder.buildAndExpand(response.getId()).toUri();
 
         return ResponseEntity.created(location).body(response);
+    }
+
+    @GetMapping("{userId}/purchases")
+    public ResponseEntity<List<PurchaseResponse>> getPurchases(@PathVariable UUID userId) {
+
+        final ListPurchaseUseCaseInput input = ListPurchaseUseCaseInput.builder()
+                .buyerId(userId)
+                .build();
+
+        final ListPurchaseUseCaseOutput output = listPurchaseUseCase.execute(input);
+
+        final List<PurchaseResponse> response = userMapper.toPurchaseResponseList(output.getPurchases());
+
+        return ResponseEntity.ok(response);
     }
 
 

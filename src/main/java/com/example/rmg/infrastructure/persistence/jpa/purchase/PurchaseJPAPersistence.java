@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class PurchaseJPAPersistence implements PurchasePersistence {
 
 
-    private final PurchaseItemEntityRepository repository;
+    private final PurchaseEntityRepository repository;
 
     private final PurchaseEntityMapper entityMapper;
 

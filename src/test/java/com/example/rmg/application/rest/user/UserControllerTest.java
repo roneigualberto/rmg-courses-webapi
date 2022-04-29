@@ -6,10 +6,14 @@ import com.example.rmg.infrastructure.persistence.jpa.course.CourseEntity;
 import com.example.rmg.infrastructure.persistence.jpa.course.CourseEntityRepository;
 import com.example.rmg.infrastructure.persistence.jpa.paymentmethod.PaymentMethodEntity;
 import com.example.rmg.infrastructure.persistence.jpa.paymentmethod.PaymentMethodEntityRepository;
+import com.example.rmg.infrastructure.persistence.jpa.purchase.PurchaseEntity;
+import com.example.rmg.infrastructure.persistence.jpa.purchase.PurchaseItemEntity;
+import com.example.rmg.infrastructure.persistence.jpa.purchase.PurchaseEntityRepository;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntity;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntityRepository;
 import com.example.rmg.infrastructure.test.builders.Categories;
 import com.example.rmg.infrastructure.test.builders.Courses;
+import com.example.rmg.infrastructure.test.builders.Purchases;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -24,6 +28,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
+import java.util.UUID;
 
 import static com.example.rmg.infrastructure.test.builders.PaymentMethods.aPaymentMethodEntity;
 import static com.example.rmg.infrastructure.test.builders.PaymentMethods.aPaymentRequest;
@@ -64,6 +69,9 @@ class UserControllerTest {
     @Autowired
     private CourseEntityRepository courseEntityRepository;
 
+    @Autowired
+    private PurchaseEntityRepository purchaseEntityRepository;
+
     private UserEntity userEntity;
     private PaymentMethodResponse paymentMethodResponse;
     private UserResponse userResponse;
@@ -71,6 +79,7 @@ class UserControllerTest {
     private CategoryEntity categoryEntity;
     private CourseEntity courseEntity;
     private PurchaseResponse purchaseResponse;
+    private PurchaseEntity purchaseEntity;
 
 
     @AfterEach
@@ -180,6 +189,23 @@ class UserControllerTest {
 
     }
 
+    @Test
+    @Transactional
+    void should_list_purchases() throws Exception {
+        givenUserEntity();
+        givenPaymentMethodEntity();
+        givenCategoryEntity();
+        givenCourseEntity();
+        givenPurchaseEntity();
+
+        mockMvc.perform(get(BASE_URI + "/{userId}/purchases", userEntity.getId())
+                        .contentType(APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(purchaseEntity.getId().toString()))
+                .andExpect(jsonPath("$[0].buyerId").value(userEntity.getId().toString()));
+    }
+
     private void givenPaymentMethodEntity() {
         paymentMethodEntity = aPaymentMethodEntity(userEntity).build();
         paymentMethodEntity = paymentMethodEntityRepository.save(paymentMethodEntity);
@@ -198,6 +224,21 @@ class UserControllerTest {
     private void givenCategoryEntity() {
         categoryEntity = Categories.aCategoryEntity().build();
         categoryEntityRepository.save(categoryEntity);
+    }
+
+    private void givenPurchaseEntity() {
+
+        purchaseEntity = Purchases.aPurchaseEntity(userEntity, paymentMethodEntity).build();
+
+        PurchaseItemEntity purchaseItem = PurchaseItemEntity.builder()
+                .id(UUID.randomUUID())
+                .course(courseEntity)
+                .price(courseEntity.getPrice())
+                .build();
+        purchaseEntity.addItem(purchaseItem);
+
+        purchaseEntityRepository.save(purchaseEntity);
+
     }
 
 }

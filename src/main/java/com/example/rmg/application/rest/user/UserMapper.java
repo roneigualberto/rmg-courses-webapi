@@ -28,5 +28,7 @@ public interface UserMapper {
 
     PurchaseResponse toPurchaseResponse(PurchaseView purchaseView);
 
+    List<PurchaseResponse> toPurchaseResponseList(List<PurchaseView> purchaseViewList);
+
 
 }
