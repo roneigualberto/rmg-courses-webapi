@@ -48,7 +48,13 @@ public class CompletedLectureJPAPersistence implements CompletedLecturePersisten
     }
 
     @Override
-    public boolean isCompleted(Subscription subscription,Lecture lecture) {
+    public boolean isCompleted(Subscription subscription, Lecture lecture) {
         return repository.existsBySubscriptionIdAndLectureId(subscription.getId(), lecture.getId());
+    }
+
+    @Override
+    public Optional<CompletedLecture> findBySubscriptionAndLecture(Subscription subscription, Lecture lecture) {
+        return repository.findBySubscriptionIdAndLectureId(subscription.getId(), lecture.getId())
+                .map(entityMapper::toCompletedLecture);
     }
 }
