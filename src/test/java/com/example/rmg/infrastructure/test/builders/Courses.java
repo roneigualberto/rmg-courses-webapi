@@ -1,6 +1,6 @@
 package com.example.rmg.infrastructure.test.builders;
 
-import com.example.rmg.application.rest.course.CourseRequest;
+import com.example.rmg.infrastructure.application.webapi.course.CourseRequest;
 import com.example.rmg.domain.course.entity.Course;
 import com.example.rmg.domain.course.valueobject.SkillLevel;
 import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntity;

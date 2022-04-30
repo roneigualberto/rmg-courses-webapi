@@ -1,4 +1,4 @@
-package com.example.rmg.application.rest.category;
+package com.example.rmg.infrastructure.application.webapi.category;
 
 import com.example.rmg.domain.category.valueobject.CategoryGroup;
 import io.swagger.v3.oas.annotations.media.Schema;

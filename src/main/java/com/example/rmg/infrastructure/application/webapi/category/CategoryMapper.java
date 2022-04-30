@@ -1,4 +1,4 @@
-package com.example.rmg.application.rest.category;
+package com.example.rmg.infrastructure.application.webapi.category;
 
 import com.example.rmg.usecase.category.common.ouput.CategoryView;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCaseInput;

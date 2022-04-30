@@ -1,4 +1,4 @@
-package com.example.rmg.application.rest.user;
+package com.example.rmg.infrastructure.application.webapi.user;
 
 
 import lombok.AllArgsConstructor;

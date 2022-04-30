@@ -1,4 +1,4 @@
-package com.example.rmg.application.rest.course;
+package com.example.rmg.infrastructure.application.webapi.course;
 
 
 import com.example.rmg.usecase.course.create.CreateCourseUseCase;

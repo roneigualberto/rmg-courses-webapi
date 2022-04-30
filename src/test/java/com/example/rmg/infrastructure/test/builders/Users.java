@@ -1,6 +1,6 @@
 package com.example.rmg.infrastructure.test.builders;
 
-import com.example.rmg.application.rest.user.UserRequest;
+import com.example.rmg.infrastructure.application.webapi.user.UserRequest;
 import com.example.rmg.domain.user.entity.User;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntity;
 import com.example.rmg.usecase.user.create.CreateUserUseCaseInput;

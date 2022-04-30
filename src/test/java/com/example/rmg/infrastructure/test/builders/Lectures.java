@@ -1,6 +1,6 @@
 package com.example.rmg.infrastructure.test.builders;
 
-import com.example.rmg.application.rest.course.LectureRequest;
+import com.example.rmg.infrastructure.application.webapi.course.LectureRequest;
 import com.example.rmg.domain.course.entity.Course;
 import com.example.rmg.domain.course.entity.Lecture;
 import com.example.rmg.domain.course.valueobject.LectureType;

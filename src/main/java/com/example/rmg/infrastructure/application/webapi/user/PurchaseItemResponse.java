@@ -1,9 +1,7 @@
-package com.example.rmg.application.rest.user;
+package com.example.rmg.infrastructure.application.webapi.user;
 
 
-import com.example.rmg.application.rest.course.CourseRequest;
-import com.example.rmg.application.rest.course.CourseResponse;
-import com.example.rmg.usecase.purchase.common.output.CourseView;
+import com.example.rmg.infrastructure.application.webapi.course.CourseResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

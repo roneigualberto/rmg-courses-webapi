@@ -1,4 +1,4 @@
-package com.example.rmg.application.rest.user;
+package com.example.rmg.infrastructure.application.webapi.user;
 
 import com.example.rmg.domain.paymentmethod.valueobject.Brand;
 import lombok.AllArgsConstructor;
@@ -6,18 +6,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Data
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class PaymentMethodResponse {
-
-
-    private UUID id;
-
-    private UUID ownerId;
+public class PaymentMethodRequest {
 
     private Brand brand;
 
@@ -29,4 +22,5 @@ public class PaymentMethodResponse {
 
     private Integer expirationYear;
 
+    private Integer cvv;
 }

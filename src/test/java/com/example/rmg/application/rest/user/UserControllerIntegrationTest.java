@@ -1,5 +1,6 @@
 package com.example.rmg.application.rest.user;
 
+import com.example.rmg.infrastructure.application.webapi.user.*;
 import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntity;
 import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntityRepository;
 import com.example.rmg.infrastructure.persistence.jpa.course.CourseEntity;

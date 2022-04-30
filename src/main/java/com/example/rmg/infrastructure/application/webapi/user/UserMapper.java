@@ -1,4 +1,4 @@
-package com.example.rmg.application.rest.user;
+package com.example.rmg.infrastructure.application.webapi.user;
 
 import com.example.rmg.usecase.paymentmethod.common.input.PaymentMethodForm;
 import com.example.rmg.usecase.paymentmethod.common.output.PaymentMethodView;

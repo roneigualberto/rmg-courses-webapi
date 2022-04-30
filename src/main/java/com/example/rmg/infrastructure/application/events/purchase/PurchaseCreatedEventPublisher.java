@@ -1,4 +1,4 @@
-package com.example.rmg.application.events.purchase;
+package com.example.rmg.infrastructure.application.events.purchase;
 
 import com.example.rmg.domain.purchase.event.PurchaseCreatedEvent;
 import com.example.rmg.domain.purchase.event.PurchaseCreatedEventHandler;

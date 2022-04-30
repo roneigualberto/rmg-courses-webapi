@@ -1,7 +1,7 @@
-package com.example.rmg.application.rest.course;
+package com.example.rmg.infrastructure.application.webapi.course;
 
-import com.example.rmg.application.rest.category.CategoryResponse;
-import com.example.rmg.application.rest.user.UserResponse;
+import com.example.rmg.infrastructure.application.webapi.category.CategoryResponse;
+import com.example.rmg.infrastructure.application.webapi.user.UserResponse;
 import com.example.rmg.domain.course.valueobject.SkillLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

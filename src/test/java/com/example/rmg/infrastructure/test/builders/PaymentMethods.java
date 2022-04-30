@@ -1,6 +1,6 @@
 package com.example.rmg.infrastructure.test.builders;
 
-import com.example.rmg.application.rest.user.PaymentMethodRequest;
+import com.example.rmg.infrastructure.application.webapi.user.PaymentMethodRequest;
 import com.example.rmg.domain.paymentmethod.entity.PaymentMethod;
 import com.example.rmg.domain.paymentmethod.valueobject.Brand;
 import com.example.rmg.domain.user.entity.User;
