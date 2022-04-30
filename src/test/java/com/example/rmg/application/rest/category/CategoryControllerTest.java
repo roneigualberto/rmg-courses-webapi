@@ -1,5 +1,6 @@
 package com.example.rmg.application.rest.category;
 
+import com.example.rmg.application.rest.course.CourseResponse;
 import com.example.rmg.domain.category.messages.CategoryMessages;
 import com.example.rmg.domain.category.valueobject.CategoryGroup;
 import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntity;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -51,6 +53,7 @@ class CategoryControllerTest {
     private CategoryEntityRepository categoryEntityRepository;
 
     private CategoryEntity categoryEntity;
+    private CategoryResponse categoryResponse;
 
     @BeforeEach
     void setUp() {
@@ -59,6 +62,10 @@ class CategoryControllerTest {
 
     @AfterEach
     void tearDown() {
+
+        if (categoryResponse != null) {
+            categoryEntityRepository.deleteById(categoryResponse.getId());
+        }
 
         if (categoryEntity != null) {
             categoryEntityRepository.delete(categoryEntity);
@@ -85,13 +92,16 @@ class CategoryControllerTest {
 
         CategoryRequest request = aCategoryRequest().build();
 
-        mockMvc.perform(post(BASE_URI)
+        MockHttpServletResponse response = mockMvc.perform(post(BASE_URI)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNotEmpty())
                 .andExpect(jsonPath("$.name").value(request.getName()))
-                .andExpect(jsonPath("$.group").value(request.getGroup().name()));
+                .andExpect(jsonPath("$.group").value(request.getGroup().name()))
+                .andReturn().getResponse();
+
+        categoryResponse = objectMapper.readValue(response.getContentAsString(), CategoryResponse.class);
     }
 
 

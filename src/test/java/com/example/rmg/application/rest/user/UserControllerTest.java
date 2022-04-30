@@ -7,13 +7,10 @@ import com.example.rmg.infrastructure.persistence.jpa.course.CourseEntityReposit
 import com.example.rmg.infrastructure.persistence.jpa.paymentmethod.PaymentMethodEntity;
 import com.example.rmg.infrastructure.persistence.jpa.paymentmethod.PaymentMethodEntityRepository;
 import com.example.rmg.infrastructure.persistence.jpa.purchase.PurchaseEntity;
-import com.example.rmg.infrastructure.persistence.jpa.purchase.PurchaseItemEntity;
 import com.example.rmg.infrastructure.persistence.jpa.purchase.PurchaseEntityRepository;
+import com.example.rmg.infrastructure.persistence.jpa.purchase.PurchaseItemEntity;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntity;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntityRepository;
-import com.example.rmg.infrastructure.test.builders.Categories;
-import com.example.rmg.infrastructure.test.builders.Courses;
-import com.example.rmg.infrastructure.test.builders.Purchases;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -30,8 +27,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Set;
 import java.util.UUID;
 
+import static com.example.rmg.infrastructure.test.builders.Categories.aCategoryEntity;
+import static com.example.rmg.infrastructure.test.builders.Courses.aCourseEntity;
 import static com.example.rmg.infrastructure.test.builders.PaymentMethods.aPaymentMethodEntity;
 import static com.example.rmg.infrastructure.test.builders.PaymentMethods.aPaymentRequest;
+import static com.example.rmg.infrastructure.test.builders.Purchases.aPurchaseEntity;
 import static com.example.rmg.infrastructure.test.builders.Users.anUserEntity;
 import static com.example.rmg.infrastructure.test.builders.Users.anUserRequest;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -85,6 +85,14 @@ class UserControllerTest {
     @AfterEach
     void tearDown() {
 
+        if (purchaseResponse != null) {
+            purchaseEntityRepository.deleteById(purchaseResponse.getId());
+        }
+
+        if (purchaseEntity != null) {
+            purchaseEntityRepository.delete(purchaseEntity);
+        }
+
         if (paymentMethodEntity != null) {
             paymentMethodEntityRepository.delete(paymentMethodEntity);
         }
@@ -95,6 +103,14 @@ class UserControllerTest {
 
         if (userResponse != null) {
             userEntityRepository.deleteById(userResponse.getId());
+        }
+
+        if (courseEntity != null) {
+            courseEntityRepository.delete(courseEntity);
+        }
+
+        if (categoryEntity != null) {
+            categoryEntityRepository.delete(categoryEntity);
         }
 
         if (userEntity != null) {
@@ -165,7 +181,6 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.id").isNotEmpty())
                 .andExpect(jsonPath("$.buyerId").value(userEntity.getId().toString()))
                 .andReturn().getResponse();
-
         purchaseResponse = objectMapper.readValue(response.getContentAsString(), PurchaseResponse.class);
     }
 
@@ -217,18 +232,18 @@ class UserControllerTest {
     }
 
     private void givenCourseEntity() {
-        courseEntity = Courses.aCourseEntity(categoryEntity, userEntity).build();
+        courseEntity = aCourseEntity(categoryEntity, userEntity).build();
         courseEntityRepository.save(courseEntity);
     }
 
     private void givenCategoryEntity() {
-        categoryEntity = Categories.aCategoryEntity().build();
+        categoryEntity = aCategoryEntity().build();
         categoryEntityRepository.save(categoryEntity);
     }
 
     private void givenPurchaseEntity() {
 
-        purchaseEntity = Purchases.aPurchaseEntity(userEntity, paymentMethodEntity).build();
+        purchaseEntity = aPurchaseEntity(userEntity, paymentMethodEntity).build();
 
         PurchaseItemEntity purchaseItem = PurchaseItemEntity.builder()
                 .id(UUID.randomUUID())

@@ -4,6 +4,7 @@ import com.example.rmg.domain.course.entity.Course;
 import com.example.rmg.domain.course.persistence.CoursePersistence;
 import com.example.rmg.domain.paymentmethod.entity.PaymentMethod;
 import com.example.rmg.domain.paymentmethod.persistence.PaymentMethodPersistence;
+import com.example.rmg.domain.purchase.event.PurchaseCreatedEventHandler;
 import com.example.rmg.domain.purchase.persistence.PurchasePersistence;
 import com.example.rmg.domain.user.entity.User;
 import com.example.rmg.domain.user.persistence.UserPersistence;
@@ -48,6 +49,9 @@ class MakePurchaseUseCaseTest {
     @Mock
     private CoursePersistence coursePersistence;
 
+    @Mock
+    private PurchaseCreatedEventHandler purchaseCreatedEventHandler;
+
 
     @Test
     void should_create_purchase() {
@@ -75,6 +79,7 @@ class MakePurchaseUseCaseTest {
         assertEquals(63.0, purchaseView.getTotal());
 
         verify(purchasePersistence).save(any());
+        verify(purchaseCreatedEventHandler).handler(any());
 
     }
 

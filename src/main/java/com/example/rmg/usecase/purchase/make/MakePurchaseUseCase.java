@@ -5,6 +5,8 @@ import com.example.rmg.domain.course.persistence.CoursePersistence;
 import com.example.rmg.domain.paymentmethod.entity.PaymentMethod;
 import com.example.rmg.domain.paymentmethod.persistence.PaymentMethodPersistence;
 import com.example.rmg.domain.purchase.entity.Purchase;
+import com.example.rmg.domain.purchase.event.PurchaseCreatedEvent;
+import com.example.rmg.domain.purchase.event.PurchaseCreatedEventHandler;
 import com.example.rmg.domain.purchase.persistence.PurchasePersistence;
 import com.example.rmg.domain.user.entity.User;
 import com.example.rmg.domain.user.persistence.UserPersistence;
@@ -22,6 +24,8 @@ public class MakePurchaseUseCase implements UseCase<MakePurchaseUseCaseInput, Ma
     private final PaymentMethodPersistence paymentMethodPersistence;
 
     private final CoursePersistence coursePersistence;
+
+    private final PurchaseCreatedEventHandler purchaseCreatedEventHandler;
 
     @Override
     public MakePurchaseUseCaseOutput execute(MakePurchaseUseCaseInput input) {
@@ -44,6 +48,10 @@ public class MakePurchaseUseCase implements UseCase<MakePurchaseUseCaseInput, Ma
 
         purchasePersistence.save(purchase);
 
-        return MakePurchaseUseCaseOutput.of(purchase);
+        MakePurchaseUseCaseOutput output = MakePurchaseUseCaseOutput.of(purchase);
+
+        purchaseCreatedEventHandler.handler(new PurchaseCreatedEvent(output.getPurchase()));
+
+        return output;
     }
 }

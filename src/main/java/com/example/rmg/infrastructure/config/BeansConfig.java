@@ -6,6 +6,7 @@ import com.example.rmg.domain.course.persistence.CoursePersistence;
 import com.example.rmg.domain.course.persistence.LecturePersistence;
 import com.example.rmg.domain.course.storage.StorageService;
 import com.example.rmg.domain.paymentmethod.persistence.PaymentMethodPersistence;
+import com.example.rmg.domain.purchase.event.PurchaseCreatedEventHandler;
 import com.example.rmg.domain.purchase.persistence.PurchasePersistence;
 import com.example.rmg.domain.user.persistence.UserPersistence;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCase;
@@ -167,13 +168,15 @@ public class BeansConfig {
             PurchasePersistence purchasePersistence,
             UserPersistence userPersistence,
             PaymentMethodPersistence paymentMethodPersistence,
-            CoursePersistence coursePersistence
+            CoursePersistence coursePersistence,
+            PurchaseCreatedEventHandler handler
 
     ) {
         return new MakePurchaseUseCase(purchasePersistence,
                 userPersistence,
                 paymentMethodPersistence,
-                coursePersistence);
+                coursePersistence,
+                handler);
     }
 
     @Bean
