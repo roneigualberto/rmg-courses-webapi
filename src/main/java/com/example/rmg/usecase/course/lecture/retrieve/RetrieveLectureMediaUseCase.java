@@ -35,7 +35,7 @@ public class RetrieveLectureMediaUseCase implements UseCase<RetrieveLectureMedia
 
         LectureView lectureView = LectureMapper.INSTANCE.toLectureView(lecture);
 
-        if (!lecture.belongsTo(course)) {
+        if (lecture.doNotBelong(course)) {
             throw new DomainException(LECTURE_DOES_NOT_BELONGS_TO_COURSE);
         }
 

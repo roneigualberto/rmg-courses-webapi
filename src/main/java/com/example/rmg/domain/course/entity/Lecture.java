@@ -35,8 +35,8 @@ public class Lecture {
         ValidatorUtil.validate(this);
     }
 
-    public boolean belongsTo(Course course) {
-        return this.course.equals(course);
+    public boolean doNotBelong(Course course) {
+        return !this.course.equals(course);
     }
 
     public String getPath() {

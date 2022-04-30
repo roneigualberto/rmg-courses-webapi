@@ -36,11 +36,11 @@ public class UndoCompleteLectureUseCase implements UseCase<UndoCompleteLectureUs
 
         final Lecture lecture = lecturePersistence.get(input.getLectureId());
 
-        if (!subscription.belongsTo(student)) {
+        if (subscription.doNotBelong(student)) {
             throw new DomainException(SUBSCRIPTION_DOES_NOT_BELONG_TO_STUDENT);
         }
 
-        if (!lecture.belongsTo(subscription.getCourse())) {
+        if (lecture.doNotBelong(subscription.getCourse())) {
             throw new DomainException(LECTURE_DOES_NOT_BELONGS_TO_COURSE);
         }
 

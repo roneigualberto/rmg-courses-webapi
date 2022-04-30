@@ -5,6 +5,7 @@ import com.example.rmg.domain.user.entity.User;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
+import org.apache.tomcat.jni.Local;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -28,7 +29,20 @@ public class Subscription {
     @NotNull
     private LocalDateTime createdAt;
 
-    public boolean belongsTo(User student) {
-        return this.student.equals(student);
+    @NotNull
+    private Review review;
+
+    private boolean finished;
+
+    private LocalDateTime finishDate;
+
+    public boolean doNotBelong(User student) {
+        return !this.student.equals(student);
+    }
+
+    public void finish(Integer rating, String comment) {
+        this.review = new Review(rating, comment);
+        this.finishDate = LocalDateTime.now();
+        this.finished = true;
     }
 }
