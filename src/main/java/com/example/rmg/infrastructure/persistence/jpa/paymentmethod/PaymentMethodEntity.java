@@ -4,6 +4,8 @@ package com.example.rmg.infrastructure.persistence.jpa.paymentmethod;
 import com.example.rmg.domain.paymentmethod.valueobject.Brand;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntity;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -18,6 +20,9 @@ public class PaymentMethodEntity {
 
 
     @Id
+    @GenericGenerator(name = "uuid", strategy = "uuid4")
+    @Column(name = "id", columnDefinition = "char(36)")
+    @Type(type = "org.hibernate.type.UUIDCharType")
     private UUID id;
 
     @ManyToOne

@@ -21,7 +21,8 @@ class FileSystemStorageServiceTest {
 
     @BeforeEach
     void setUp() {
-        fileSystemStorageService = new FileSystemStorageService();
+        final FileSystemStorageProperties storageProp = new FileSystemStorageProperties();
+        fileSystemStorageService = new FileSystemStorageService(storageProp);
     }
 
 

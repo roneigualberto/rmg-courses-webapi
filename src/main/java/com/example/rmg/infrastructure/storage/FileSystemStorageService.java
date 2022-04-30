@@ -2,6 +2,7 @@ package com.example.rmg.infrastructure.storage;
 
 import com.example.rmg.domain.common.exception.StorageException;
 import com.example.rmg.domain.course.storage.StorageService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -15,7 +16,11 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static java.util.Objects.requireNonNull;
 
 @Component
+@RequiredArgsConstructor
 public class FileSystemStorageService implements StorageService {
+
+
+    private final FileSystemStorageProperties storageProp;
 
     @Override
     public void store(String bucket, String path, InputStream content) {
@@ -33,14 +38,12 @@ public class FileSystemStorageService implements StorageService {
     }
 
     private Path getLocationFilePath(String bucket, String path) {
-        final String tmpDir = System.getProperty("java.io.tmpdir");
 
         final String crossPlatformPath = bucket + File.separator + path.replace("/", File.separator);
 
-        final Path locationPath = Paths.get(tmpDir);
+        final Path locationPath = storageProp.getLocationPath();
 
         return locationPath.resolve(crossPlatformPath).normalize().toAbsolutePath();
-
     }
 
 
