@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.Getter;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 
@@ -26,5 +26,5 @@ public class Subscription {
     private Course course;
 
     @NotNull
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 }
