@@ -46,7 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-class CourseControllerTest {
+class CourseControllerIntegrationTest {
 
     public static final String BASE_URI = "/api/v1/courses";
 

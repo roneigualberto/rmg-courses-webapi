@@ -17,7 +17,6 @@ import com.example.rmg.infrastructure.persistence.jpa.subscription.SubscriptionE
 import com.example.rmg.infrastructure.persistence.jpa.subscription.SubscriptionEntityRepository;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntity;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntityRepository;
-import com.example.rmg.infrastructure.test.builders.Subscriptions;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -54,7 +53,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-class UserControllerTest {
+class UserControllerIntegrationTest {
 
 
     public static final String BASE_URI = "/api/v1/users";

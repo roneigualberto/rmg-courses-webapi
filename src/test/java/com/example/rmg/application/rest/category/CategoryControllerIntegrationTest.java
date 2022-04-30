@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-class CategoryControllerTest {
+class CategoryControllerIntegrationTest {
 
     public static final String BASE_URI = "/api/v1/categories";
 
