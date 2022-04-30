@@ -1,0 +1,57 @@
+package com.example.rmg.usecase.subscription.completelecture;
+
+import com.example.rmg.domain.common.exception.DomainException;
+import com.example.rmg.domain.course.entity.Lecture;
+import com.example.rmg.domain.course.messages.CourseMessages;
+import com.example.rmg.domain.course.persistence.LecturePersistence;
+import com.example.rmg.domain.subscription.entity.CompletedLecture;
+import com.example.rmg.domain.subscription.entity.Subscription;
+import com.example.rmg.domain.subscription.persistence.CompletedLecturePersistence;
+import com.example.rmg.domain.subscription.persistence.SubscriptionPersistence;
+import com.example.rmg.usecase.common.UseCase;
+import lombok.RequiredArgsConstructor;
+
+import java.time.LocalDateTime;
+
+import static com.example.rmg.domain.course.messages.CourseMessages.LECTURE_DOES_NOT_BELONGS_TO_COURSE;
+
+@RequiredArgsConstructor
+public class CompleteLectureUseCase implements UseCase<CompleteLectureUseCaseInput, CompleteLectureUseCaseOutput> {
+
+
+    private final CompletedLecturePersistence completedLecturePersistence;
+
+    private final SubscriptionPersistence subscriptionPersistence;
+
+    private final LecturePersistence lecturePersistence;
+
+
+    @Override
+    public CompleteLectureUseCaseOutput execute(CompleteLectureUseCaseInput input) {
+
+        final Subscription subscription = subscriptionPersistence.get(input.getSubscriptionId());
+
+        final Lecture lecture = lecturePersistence.get(input.getLectureId());
+
+
+        if (!lecture.belongsTo(subscription.getCourse())) {
+            throw new DomainException(LECTURE_DOES_NOT_BELONGS_TO_COURSE);
+        }
+
+        boolean isCompleted = completedLecturePersistence.isCompleted(lecture);
+
+        if (isCompleted) {
+            throw new DomainException("Lecture was already completed");
+        }
+
+        final CompletedLecture completedLecture = CompletedLecture.builder()
+                .subscription(subscription)
+                .lecture(lecture)
+                .completedAt(LocalDateTime.now())
+                .build();
+
+        completedLecturePersistence.save(completedLecture);
+
+        return CompleteLectureUseCaseOutput.builder().build();
+    }
+}

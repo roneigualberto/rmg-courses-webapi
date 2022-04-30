@@ -36,7 +36,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserController {
 
-
     private final CreateUserUseCase createUserUseCase;
 
     private final CreatePaymentMethodUseCase createPaymentMethodUseCase;
