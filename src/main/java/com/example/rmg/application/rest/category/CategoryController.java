@@ -16,6 +16,7 @@ import com.example.rmg.usecase.category.list.ListCategoryUseCaseOutput;
 import com.example.rmg.usecase.category.update.UpdateCategoryUseCase;
 import com.example.rmg.usecase.category.update.UpdateCategoryUseCaseInput;
 import com.example.rmg.usecase.category.update.UpdateCategoryUseCaseOutput;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
+@Tag(name = "Categories")
 @RestController
 @RequestMapping("/api/v1/categories")
 @RequiredArgsConstructor

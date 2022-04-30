@@ -31,6 +31,7 @@ import com.example.rmg.usecase.course.publish.PublishCourseUseCaseOutput;
 import com.example.rmg.usecase.course.update.UpdateCourseUseCase;
 import com.example.rmg.usecase.course.update.UpdateCourseUseCaseInput;
 import com.example.rmg.usecase.course.update.UpdateCourseUseCaseOutput;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -47,6 +48,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
+@Tag(name = "Courses")
 @RestController
 @RequestMapping("/api/v1/courses")
 @RequiredArgsConstructor

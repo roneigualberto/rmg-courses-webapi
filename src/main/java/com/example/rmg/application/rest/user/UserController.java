@@ -30,6 +30,7 @@ import com.example.rmg.usecase.subscription.undocompletelecture.UndoCompleteLect
 import com.example.rmg.usecase.user.create.CreateUserUseCase;
 import com.example.rmg.usecase.user.create.CreateUserUseCaseInput;
 import com.example.rmg.usecase.user.create.CreateUserUseCaseOutput;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
+
+@Tag(name = "Users")
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
