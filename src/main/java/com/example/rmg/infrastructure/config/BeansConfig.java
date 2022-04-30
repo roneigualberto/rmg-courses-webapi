@@ -8,6 +8,7 @@ import com.example.rmg.domain.course.storage.StorageService;
 import com.example.rmg.domain.paymentmethod.persistence.PaymentMethodPersistence;
 import com.example.rmg.domain.purchase.event.PurchaseCreatedEventHandler;
 import com.example.rmg.domain.purchase.persistence.PurchasePersistence;
+import com.example.rmg.domain.subscription.persistence.SubscriptionPersistence;
 import com.example.rmg.domain.user.persistence.UserPersistence;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCase;
 import com.example.rmg.usecase.category.delete.DeleteCategoryUseCase;
@@ -28,6 +29,7 @@ import com.example.rmg.usecase.paymentmethod.create.CreatePaymentMethodUseCase;
 import com.example.rmg.usecase.paymentmethod.list.ListPaymentMethodUseCase;
 import com.example.rmg.usecase.purchase.list.ListPurchaseUseCase;
 import com.example.rmg.usecase.purchase.make.MakePurchaseUseCase;
+import com.example.rmg.usecase.subscription.create.CreateSubscriptionUseCase;
 import com.example.rmg.usecase.user.create.CreateUserUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -185,6 +187,16 @@ public class BeansConfig {
             UserPersistence userPersistence
     ) {
         return new ListPurchaseUseCase(purchasePersistence, userPersistence);
+    }
+
+
+    @Bean
+    public CreateSubscriptionUseCase createSubscriptionUseCase(
+            SubscriptionPersistence subscriptionPersistence,
+            UserPersistence userPersistence,
+            CoursePersistence coursePersistence
+    ) {
+        return new CreateSubscriptionUseCase(subscriptionPersistence, userPersistence, coursePersistence);
     }
 
 
