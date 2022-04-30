@@ -28,17 +28,17 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 
     @ExceptionHandler(DomainException.class)
     @ResponseStatus(HttpStatus.BAD_GATEWAY)
-    public final ResponseEntity<Map<String, Object>> handleDomainException(DomainException ex, WebRequest request) {
+    public final ResponseEntity<ApiResponse> handleDomainException(DomainException ex, WebRequest request) {
 
-        Map<String, Object> body = new HashMap<>();
 
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-        body.put("timestamp", new Date().getTime());
-        body.put("message", ex.getMessage());
-        body.put("error", httpStatus.getReasonPhrase());
-        body.put("path", httpServletRequest.getRequestURI());
-        body.put("status", String.valueOf(httpStatus.value()));
+        ApiResponse body = ApiResponse.builder()
+                .timestamp(new Date().getTime())
+                .error(httpStatus.getReasonPhrase())
+                .path(httpServletRequest.getRequestURI())
+                .status(httpStatus.value())
+                .build();
 
         return ResponseEntity.status(httpStatus).body(body);
 

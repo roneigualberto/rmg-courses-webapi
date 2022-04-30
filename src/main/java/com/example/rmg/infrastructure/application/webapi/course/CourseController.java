@@ -227,7 +227,7 @@ public class CourseController {
 
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(lectureView.getType().getMimeType()))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "lecture-" + lectureView.getId() + lectureView.getType())
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"lecture-" + lectureView.getId() + lectureView.getType() + "\"")
                 .body(body);
 
     }
