@@ -5,7 +5,6 @@ import com.example.rmg.domain.purchase.entity.Purchase;
 import com.example.rmg.domain.purchase.persistence.PurchasePersistence;
 import com.example.rmg.domain.user.entity.User;
 import com.example.rmg.domain.user.persistence.UserPersistence;
-import com.example.rmg.infrastructure.test.builders.Courses;
 import com.example.rmg.infrastructure.test.builders.Purchases;
 import com.example.rmg.usecase.purchase.common.output.PurchaseView;
 import org.junit.jupiter.api.Test;

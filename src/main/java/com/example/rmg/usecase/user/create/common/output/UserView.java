@@ -1,7 +1,6 @@
 package com.example.rmg.usecase.user.create.common.output;
 
 import com.example.rmg.domain.user.entity.User;
-import com.example.rmg.usecase.category.common.ouput.CategoryView;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

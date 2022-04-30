@@ -1,10 +1,7 @@
 package com.example.rmg.usecase.course.common.output;
 
 
-import com.example.rmg.domain.category.entity.Category;
-import com.example.rmg.domain.course.entity.Course;
 import com.example.rmg.domain.course.valueobject.SkillLevel;
-import com.example.rmg.domain.user.entity.User;
 import com.example.rmg.usecase.category.common.ouput.CategoryView;
 import com.example.rmg.usecase.user.create.common.output.UserView;
 import lombok.AllArgsConstructor;

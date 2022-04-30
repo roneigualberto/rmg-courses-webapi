@@ -1,14 +1,8 @@
 package com.example.rmg.usecase.course.delete;
 
-import com.example.rmg.domain.category.entity.Category;
-import com.example.rmg.domain.category.persistence.CategoryPersistence;
 import com.example.rmg.domain.course.entity.Course;
 import com.example.rmg.domain.course.persistence.CoursePersistence;
-import com.example.rmg.infrastructure.test.builders.Categories;
 import com.example.rmg.infrastructure.test.builders.Courses;
-import com.example.rmg.usecase.category.delete.DeleteCategoryUseCase;
-import com.example.rmg.usecase.category.delete.DeleteCategoryUseCaseInput;
-import com.example.rmg.usecase.category.delete.DeleteCategoryUseCaseOutput;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

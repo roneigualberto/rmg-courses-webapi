@@ -2,29 +2,15 @@ package com.example.rmg.usecase.course.create;
 
 import com.example.rmg.domain.category.entity.Category;
 import com.example.rmg.domain.category.persistence.CategoryPersistence;
-import com.example.rmg.domain.category.valueobject.CategoryGroup;
 import com.example.rmg.domain.course.persistence.CoursePersistence;
-import com.example.rmg.domain.course.valueobject.SkillLevel;
 import com.example.rmg.domain.user.entity.User;
 import com.example.rmg.domain.user.persistence.UserPersistence;
-import com.example.rmg.infrastructure.test.builders.Categories;
-import com.example.rmg.infrastructure.test.builders.Courses;
-import com.example.rmg.infrastructure.test.builders.Users;
 import com.example.rmg.usecase.course.common.output.CourseView;
-import com.example.rmg.usecase.course.create.CreateCourseUseCase;
-import com.example.rmg.usecase.course.create.CreateCourseUseCaseInput;
-import com.example.rmg.usecase.course.create.CreateCourseUseCaseOutput;
-import com.example.rmg.usecase.user.create.CreateUserUseCase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.UUID;
 
 import static com.example.rmg.infrastructure.test.builders.Categories.aCategory;
 import static com.example.rmg.infrastructure.test.builders.Courses.aCreateCourseUseCaseInput;

@@ -6,9 +6,11 @@ import com.example.rmg.domain.course.entity.Lecture;
 import com.example.rmg.domain.course.messages.CourseMessages;
 import com.example.rmg.domain.course.persistence.LecturePersistence;
 import com.example.rmg.domain.subscription.entity.Subscription;
+import com.example.rmg.domain.subscription.messages.SubscriptionMessages;
 import com.example.rmg.domain.subscription.persistence.CompletedLecturePersistence;
 import com.example.rmg.domain.subscription.persistence.SubscriptionPersistence;
 import com.example.rmg.domain.user.entity.User;
+import com.example.rmg.domain.user.persistence.UserPersistence;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.example.rmg.domain.subscription.messages.SubscriptionMessages.LECTURE_WAS_COMPLETED;
+import static com.example.rmg.domain.subscription.messages.SubscriptionMessages.SUBSCRIPTION_DOES_NOT_BELONG_TO_STUDENT;
 import static com.example.rmg.infrastructure.test.builders.Courses.aCourse;
 import static com.example.rmg.infrastructure.test.builders.Lectures.aLecture;
 import static com.example.rmg.infrastructure.test.builders.Subscriptions.aSubscription;
@@ -32,7 +35,6 @@ class CompleteLectureUseCaseTest {
     @InjectMocks
     private CompleteLectureUseCase useCase;
 
-
     @Mock
     private SubscriptionPersistence subscriptionPersistence;
 
@@ -42,11 +44,18 @@ class CompleteLectureUseCaseTest {
     @Mock
     private LecturePersistence lecturePersistence;
 
+
+    @Mock
+    private UserPersistence userPersistence;
+
     @Test
     void should_complete_lecture() {
 
-        final User student = anUser().build();
+
         final Course course = aCourse().build();
+
+        final User student = anUser().build();
+        when(userPersistence.get(any())).thenReturn(student);
 
 
         final Lecture lecture = aLecture(course).build();
@@ -98,7 +107,7 @@ class CompleteLectureUseCaseTest {
 
         final Subscription subscription = aSubscription(student, course).build();
         when(subscriptionPersistence.get(any())).thenReturn(subscription);
-        when(completedLecturePersistence.isCompleted(any())).thenReturn(true);
+        when(completedLecturePersistence.isCompleted(any(), any())).thenReturn(true);
 
 
         CompleteLectureUseCaseInput input = CompleteLectureUseCaseInput.builder()
@@ -108,6 +117,33 @@ class CompleteLectureUseCaseTest {
         DomainException exc = assertThrows(DomainException.class, () -> useCase.execute(input));
 
         assertEquals(LECTURE_WAS_COMPLETED, exc.getMessage());
+    }
+
+
+    @Test
+    void should_complete_lecture_with_different_student() {
+
+
+        final Course course = aCourse().build();
+
+        final User student1 = anUser().build();
+        when(userPersistence.get(any())).thenReturn(student1);
+
+
+        final Lecture lecture = aLecture(course).build();
+        when(lecturePersistence.get(any())).thenReturn(lecture);
+
+        final User student2 = anUser().build();
+        final Subscription subscription = aSubscription(student2, course).build();
+        when(subscriptionPersistence.get(any())).thenReturn(subscription);
+
+        CompleteLectureUseCaseInput input = CompleteLectureUseCaseInput.builder()
+                .subscriptionId(subscription.getId())
+                .lectureId(lecture.getId()).build();
+
+        DomainException exc = assertThrows(DomainException.class, () -> useCase.execute(input));
+
+        assertEquals(SUBSCRIPTION_DOES_NOT_BELONG_TO_STUDENT, exc.getMessage());
     }
 
 

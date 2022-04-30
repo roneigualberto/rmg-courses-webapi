@@ -1,6 +1,5 @@
 package com.example.rmg.usecase.course.update;
 
-import com.example.rmg.domain.category.valueobject.CategoryGroup;
 import com.example.rmg.domain.course.valueobject.SkillLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

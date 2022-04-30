@@ -1,13 +1,8 @@
 package com.example.rmg.infrastructure.persistence.jpa.subscription;
 
-import com.example.rmg.domain.purchase.entity.Purchase;
-import com.example.rmg.domain.purchase.persistence.PurchasePersistence;
 import com.example.rmg.domain.subscription.entity.Subscription;
 import com.example.rmg.domain.subscription.persistence.SubscriptionPersistence;
 import com.example.rmg.domain.user.entity.User;
-import com.example.rmg.infrastructure.persistence.jpa.purchase.PurchaseEntity;
-import com.example.rmg.infrastructure.persistence.jpa.purchase.PurchaseEntityMapper;
-import com.example.rmg.infrastructure.persistence.jpa.purchase.PurchaseEntityRepository;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -46,8 +41,8 @@ public class SubscriptionJPAPersistence implements SubscriptionPersistence {
     }
 
     @Override
-    public Optional<Subscription> findById(UUID uuid) {
-        return Optional.empty();
+    public Optional<Subscription> findById(UUID subscriptionId) {
+        return repository.findById(subscriptionId).map(entityMapper::toSubscription);
     }
 
     @Override

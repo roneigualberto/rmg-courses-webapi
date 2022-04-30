@@ -2,17 +2,15 @@ package com.example.rmg.domain.course.entity;
 
 
 import com.example.rmg.domain.category.entity.Category;
-import com.example.rmg.domain.common.validator.ValidatorUtil;
 import com.example.rmg.domain.course.valueobject.SkillLevel;
+import com.example.rmg.domain.common.validator.ValidatorUtil;
 import com.example.rmg.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import org.apache.tomcat.jni.Local;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 

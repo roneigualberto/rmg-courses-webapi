@@ -1,7 +1,7 @@
-package com.example.rmg.infrastructure.persistence.jpa.purchase;
+package com.example.rmg.infrastructure.persistence.jpa.subscription;
 
 
-import com.example.rmg.infrastructure.persistence.jpa.course.CourseEntity;
+import com.example.rmg.infrastructure.persistence.jpa.lecture.LectureEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,15 +9,17 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "purchase_item")
+@Table(name = "completed_lecture")
 @Builder
-@Data
 @AllArgsConstructor
+@Data
 @NoArgsConstructor
-public class PurchaseItemEntity {
+public class CompletedLectureEntity {
+
 
     @Id
     @GenericGenerator(name = "uuid", strategy = "uuid4")
@@ -25,13 +27,14 @@ public class PurchaseItemEntity {
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private PurchaseEntity purchase;
+    private SubscriptionEntity subscription;
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private CourseEntity course;
+    private LectureEntity lecture;
 
     @Column(nullable = false)
-    private Double price;
+    private LocalDateTime completedAt;
+
 
 }

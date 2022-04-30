@@ -15,6 +15,9 @@ import com.example.rmg.usecase.purchase.list.ListPurchaseUseCaseOutput;
 import com.example.rmg.usecase.purchase.make.MakePurchaseUseCase;
 import com.example.rmg.usecase.purchase.make.MakePurchaseUseCaseInput;
 import com.example.rmg.usecase.purchase.make.MakePurchaseUseCaseOutput;
+import com.example.rmg.usecase.subscription.completelecture.CompleteLectureUseCase;
+import com.example.rmg.usecase.subscription.completelecture.CompleteLectureUseCaseInput;
+import com.example.rmg.usecase.subscription.completelecture.CompleteLectureUseCaseOutput;
 import com.example.rmg.usecase.subscription.list.ListSubscriptionUseCase;
 import com.example.rmg.usecase.subscription.list.ListSubscriptionUseCaseInput;
 import com.example.rmg.usecase.subscription.list.ListSubscriptionUseCaseOutput;
@@ -47,6 +50,8 @@ public class UserController {
     private final ListPurchaseUseCase listPurchaseUseCase;
 
     private final ListSubscriptionUseCase listSubscriptionUseCase;
+
+    private final CompleteLectureUseCase completeLectureUseCase;
 
     private final UserMapper userMapper;
 
@@ -135,6 +140,21 @@ public class UserController {
         final List<SubscriptionResponse> response = userMapper.toSubscriptionResponseList(output.getSubscriptions());
 
         return ResponseEntity.ok(response);
+    }
+
+
+    @PatchMapping("{userId}/subscriptions/{subscriptionId}/completed-lecture/{lectureId}")
+    public ResponseEntity<?> completedLecture(@PathVariable UUID userId, @PathVariable UUID subscriptionId, @PathVariable UUID lectureId) {
+
+        final CompleteLectureUseCaseInput input = CompleteLectureUseCaseInput.builder()
+                .studentId(userId)
+                .subscriptionId(subscriptionId)
+                .lectureId(lectureId)
+                .build();
+
+        final CompleteLectureUseCaseOutput output = completeLectureUseCase.execute(input);
+
+        return ResponseEntity.noContent().build();
     }
 
 

@@ -5,9 +5,6 @@ import com.example.rmg.domain.paymentmethod.persistence.PaymentMethodPersistence
 import com.example.rmg.domain.user.entity.User;
 import com.example.rmg.domain.user.persistence.UserPersistence;
 import com.example.rmg.usecase.common.UseCase;
-import com.example.rmg.usecase.paymentmethod.common.input.PaymentMethodForm;
-import com.example.rmg.usecase.paymentmethod.create.CreatePaymentMethodUseCaseInput;
-import com.example.rmg.usecase.paymentmethod.create.CreatePaymentMethodUseCaseOutput;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

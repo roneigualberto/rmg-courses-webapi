@@ -1,7 +1,6 @@
 package com.example.rmg.infrastructure.persistence.jpa.course;
 
 
-import com.example.rmg.domain.category.valueobject.CategoryGroup;
 import com.example.rmg.domain.course.valueobject.SkillLevel;
 import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntity;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntity;
@@ -12,7 +11,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 

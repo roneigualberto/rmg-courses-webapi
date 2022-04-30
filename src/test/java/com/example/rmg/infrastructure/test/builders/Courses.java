@@ -6,13 +6,10 @@ import com.example.rmg.domain.course.valueobject.SkillLevel;
 import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntity;
 import com.example.rmg.infrastructure.persistence.jpa.course.CourseEntity;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntity;
-import com.example.rmg.usecase.category.update.UpdateCategoryUseCaseInput;
 import com.example.rmg.usecase.course.create.CreateCourseUseCaseInput;
 import com.example.rmg.usecase.course.update.UpdateCourseUseCaseInput;
 
 import java.util.UUID;
-
-import static com.example.rmg.domain.category.valueobject.CategoryGroup.BUSINESS;
 
 public class Courses {
 

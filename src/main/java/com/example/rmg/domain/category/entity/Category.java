@@ -1,6 +1,5 @@
 package com.example.rmg.domain.category.entity;
 
-import com.example.rmg.domain.category.messages.CategoryMessages;
 import com.example.rmg.domain.category.valueobject.CategoryGroup;
 import com.example.rmg.domain.common.validator.ValidatorUtil;
 import lombok.Builder;

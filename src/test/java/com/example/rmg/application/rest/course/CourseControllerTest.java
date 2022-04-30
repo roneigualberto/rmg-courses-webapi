@@ -1,8 +1,5 @@
 package com.example.rmg.application.rest.course;
 
-import com.example.rmg.application.rest.category.CategoryRequest;
-import com.example.rmg.application.rest.course.CourseRequest;
-import com.example.rmg.application.rest.course.CourseResponse;
 import com.example.rmg.domain.course.storage.StorageService;
 import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntity;
 import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntityRepository;
@@ -37,7 +34,6 @@ import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
-import static com.example.rmg.infrastructure.test.builders.Categories.aCategoryRequest;
 import static com.example.rmg.infrastructure.test.builders.Lectures.aLectureEntity;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -342,9 +338,7 @@ class CourseControllerTest {
     }
 
     private void givenLectureEntity() {
-
         lectureEntity = aLectureEntity(courseEntity).build();
-
         lectureEntityRepository.save(lectureEntity);
     }
 

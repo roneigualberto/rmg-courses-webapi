@@ -1,18 +1,11 @@
 package com.example.rmg.infrastructure.test.builders;
 
-import com.example.rmg.application.rest.course.LectureRequest;
 import com.example.rmg.application.rest.user.PaymentMethodRequest;
-import com.example.rmg.domain.course.entity.Course;
-import com.example.rmg.domain.course.entity.Lecture;
-import com.example.rmg.domain.course.valueobject.LectureType;
 import com.example.rmg.domain.paymentmethod.entity.PaymentMethod;
 import com.example.rmg.domain.paymentmethod.valueobject.Brand;
 import com.example.rmg.domain.user.entity.User;
-import com.example.rmg.infrastructure.persistence.jpa.course.CourseEntity;
-import com.example.rmg.infrastructure.persistence.jpa.lecture.LectureEntity;
 import com.example.rmg.infrastructure.persistence.jpa.paymentmethod.PaymentMethodEntity;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntity;
-import com.example.rmg.usecase.course.lecture.common.input.LectureForm;
 import com.example.rmg.usecase.paymentmethod.common.input.PaymentMethodForm;
 
 import java.time.Month;

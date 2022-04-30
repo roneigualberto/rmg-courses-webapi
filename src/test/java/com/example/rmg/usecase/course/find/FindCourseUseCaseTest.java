@@ -3,7 +3,6 @@ package com.example.rmg.usecase.course.find;
 import com.example.rmg.domain.common.exception.DomainException;
 import com.example.rmg.domain.course.entity.Course;
 import com.example.rmg.domain.course.persistence.CoursePersistence;
-import com.example.rmg.infrastructure.test.builders.Courses;
 import com.example.rmg.usecase.course.common.output.CourseView;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -8,6 +8,7 @@ import com.example.rmg.domain.course.storage.StorageService;
 import com.example.rmg.domain.paymentmethod.persistence.PaymentMethodPersistence;
 import com.example.rmg.domain.purchase.event.PurchaseCreatedEventHandler;
 import com.example.rmg.domain.purchase.persistence.PurchasePersistence;
+import com.example.rmg.domain.subscription.persistence.CompletedLecturePersistence;
 import com.example.rmg.domain.subscription.persistence.SubscriptionPersistence;
 import com.example.rmg.domain.user.persistence.UserPersistence;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCase;
@@ -29,6 +30,7 @@ import com.example.rmg.usecase.paymentmethod.create.CreatePaymentMethodUseCase;
 import com.example.rmg.usecase.paymentmethod.list.ListPaymentMethodUseCase;
 import com.example.rmg.usecase.purchase.list.ListPurchaseUseCase;
 import com.example.rmg.usecase.purchase.make.MakePurchaseUseCase;
+import com.example.rmg.usecase.subscription.completelecture.CompleteLectureUseCase;
 import com.example.rmg.usecase.subscription.create.CreateSubscriptionUseCase;
 import com.example.rmg.usecase.subscription.list.ListSubscriptionUseCase;
 import com.example.rmg.usecase.user.create.CreateUserUseCase;
@@ -206,6 +208,17 @@ public class BeansConfig {
             UserPersistence userPersistence
     ) {
         return new ListSubscriptionUseCase(subscriptionPersistence, userPersistence);
+    }
+
+
+    @Bean
+    public CompleteLectureUseCase completeLectureUseCase(
+            CompletedLecturePersistence completedLecturePersistence,
+            SubscriptionPersistence subscriptionPersistence,
+            LecturePersistence lecturePersistence,
+            UserPersistence userPersistence
+    ) {
+        return new CompleteLectureUseCase(completedLecturePersistence, subscriptionPersistence,lecturePersistence, userPersistence);
     }
 
 

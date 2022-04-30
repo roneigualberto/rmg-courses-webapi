@@ -1,10 +1,11 @@
 package com.example.rmg.application.rest.user;
 
-import com.example.rmg.domain.subscription.entity.Subscription;
 import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntity;
 import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntityRepository;
 import com.example.rmg.infrastructure.persistence.jpa.course.CourseEntity;
 import com.example.rmg.infrastructure.persistence.jpa.course.CourseEntityRepository;
+import com.example.rmg.infrastructure.persistence.jpa.lecture.LectureEntity;
+import com.example.rmg.infrastructure.persistence.jpa.lecture.LectureEntityRepository;
 import com.example.rmg.infrastructure.persistence.jpa.paymentmethod.PaymentMethodEntity;
 import com.example.rmg.infrastructure.persistence.jpa.paymentmethod.PaymentMethodEntityRepository;
 import com.example.rmg.infrastructure.persistence.jpa.purchase.PurchaseEntity;
@@ -14,7 +15,6 @@ import com.example.rmg.infrastructure.persistence.jpa.subscription.SubscriptionE
 import com.example.rmg.infrastructure.persistence.jpa.subscription.SubscriptionEntityRepository;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntity;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntityRepository;
-import com.example.rmg.infrastructure.test.builders.Subscriptions;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -33,6 +33,7 @@ import java.util.UUID;
 
 import static com.example.rmg.infrastructure.test.builders.Categories.aCategoryEntity;
 import static com.example.rmg.infrastructure.test.builders.Courses.aCourseEntity;
+import static com.example.rmg.infrastructure.test.builders.Lectures.aLectureEntity;
 import static com.example.rmg.infrastructure.test.builders.PaymentMethods.aPaymentMethodEntity;
 import static com.example.rmg.infrastructure.test.builders.PaymentMethods.aPaymentRequest;
 import static com.example.rmg.infrastructure.test.builders.Purchases.aPurchaseEntity;
@@ -40,8 +41,7 @@ import static com.example.rmg.infrastructure.test.builders.Subscriptions.aSubscr
 import static com.example.rmg.infrastructure.test.builders.Users.anUserEntity;
 import static com.example.rmg.infrastructure.test.builders.Users.anUserRequest;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -80,6 +80,9 @@ class UserControllerTest {
     @Autowired
     private SubscriptionEntityRepository subscriptionEntityRepository;
 
+    @Autowired
+    private LectureEntityRepository lectureEntityRepository;
+
     private UserEntity userEntity;
     private PaymentMethodResponse paymentMethodResponse;
     private UserResponse userResponse;
@@ -89,6 +92,7 @@ class UserControllerTest {
     private PurchaseResponse purchaseResponse;
     private PurchaseEntity purchaseEntity;
     private SubscriptionEntity subscriptionEntity;
+    private LectureEntity lectureEntity;
 
 
     @AfterEach
@@ -250,6 +254,26 @@ class UserControllerTest {
                 .andExpect(jsonPath("$[0].studentId").value(userEntity.getId().toString()));
     }
 
+    @Test
+    @Transactional
+    void should_complete_lecture() throws Exception {
+        givenUserEntity();
+        givenCategoryEntity();
+        givenCourseEntity();
+        givenLectureEntity();
+        givenSubscriptionEntity();
+
+        mockMvc.perform(patch(BASE_URI + "/{userId}/subscriptions/{subscriptionId}/completed-lecture/{lectureId}",
+                userEntity.getId(),
+                subscriptionEntity.getId(),
+                lectureEntity.getId()
+                , userEntity.getId())
+                .contentType(APPLICATION_JSON)
+        ).andExpect(status().isNoContent());
+
+
+    }
+
 
     private void givenPaymentMethodEntity() {
         paymentMethodEntity = aPaymentMethodEntity(userEntity).build();
@@ -264,6 +288,11 @@ class UserControllerTest {
     private void givenCourseEntity() {
         courseEntity = aCourseEntity(categoryEntity, userEntity).build();
         courseEntityRepository.save(courseEntity);
+    }
+
+    private void givenLectureEntity() {
+        lectureEntity = aLectureEntity(courseEntity).build();
+        lectureEntityRepository.save(lectureEntity);
     }
 
     private void givenCategoryEntity() {

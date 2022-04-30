@@ -9,8 +9,6 @@ import com.example.rmg.domain.course.storage.StorageService;
 import com.example.rmg.usecase.common.UseCase;
 import com.example.rmg.usecase.course.lecture.common.mappers.LectureMapper;
 import com.example.rmg.usecase.course.lecture.common.output.LectureView;
-import com.example.rmg.usecase.course.lecture.store.StoreLectureMediaUseCaseInput;
-import com.example.rmg.usecase.course.lecture.store.StoreLectureUseCaseOutput;
 import lombok.RequiredArgsConstructor;
 
 import java.io.InputStream;

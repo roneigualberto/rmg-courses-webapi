@@ -1,8 +1,7 @@
 package com.example.rmg.domain.user.persistence;
 
-import com.example.rmg.domain.category.entity.Category;
-import com.example.rmg.domain.common.exception.DomainException;
 import com.example.rmg.domain.common.persistence.GenericPersistence;
+import com.example.rmg.domain.common.exception.DomainException;
 import com.example.rmg.domain.user.entity.User;
 import com.example.rmg.domain.user.messages.UserMessages;
 

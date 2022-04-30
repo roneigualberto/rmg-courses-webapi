@@ -7,7 +7,6 @@ import com.example.rmg.domain.course.persistence.CoursePersistence;
 import com.example.rmg.domain.user.entity.User;
 import com.example.rmg.domain.user.persistence.UserPersistence;
 import com.example.rmg.usecase.common.UseCase;
-import com.example.rmg.usecase.course.common.mappers.CourseMapper;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

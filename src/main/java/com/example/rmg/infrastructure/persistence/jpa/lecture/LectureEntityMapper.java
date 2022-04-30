@@ -1,9 +1,7 @@
 package com.example.rmg.infrastructure.persistence.jpa.lecture;
 
 
-import com.example.rmg.domain.course.entity.Course;
 import com.example.rmg.domain.course.entity.Lecture;
-import com.example.rmg.infrastructure.persistence.jpa.course.CourseEntity;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

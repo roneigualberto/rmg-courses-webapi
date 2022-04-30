@@ -1,6 +1,5 @@
 package com.example.rmg.application.rest.user;
 
-import com.example.rmg.domain.paymentmethod.valueobject.Brand;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

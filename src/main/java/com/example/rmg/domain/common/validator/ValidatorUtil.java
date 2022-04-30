@@ -1,7 +1,7 @@
 package com.example.rmg.domain.common.validator;
 
-import com.example.rmg.domain.common.exception.ValidationError;
 import com.example.rmg.domain.common.exception.ValidationException;
+import com.example.rmg.domain.common.exception.ValidationError;
 
 import javax.validation.*;
 import java.util.Set;

@@ -27,4 +27,8 @@ public class Subscription {
 
     @NotNull
     private LocalDateTime createdAt;
+
+    public boolean belongsTo(User student) {
+        return this.student.equals(student);
+    }
 }

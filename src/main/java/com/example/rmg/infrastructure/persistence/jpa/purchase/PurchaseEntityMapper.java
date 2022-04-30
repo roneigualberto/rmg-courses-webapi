@@ -3,12 +3,8 @@ package com.example.rmg.infrastructure.persistence.jpa.purchase;
 
 import com.example.rmg.domain.purchase.entity.Purchase;
 import com.example.rmg.domain.purchase.entity.PurchaseItem;
-import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-
-import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface PurchaseEntityMapper {

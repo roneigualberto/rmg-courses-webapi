@@ -1,23 +1,15 @@
 package com.example.rmg.usecase.paymentmethod.create;
 
-import com.example.rmg.domain.course.persistence.CoursePersistence;
-import com.example.rmg.domain.course.persistence.LecturePersistence;
 import com.example.rmg.domain.paymentmethod.persistence.PaymentMethodPersistence;
 import com.example.rmg.domain.user.entity.User;
 import com.example.rmg.domain.user.persistence.UserPersistence;
-import com.example.rmg.infrastructure.test.builders.PaymentMethods;
-import com.example.rmg.infrastructure.test.builders.Users;
-import com.example.rmg.usecase.course.lecture.create.CreateLectureUseCase;
 import com.example.rmg.usecase.paymentmethod.common.input.PaymentMethodForm;
 import com.example.rmg.usecase.paymentmethod.common.output.PaymentMethodView;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Optional;
 
 import static com.example.rmg.infrastructure.test.builders.PaymentMethods.aPaymentMethodForm;
 import static com.example.rmg.infrastructure.test.builders.Users.anUser;

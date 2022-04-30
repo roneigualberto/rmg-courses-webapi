@@ -5,20 +5,14 @@ import com.example.rmg.domain.category.persistence.CategoryPersistence;
 import com.example.rmg.domain.category.valueobject.CategoryGroup;
 import com.example.rmg.infrastructure.test.builders.Categories;
 import com.example.rmg.usecase.category.common.ouput.CategoryView;
-import com.example.rmg.usecase.category.list.ListCategoryUseCase;
-import com.example.rmg.usecase.category.list.ListCategoryUseCaseInput;
-import com.example.rmg.usecase.category.list.ListCategoryUseCaseOutput;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;

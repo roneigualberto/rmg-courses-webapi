@@ -3,11 +3,8 @@ package com.example.rmg.infrastructure.persistence.jpa.lecture;
 
 import com.example.rmg.domain.course.entity.Course;
 import com.example.rmg.domain.course.entity.Lecture;
-import com.example.rmg.domain.course.persistence.CoursePersistence;
 import com.example.rmg.domain.course.persistence.LecturePersistence;
 import com.example.rmg.infrastructure.persistence.jpa.course.CourseEntity;
-import com.example.rmg.infrastructure.persistence.jpa.course.CourseEntityMapper;
-import com.example.rmg.infrastructure.persistence.jpa.lecture.LectureEntityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

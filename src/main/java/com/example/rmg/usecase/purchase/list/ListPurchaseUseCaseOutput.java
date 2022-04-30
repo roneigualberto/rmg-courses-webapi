@@ -1,9 +1,6 @@
 package com.example.rmg.usecase.purchase.list;
 
-import com.example.rmg.domain.paymentmethod.entity.PaymentMethod;
 import com.example.rmg.domain.purchase.entity.Purchase;
-import com.example.rmg.usecase.paymentmethod.common.mappers.PaymentMethodMapper;
-import com.example.rmg.usecase.paymentmethod.common.output.PaymentMethodView;
 import com.example.rmg.usecase.purchase.common.mappers.PurchaseMapper;
 import com.example.rmg.usecase.purchase.common.output.PurchaseView;
 import lombok.AllArgsConstructor;

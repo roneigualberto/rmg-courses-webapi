@@ -1,7 +1,5 @@
 package com.example.rmg.usecase.course.delete;
 
-import com.example.rmg.domain.category.entity.Category;
-import com.example.rmg.domain.category.persistence.CategoryPersistence;
 import com.example.rmg.domain.course.entity.Course;
 import com.example.rmg.domain.course.persistence.CoursePersistence;
 import com.example.rmg.usecase.common.UseCase;

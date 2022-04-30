@@ -2,11 +2,9 @@ package com.example.rmg.infrastructure.persistence.jpa.user;
 
 import com.example.rmg.domain.user.entity.User;
 import com.example.rmg.domain.user.persistence.UserPersistence;
-import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.Entity;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

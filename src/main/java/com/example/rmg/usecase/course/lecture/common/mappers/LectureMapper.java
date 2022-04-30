@@ -1,7 +1,6 @@
 package com.example.rmg.usecase.course.lecture.common.mappers;
 
 
-import com.example.rmg.domain.course.entity.Course;
 import com.example.rmg.domain.course.entity.Lecture;
 import com.example.rmg.usecase.course.lecture.common.output.LectureView;
 import org.mapstruct.Mapper;

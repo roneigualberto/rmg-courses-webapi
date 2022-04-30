@@ -1,18 +1,13 @@
 package com.example.rmg.usecase.category.update;
 
 import com.example.rmg.domain.category.entity.Category;
-import com.example.rmg.domain.category.messages.CategoryMessages;
 import com.example.rmg.domain.category.persistence.CategoryPersistence;
 import com.example.rmg.domain.common.exception.DomainException;
 import com.example.rmg.infrastructure.test.builders.Categories;
 import com.example.rmg.usecase.category.common.ouput.CategoryView;
-import com.example.rmg.usecase.category.update.UpdateCategoryUseCase;
-import com.example.rmg.usecase.category.update.UpdateCategoryUseCaseInput;
-import com.example.rmg.usecase.category.update.UpdateCategoryUseCaseOutput;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -20,8 +15,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static com.example.rmg.domain.category.messages.CategoryMessages.CATEGORY_NAME_EXISTS;
-import static com.example.rmg.domain.category.valueobject.CategoryGroup.BUSINESS;
-import static com.example.rmg.domain.category.valueobject.CategoryGroup.DEVELOPMENT;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;

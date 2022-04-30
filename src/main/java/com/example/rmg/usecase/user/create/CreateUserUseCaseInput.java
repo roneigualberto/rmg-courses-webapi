@@ -1,6 +1,5 @@
 package com.example.rmg.usecase.user.create;
 
-import com.example.rmg.domain.category.valueobject.CategoryGroup;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

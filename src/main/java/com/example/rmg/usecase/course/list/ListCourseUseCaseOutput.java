@@ -1,8 +1,6 @@
 package com.example.rmg.usecase.course.list;
 
-import com.example.rmg.domain.category.entity.Category;
 import com.example.rmg.domain.course.entity.Course;
-import com.example.rmg.usecase.category.common.ouput.CategoryView;
 import com.example.rmg.usecase.course.common.mappers.CourseMapper;
 import com.example.rmg.usecase.course.common.output.CourseView;
 import lombok.AllArgsConstructor;

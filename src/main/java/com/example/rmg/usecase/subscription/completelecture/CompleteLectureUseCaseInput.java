@@ -11,6 +11,9 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CompleteLectureUseCaseInput {
 
+
+    private UUID studentId;
+
     private UUID subscriptionId;
 
     private UUID lectureId;
