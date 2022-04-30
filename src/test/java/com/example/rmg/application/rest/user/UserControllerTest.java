@@ -1,5 +1,6 @@
 package com.example.rmg.application.rest.user;
 
+import com.example.rmg.domain.subscription.entity.Subscription;
 import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntity;
 import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntityRepository;
 import com.example.rmg.infrastructure.persistence.jpa.course.CourseEntity;
@@ -9,8 +10,11 @@ import com.example.rmg.infrastructure.persistence.jpa.paymentmethod.PaymentMetho
 import com.example.rmg.infrastructure.persistence.jpa.purchase.PurchaseEntity;
 import com.example.rmg.infrastructure.persistence.jpa.purchase.PurchaseEntityRepository;
 import com.example.rmg.infrastructure.persistence.jpa.purchase.PurchaseItemEntity;
+import com.example.rmg.infrastructure.persistence.jpa.subscription.SubscriptionEntity;
+import com.example.rmg.infrastructure.persistence.jpa.subscription.SubscriptionEntityRepository;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntity;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntityRepository;
+import com.example.rmg.infrastructure.test.builders.Subscriptions;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -32,6 +36,7 @@ import static com.example.rmg.infrastructure.test.builders.Courses.aCourseEntity
 import static com.example.rmg.infrastructure.test.builders.PaymentMethods.aPaymentMethodEntity;
 import static com.example.rmg.infrastructure.test.builders.PaymentMethods.aPaymentRequest;
 import static com.example.rmg.infrastructure.test.builders.Purchases.aPurchaseEntity;
+import static com.example.rmg.infrastructure.test.builders.Subscriptions.aSubscriptionEntity;
 import static com.example.rmg.infrastructure.test.builders.Users.anUserEntity;
 import static com.example.rmg.infrastructure.test.builders.Users.anUserRequest;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -72,6 +77,9 @@ class UserControllerTest {
     @Autowired
     private PurchaseEntityRepository purchaseEntityRepository;
 
+    @Autowired
+    private SubscriptionEntityRepository subscriptionEntityRepository;
+
     private UserEntity userEntity;
     private PaymentMethodResponse paymentMethodResponse;
     private UserResponse userResponse;
@@ -80,10 +88,15 @@ class UserControllerTest {
     private CourseEntity courseEntity;
     private PurchaseResponse purchaseResponse;
     private PurchaseEntity purchaseEntity;
+    private SubscriptionEntity subscriptionEntity;
 
 
     @AfterEach
     void tearDown() {
+
+        if (subscriptionEntity != null) {
+            subscriptionEntityRepository.delete(subscriptionEntity);
+        }
 
         if (purchaseResponse != null) {
             purchaseEntityRepository.deleteById(purchaseResponse.getId());
@@ -221,6 +234,23 @@ class UserControllerTest {
                 .andExpect(jsonPath("$[0].buyerId").value(userEntity.getId().toString()));
     }
 
+    @Test
+    @Transactional
+    void should_list_subscriptions() throws Exception {
+        givenUserEntity();
+        givenCategoryEntity();
+        givenCourseEntity();
+        givenSubscriptionEntity();
+
+        mockMvc.perform(get(BASE_URI + "/{userId}/subscriptions", userEntity.getId())
+                        .contentType(APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(subscriptionEntity.getId().toString()))
+                .andExpect(jsonPath("$[0].studentId").value(userEntity.getId().toString()));
+    }
+
+
     private void givenPaymentMethodEntity() {
         paymentMethodEntity = aPaymentMethodEntity(userEntity).build();
         paymentMethodEntity = paymentMethodEntityRepository.save(paymentMethodEntity);
@@ -253,6 +283,12 @@ class UserControllerTest {
         purchaseEntity.addItem(purchaseItem);
 
         purchaseEntityRepository.save(purchaseEntity);
+
+    }
+
+    private void givenSubscriptionEntity() {
+        subscriptionEntity = aSubscriptionEntity(userEntity, courseEntity).build();
+        subscriptionEntityRepository.save(subscriptionEntity);
 
     }
 

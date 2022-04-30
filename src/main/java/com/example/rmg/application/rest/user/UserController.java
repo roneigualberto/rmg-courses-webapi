@@ -15,6 +15,9 @@ import com.example.rmg.usecase.purchase.list.ListPurchaseUseCaseOutput;
 import com.example.rmg.usecase.purchase.make.MakePurchaseUseCase;
 import com.example.rmg.usecase.purchase.make.MakePurchaseUseCaseInput;
 import com.example.rmg.usecase.purchase.make.MakePurchaseUseCaseOutput;
+import com.example.rmg.usecase.subscription.list.ListSubscriptionUseCase;
+import com.example.rmg.usecase.subscription.list.ListSubscriptionUseCaseInput;
+import com.example.rmg.usecase.subscription.list.ListSubscriptionUseCaseOutput;
 import com.example.rmg.usecase.user.create.CreateUserUseCase;
 import com.example.rmg.usecase.user.create.CreateUserUseCaseInput;
 import com.example.rmg.usecase.user.create.CreateUserUseCaseOutput;
@@ -43,6 +46,8 @@ public class UserController {
     private final MakePurchaseUseCase makePurchaseUseCase;
 
     private final ListPurchaseUseCase listPurchaseUseCase;
+
+    private final ListSubscriptionUseCase listSubscriptionUseCase;
 
     private final UserMapper userMapper;
 
@@ -114,6 +119,21 @@ public class UserController {
         final ListPurchaseUseCaseOutput output = listPurchaseUseCase.execute(input);
 
         final List<PurchaseResponse> response = userMapper.toPurchaseResponseList(output.getPurchases());
+
+        return ResponseEntity.ok(response);
+    }
+
+
+    @GetMapping("{userId}/subscriptions")
+    public ResponseEntity<List<SubscriptionResponse>> getSubscriptions(@PathVariable UUID userId) {
+
+        final ListSubscriptionUseCaseInput input = ListSubscriptionUseCaseInput.builder()
+                .studentId(userId)
+                .build();
+
+        final ListSubscriptionUseCaseOutput output = listSubscriptionUseCase.execute(input);
+
+        final List<SubscriptionResponse> response = userMapper.toSubscriptionResponseList(output.getSubscriptions());
 
         return ResponseEntity.ok(response);
     }
