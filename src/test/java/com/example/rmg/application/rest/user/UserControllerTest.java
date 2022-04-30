@@ -11,10 +11,13 @@ import com.example.rmg.infrastructure.persistence.jpa.paymentmethod.PaymentMetho
 import com.example.rmg.infrastructure.persistence.jpa.purchase.PurchaseEntity;
 import com.example.rmg.infrastructure.persistence.jpa.purchase.PurchaseEntityRepository;
 import com.example.rmg.infrastructure.persistence.jpa.purchase.PurchaseItemEntity;
+import com.example.rmg.infrastructure.persistence.jpa.subscription.CompletedLectureEntity;
+import com.example.rmg.infrastructure.persistence.jpa.subscription.CompletedLectureEntityRepository;
 import com.example.rmg.infrastructure.persistence.jpa.subscription.SubscriptionEntity;
 import com.example.rmg.infrastructure.persistence.jpa.subscription.SubscriptionEntityRepository;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntity;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntityRepository;
+import com.example.rmg.infrastructure.test.builders.Subscriptions;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -37,6 +40,7 @@ import static com.example.rmg.infrastructure.test.builders.Lectures.aLectureEnti
 import static com.example.rmg.infrastructure.test.builders.PaymentMethods.aPaymentMethodEntity;
 import static com.example.rmg.infrastructure.test.builders.PaymentMethods.aPaymentRequest;
 import static com.example.rmg.infrastructure.test.builders.Purchases.aPurchaseEntity;
+import static com.example.rmg.infrastructure.test.builders.Subscriptions.aCompletedLectureEntity;
 import static com.example.rmg.infrastructure.test.builders.Subscriptions.aSubscriptionEntity;
 import static com.example.rmg.infrastructure.test.builders.Users.anUserEntity;
 import static com.example.rmg.infrastructure.test.builders.Users.anUserRequest;
@@ -83,6 +87,9 @@ class UserControllerTest {
     @Autowired
     private LectureEntityRepository lectureEntityRepository;
 
+    @Autowired
+    private CompletedLectureEntityRepository completedLectureEntityRepository;
+
     private UserEntity userEntity;
     private PaymentMethodResponse paymentMethodResponse;
     private UserResponse userResponse;
@@ -93,10 +100,16 @@ class UserControllerTest {
     private PurchaseEntity purchaseEntity;
     private SubscriptionEntity subscriptionEntity;
     private LectureEntity lectureEntity;
+    private CompletedLectureEntity completedLectureEntity;
 
 
     @AfterEach
     void tearDown() {
+
+
+        if (completedLectureEntity != null) {
+            completedLectureEntityRepository.delete(completedLectureEntity);
+        }
 
         if (subscriptionEntity != null) {
             subscriptionEntityRepository.delete(subscriptionEntity);
@@ -122,6 +135,10 @@ class UserControllerTest {
             userEntityRepository.deleteById(userResponse.getId());
         }
 
+        if (lectureEntity != null) {
+            lectureEntityRepository.delete(lectureEntity);
+        }
+
         if (courseEntity != null) {
             courseEntityRepository.delete(courseEntity);
         }
@@ -133,6 +150,8 @@ class UserControllerTest {
         if (userEntity != null) {
             userEntityRepository.delete(userEntity);
         }
+
+
     }
 
 
@@ -266,12 +285,27 @@ class UserControllerTest {
         mockMvc.perform(patch(BASE_URI + "/{userId}/subscriptions/{subscriptionId}/completed-lecture/{lectureId}",
                 userEntity.getId(),
                 subscriptionEntity.getId(),
-                lectureEntity.getId()
-                , userEntity.getId())
+                lectureEntity.getId())
                 .contentType(APPLICATION_JSON)
         ).andExpect(status().isNoContent());
+    }
 
+    @Test
+    @Transactional
+    void should_undo_complete_lecture() throws Exception {
+        givenUserEntity();
+        givenCategoryEntity();
+        givenCourseEntity();
+        givenLectureEntity();
+        givenSubscriptionEntity();
+        givenCompletedLectureEntity();
 
+        mockMvc.perform(delete(BASE_URI + "/{userId}/subscriptions/{subscriptionId}/completed-lecture/{lectureId}",
+                userEntity.getId(),
+                subscriptionEntity.getId(),
+                lectureEntity.getId())
+                .contentType(APPLICATION_JSON)
+        ).andExpect(status().isNoContent());
     }
 
 
@@ -318,7 +352,11 @@ class UserControllerTest {
     private void givenSubscriptionEntity() {
         subscriptionEntity = aSubscriptionEntity(userEntity, courseEntity).build();
         subscriptionEntityRepository.save(subscriptionEntity);
+    }
 
+    private void givenCompletedLectureEntity() {
+        completedLectureEntity = aCompletedLectureEntity(subscriptionEntity, lectureEntity).build();
+        completedLectureEntityRepository.save(completedLectureEntity);
     }
 
 }

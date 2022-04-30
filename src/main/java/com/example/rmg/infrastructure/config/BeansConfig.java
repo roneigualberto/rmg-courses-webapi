@@ -33,6 +33,7 @@ import com.example.rmg.usecase.purchase.make.MakePurchaseUseCase;
 import com.example.rmg.usecase.subscription.completelecture.CompleteLectureUseCase;
 import com.example.rmg.usecase.subscription.create.CreateSubscriptionUseCase;
 import com.example.rmg.usecase.subscription.list.ListSubscriptionUseCase;
+import com.example.rmg.usecase.subscription.undocompletelecture.UndoCompleteLectureUseCase;
 import com.example.rmg.usecase.user.create.CreateUserUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -220,6 +221,18 @@ public class BeansConfig {
     ) {
         return new CompleteLectureUseCase(completedLecturePersistence, subscriptionPersistence,lecturePersistence, userPersistence);
     }
+
+
+    @Bean
+    public UndoCompleteLectureUseCase undoCompleteLectureUseCase(
+            CompletedLecturePersistence completedLecturePersistence,
+            SubscriptionPersistence subscriptionPersistence,
+            LecturePersistence lecturePersistence,
+            UserPersistence userPersistence
+    ) {
+        return new UndoCompleteLectureUseCase(completedLecturePersistence, subscriptionPersistence,lecturePersistence, userPersistence);
+    }
+
 
 
 }

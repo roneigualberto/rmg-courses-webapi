@@ -21,6 +21,9 @@ import com.example.rmg.usecase.subscription.completelecture.CompleteLectureUseCa
 import com.example.rmg.usecase.subscription.list.ListSubscriptionUseCase;
 import com.example.rmg.usecase.subscription.list.ListSubscriptionUseCaseInput;
 import com.example.rmg.usecase.subscription.list.ListSubscriptionUseCaseOutput;
+import com.example.rmg.usecase.subscription.undocompletelecture.UndoCompleteLectureUseCase;
+import com.example.rmg.usecase.subscription.undocompletelecture.UndoCompleteLectureUseCaseInput;
+import com.example.rmg.usecase.subscription.undocompletelecture.UndoCompleteLectureUseCaseOutput;
 import com.example.rmg.usecase.user.create.CreateUserUseCase;
 import com.example.rmg.usecase.user.create.CreateUserUseCaseInput;
 import com.example.rmg.usecase.user.create.CreateUserUseCaseOutput;
@@ -52,6 +55,8 @@ public class UserController {
     private final ListSubscriptionUseCase listSubscriptionUseCase;
 
     private final CompleteLectureUseCase completeLectureUseCase;
+
+    private final UndoCompleteLectureUseCase undoCompleteLectureUseCase;
 
     private final UserMapper userMapper;
 
@@ -144,7 +149,7 @@ public class UserController {
 
 
     @PatchMapping("{userId}/subscriptions/{subscriptionId}/completed-lecture/{lectureId}")
-    public ResponseEntity<?> completedLecture(@PathVariable UUID userId, @PathVariable UUID subscriptionId, @PathVariable UUID lectureId) {
+    public ResponseEntity<?> completeLecture(@PathVariable UUID userId, @PathVariable UUID subscriptionId, @PathVariable UUID lectureId) {
 
         final CompleteLectureUseCaseInput input = CompleteLectureUseCaseInput.builder()
                 .studentId(userId)
@@ -153,6 +158,20 @@ public class UserController {
                 .build();
 
         final CompleteLectureUseCaseOutput output = completeLectureUseCase.execute(input);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("{userId}/subscriptions/{subscriptionId}/completed-lecture/{lectureId}")
+    public ResponseEntity<?> undoCompleteLecture(@PathVariable UUID userId, @PathVariable UUID subscriptionId, @PathVariable UUID lectureId) {
+
+        final UndoCompleteLectureUseCaseInput input = UndoCompleteLectureUseCaseInput.builder()
+                .studentId(userId)
+                .subscriptionId(subscriptionId)
+                .lectureId(lectureId)
+                .build();
+
+        final UndoCompleteLectureUseCaseOutput output = undoCompleteLectureUseCase.execute(input);
 
         return ResponseEntity.noContent().build();
     }

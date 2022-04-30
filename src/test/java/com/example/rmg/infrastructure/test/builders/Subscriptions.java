@@ -4,6 +4,8 @@ import com.example.rmg.domain.course.entity.Course;
 import com.example.rmg.domain.subscription.entity.Subscription;
 import com.example.rmg.domain.user.entity.User;
 import com.example.rmg.infrastructure.persistence.jpa.course.CourseEntity;
+import com.example.rmg.infrastructure.persistence.jpa.lecture.LectureEntity;
+import com.example.rmg.infrastructure.persistence.jpa.subscription.CompletedLectureEntity;
 import com.example.rmg.infrastructure.persistence.jpa.subscription.SubscriptionEntity;
 import com.example.rmg.infrastructure.persistence.jpa.user.UserEntity;
 
@@ -29,6 +31,17 @@ public class Subscriptions {
                 .createdAt(LocalDateTime.now())
                 .student(student)
                 .course(course);
+
+
+    }
+
+    public static CompletedLectureEntity.CompletedLectureEntityBuilder aCompletedLectureEntity(SubscriptionEntity subscriptionEntity, LectureEntity lectureEntity) {
+
+        return CompletedLectureEntity.builder()
+                .id(UUID.randomUUID())
+                .completedAt(LocalDateTime.now())
+                .subscription(subscriptionEntity)
+                .lecture(lectureEntity);
 
 
     }

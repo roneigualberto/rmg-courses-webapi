@@ -76,6 +76,8 @@ class CompleteLectureUseCaseTest {
     void should_not_complete_lecture_with_different_courses() {
 
         final User student = anUser().build();
+        when(userPersistence.get(any())).thenReturn(student);
+
         final Course course1 = aCourse().build();
 
 
@@ -99,8 +101,9 @@ class CompleteLectureUseCaseTest {
     void should_not_complete_lecture_with_lecture_was_completed() {
 
         final User student = anUser().build();
-        final Course course = aCourse().build();
+        when(userPersistence.get(any())).thenReturn(student);
 
+        final Course course = aCourse().build();
 
         final Lecture lecture = aLecture(course).build();
         when(lecturePersistence.get(any())).thenReturn(lecture);

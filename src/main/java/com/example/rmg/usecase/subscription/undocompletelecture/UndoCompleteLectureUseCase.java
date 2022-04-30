@@ -12,8 +12,6 @@ import com.example.rmg.domain.user.persistence.UserPersistence;
 import com.example.rmg.usecase.common.UseCase;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Optional;
-
 import static com.example.rmg.domain.course.messages.CourseMessages.LECTURE_DOES_NOT_BELONGS_TO_COURSE;
 import static com.example.rmg.domain.subscription.messages.SubscriptionMessages.SUBSCRIPTION_DOES_NOT_BELONG_TO_STUDENT;
 
