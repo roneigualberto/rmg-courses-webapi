@@ -32,6 +32,8 @@ import com.example.rmg.usecase.purchase.list.ListPurchaseUseCase;
 import com.example.rmg.usecase.purchase.make.MakePurchaseUseCase;
 import com.example.rmg.usecase.subscription.completelecture.CompleteLectureUseCase;
 import com.example.rmg.usecase.subscription.create.CreateSubscriptionUseCase;
+import com.example.rmg.usecase.subscription.finish.FinishSubscriptionUseCase;
+import com.example.rmg.usecase.subscription.finish.FinishSubscriptionUseCaseInput;
 import com.example.rmg.usecase.subscription.list.ListSubscriptionUseCase;
 import com.example.rmg.usecase.subscription.undocompletelecture.UndoCompleteLectureUseCase;
 import com.example.rmg.usecase.user.create.CreateUserUseCase;
@@ -219,7 +221,7 @@ public class BeansConfig {
             LecturePersistence lecturePersistence,
             UserPersistence userPersistence
     ) {
-        return new CompleteLectureUseCase(completedLecturePersistence, subscriptionPersistence,lecturePersistence, userPersistence);
+        return new CompleteLectureUseCase(completedLecturePersistence, subscriptionPersistence, lecturePersistence, userPersistence);
     }
 
 
@@ -230,9 +232,16 @@ public class BeansConfig {
             LecturePersistence lecturePersistence,
             UserPersistence userPersistence
     ) {
-        return new UndoCompleteLectureUseCase(completedLecturePersistence, subscriptionPersistence,lecturePersistence, userPersistence);
+        return new UndoCompleteLectureUseCase(completedLecturePersistence, subscriptionPersistence, lecturePersistence, userPersistence);
     }
 
+    @Bean
+    public FinishSubscriptionUseCase finishSubscriptionUseCase(
+            SubscriptionPersistence subscriptionPersistence,
+            UserPersistence userPersistence
+    ) {
+        return new FinishSubscriptionUseCase(subscriptionPersistence, userPersistence);
+    }
 
 
 }

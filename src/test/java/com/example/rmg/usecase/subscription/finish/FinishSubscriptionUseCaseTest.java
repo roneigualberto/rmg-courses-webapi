@@ -1,12 +1,10 @@
 package com.example.rmg.usecase.subscription.finish;
 
 import com.example.rmg.domain.course.entity.Course;
-import com.example.rmg.domain.course.entity.Lecture;
 import com.example.rmg.domain.subscription.entity.Subscription;
 import com.example.rmg.domain.subscription.persistence.SubscriptionPersistence;
 import com.example.rmg.domain.user.entity.User;
 import com.example.rmg.domain.user.persistence.UserPersistence;
-import com.example.rmg.usecase.subscription.completelecture.CompleteLectureUseCase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.example.rmg.infrastructure.test.builders.Courses.aCourse;
-import static com.example.rmg.infrastructure.test.builders.Lectures.aLecture;
 import static com.example.rmg.infrastructure.test.builders.Subscriptions.aSubscription;
 import static com.example.rmg.infrastructure.test.builders.Users.anUser;
 import static org.mockito.ArgumentMatchers.any;

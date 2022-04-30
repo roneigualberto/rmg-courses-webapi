@@ -18,6 +18,9 @@ import com.example.rmg.usecase.purchase.make.MakePurchaseUseCaseOutput;
 import com.example.rmg.usecase.subscription.completelecture.CompleteLectureUseCase;
 import com.example.rmg.usecase.subscription.completelecture.CompleteLectureUseCaseInput;
 import com.example.rmg.usecase.subscription.completelecture.CompleteLectureUseCaseOutput;
+import com.example.rmg.usecase.subscription.finish.FinishSubscriptionUseCase;
+import com.example.rmg.usecase.subscription.finish.FinishSubscriptionUseCaseInput;
+import com.example.rmg.usecase.subscription.finish.FinishSubscriptionUseCaseOutput;
 import com.example.rmg.usecase.subscription.list.ListSubscriptionUseCase;
 import com.example.rmg.usecase.subscription.list.ListSubscriptionUseCaseInput;
 import com.example.rmg.usecase.subscription.list.ListSubscriptionUseCaseOutput;
@@ -57,6 +60,8 @@ public class UserController {
     private final CompleteLectureUseCase completeLectureUseCase;
 
     private final UndoCompleteLectureUseCase undoCompleteLectureUseCase;
+
+    private final FinishSubscriptionUseCase finishSubscriptionUseCase;
 
     private final UserMapper userMapper;
 
@@ -172,6 +177,22 @@ public class UserController {
                 .build();
 
         final UndoCompleteLectureUseCaseOutput output = undoCompleteLectureUseCase.execute(input);
+
+        return ResponseEntity.noContent().build();
+    }
+
+
+    @PutMapping("{userId}/subscriptions/{subscriptionId}/finish")
+    public ResponseEntity<?> finishSubscription(@PathVariable UUID userId, @PathVariable UUID subscriptionId, @RequestBody FinishSubscriptionRequest request) {
+
+        final FinishSubscriptionUseCaseInput input = FinishSubscriptionUseCaseInput.builder()
+                .studentId(userId)
+                .subscriptionId(subscriptionId)
+                .rating(request.getRating())
+                .comment(request.getComment())
+                .build();
+
+        final FinishSubscriptionUseCaseOutput output = finishSubscriptionUseCase.execute(input);
 
         return ResponseEntity.noContent().build();
     }

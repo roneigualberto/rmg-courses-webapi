@@ -308,6 +308,25 @@ class UserControllerTest {
         ).andExpect(status().isNoContent());
     }
 
+    @Test
+    @Transactional
+    void should_finish_subscription() throws Exception {
+        givenUserEntity();
+        givenCategoryEntity();
+        givenCourseEntity();
+        givenLectureEntity();
+        givenSubscriptionEntity();
+
+        FinishSubscriptionRequest request = FinishSubscriptionRequest.builder().comment("Course awesome!").rating(10).build();
+
+        mockMvc.perform(put(BASE_URI + "/{userId}/subscriptions/{subscriptionId}/finish",
+                userEntity.getId(),
+                subscriptionEntity.getId())
+                .contentType(APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request))
+        ).andExpect(status().isNoContent());
+    }
+
 
     private void givenPaymentMethodEntity() {
         paymentMethodEntity = aPaymentMethodEntity(userEntity).build();
