@@ -25,7 +25,7 @@ type Course {
     category: Category!
     published: Boolean!
     publishDate: Date
-    lectures: [Lecture!]
+    lectures: [Lecture]
 }
 
 type Lecture {
@@ -35,7 +35,22 @@ type Lecture {
     type: String
 }
 
+input CourseRequest {
+    name: String
+    instructorId: String
+    title: String!;
+    description: String;
+    skillLevel: String!;
+    price: Float!;
+    categoryId: String!;
+}
+
 type Query {
    categories: [Category]
    courses: [Course]
 }
+
+type Mutation {
+   createCourse(input: CourseRequest!): Course
+}
+

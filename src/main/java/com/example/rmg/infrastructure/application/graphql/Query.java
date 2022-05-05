@@ -16,7 +16,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class GraphQLQueries implements GraphQLQueryResolver {
+public class Query implements GraphQLQueryResolver {
 
 
     private final ListCategoryUseCase listCategoryUseCase;
