@@ -1,6 +1,6 @@
 package com.example.rmg.infrastructure.test.builders;
 
-import com.example.rmg.infrastructure.application.webapi.category.CategoryRequest;
+import com.example.rmg.infrastructure.application.rest.category.CategoryRequest;
 import com.example.rmg.domain.category.entity.Category;
 import com.example.rmg.domain.category.valueobject.CategoryGroup;
 import com.example.rmg.infrastructure.persistence.jpa.category.CategoryEntity;

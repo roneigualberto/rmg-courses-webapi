@@ -37,6 +37,7 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
                 .timestamp(new Date().getTime())
                 .error(httpStatus.getReasonPhrase())
                 .path(httpServletRequest.getRequestURI())
+                .message(ex.getMessage())
                 .status(httpStatus.value())
                 .build();
 

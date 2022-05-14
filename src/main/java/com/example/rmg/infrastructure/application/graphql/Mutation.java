@@ -1,8 +1,8 @@
 package com.example.rmg.infrastructure.application.graphql;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
-import com.example.rmg.infrastructure.application.webapi.course.CourseMapper;
-import com.example.rmg.infrastructure.application.webapi.course.CourseRequest;
+import com.example.rmg.infrastructure.application.rest.course.CourseMapper;
+import com.example.rmg.infrastructure.application.rest.course.CourseRequest;
 import com.example.rmg.usecase.course.common.output.CourseView;
 import com.example.rmg.usecase.course.create.CreateCourseUseCase;
 import com.example.rmg.usecase.course.create.CreateCourseUseCaseInput;

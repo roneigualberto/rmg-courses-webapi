@@ -16,6 +16,8 @@ services:
       - ./.docker/storage:/app/storage
     networks:
       - app-network
+    depends_on:
+      - db
   db:
     image: mysql:5.7
     command: --innodb-use-native-aio=0

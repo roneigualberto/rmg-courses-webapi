@@ -18,10 +18,11 @@ class FileSystemStorageServiceTest {
     public static final String FOLDER = "some-folder.txt";
     public static final String FILE_NAME = "some-file.txt";
     private FileSystemStorageService fileSystemStorageService;
+    private FileSystemStorageProperties storageProp;
 
     @BeforeEach
     void setUp() {
-        final FileSystemStorageProperties storageProp = new FileSystemStorageProperties();
+        storageProp = new FileSystemStorageProperties();
         fileSystemStorageService = new FileSystemStorageService(storageProp);
     }
 
@@ -33,12 +34,13 @@ class FileSystemStorageServiceTest {
 
         ByteArrayInputStream inputStream = new ByteArrayInputStream(contentFile.getBytes(StandardCharsets.UTF_8));
 
-        final String tmpDir = System.getProperty("java.io.tmpdir");
 
         fileSystemStorageService.store(FOLDER, FILE_NAME, inputStream);
 
-        final Path locationPath = Paths.get(tmpDir, FOLDER);
-        boolean existFile = Files.exists(locationPath.resolve(FILE_NAME));
+        final Path dirPath = storageProp.getLocationPath().resolve(FOLDER);
+
+        boolean existFile = Files.exists(dirPath.resolve(FILE_NAME));
+
         assertTrue(existFile);
     }
 }
