@@ -19,12 +19,11 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
-class ListCategoryUseCaseTest {
+class DefaultListCategoryUseCaseTest {
 
 
     @InjectMocks
-    private ListCategoryUseCase useCase;
-
+    private DefaultListCategoryUseCase useCase;
 
     @Mock
     private CategoryPersistence categoryPersistence;

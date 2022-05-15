@@ -10,6 +10,7 @@ import com.example.rmg.usecase.category.delete.DeleteCategoryUseCaseOutput;
 import com.example.rmg.usecase.category.find.FindCategoryUseCase;
 import com.example.rmg.usecase.category.find.FindCategoryUseCaseInput;
 import com.example.rmg.usecase.category.find.FindCategoryUseCaseOutput;
+import com.example.rmg.usecase.category.list.DefaultListCategoryUseCase;
 import com.example.rmg.usecase.category.list.ListCategoryUseCase;
 import com.example.rmg.usecase.category.list.ListCategoryUseCaseInput;
 import com.example.rmg.usecase.category.list.ListCategoryUseCaseOutput;

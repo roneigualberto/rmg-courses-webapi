@@ -2,6 +2,7 @@ package com.example.rmg.infrastructure.application.graphql;
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import com.example.rmg.usecase.category.common.ouput.CategoryView;
+import com.example.rmg.usecase.category.list.DefaultListCategoryUseCase;
 import com.example.rmg.usecase.category.list.ListCategoryUseCase;
 import com.example.rmg.usecase.category.list.ListCategoryUseCaseInput;
 import com.example.rmg.usecase.category.list.ListCategoryUseCaseOutput;
