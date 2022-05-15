@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 class FindCategoryUseCaseTest {
 
     @InjectMocks
-    private FindCategoryUseCase useCase;
+    private DefaultFindCategoryUseCase useCase;
 
     @Spy
     private CategoryPersistence categoryPersistence;

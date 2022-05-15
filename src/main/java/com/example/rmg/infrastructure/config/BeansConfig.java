@@ -14,6 +14,7 @@ import com.example.rmg.domain.user.persistence.UserPersistence;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCase;
 import com.example.rmg.usecase.category.create.DefaultCreateCategoryUseCase;
 import com.example.rmg.usecase.category.delete.DeleteCategoryUseCase;
+import com.example.rmg.usecase.category.find.DefaultFindCategoryUseCase;
 import com.example.rmg.usecase.category.find.FindCategoryUseCase;
 import com.example.rmg.usecase.category.list.DefaultListCategoryUseCase;
 import com.example.rmg.usecase.category.list.ListCategoryUseCase;
@@ -56,7 +57,7 @@ public class BeansConfig {
 
     @Bean
     public FindCategoryUseCase findCategoryUseCase(CategoryPersistence categoryPersistence) {
-        return new FindCategoryUseCase(categoryPersistence);
+        return new DefaultFindCategoryUseCase(categoryPersistence);
     }
 
     @Bean
