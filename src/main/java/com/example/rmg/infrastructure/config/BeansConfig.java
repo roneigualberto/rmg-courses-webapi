@@ -13,6 +13,7 @@ import com.example.rmg.domain.subscription.persistence.SubscriptionPersistence;
 import com.example.rmg.domain.user.persistence.UserPersistence;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCase;
 import com.example.rmg.usecase.category.create.DefaultCreateCategoryUseCase;
+import com.example.rmg.usecase.category.delete.DefaultDeleteCategoryUseCase;
 import com.example.rmg.usecase.category.delete.DeleteCategoryUseCase;
 import com.example.rmg.usecase.category.find.DefaultFindCategoryUseCase;
 import com.example.rmg.usecase.category.find.FindCategoryUseCase;
@@ -68,7 +69,7 @@ public class BeansConfig {
 
     @Bean
     public DeleteCategoryUseCase deleteCategoryUseCase(CategoryPersistence categoryPersistence) {
-        return new DeleteCategoryUseCase(categoryPersistence);
+        return new DefaultDeleteCategoryUseCase(categoryPersistence);
     }
 
     @Bean

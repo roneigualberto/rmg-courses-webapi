@@ -21,7 +21,7 @@ class DeleteCategoryUseCaseTest {
 
 
     @InjectMocks
-    private DeleteCategoryUseCase useCase;
+    private DefaultDeleteCategoryUseCase useCase;
 
 
     @Spy
