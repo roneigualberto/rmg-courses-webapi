@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 class UpdateCategoryUseCaseTest {
 
     @InjectMocks
-    private UpdateCategoryUseCase useCase;
+    private DefaultUpdateCategoryUseCase useCase;
 
     @Spy
     private CategoryPersistence categoryPersistence;

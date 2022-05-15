@@ -18,6 +18,7 @@ import com.example.rmg.usecase.category.find.DefaultFindCategoryUseCase;
 import com.example.rmg.usecase.category.find.FindCategoryUseCase;
 import com.example.rmg.usecase.category.list.DefaultListCategoryUseCase;
 import com.example.rmg.usecase.category.list.ListCategoryUseCase;
+import com.example.rmg.usecase.category.update.DefaultUpdateCategoryUseCase;
 import com.example.rmg.usecase.category.update.UpdateCategoryUseCase;
 import com.example.rmg.usecase.course.create.CreateCourseUseCase;
 import com.example.rmg.usecase.course.delete.DeleteCourseUseCase;
@@ -62,7 +63,7 @@ public class BeansConfig {
 
     @Bean
     public UpdateCategoryUseCase updateCategoryUseCase(CategoryPersistence categoryPersistence) {
-        return new UpdateCategoryUseCase(categoryPersistence);
+        return new DefaultUpdateCategoryUseCase(categoryPersistence);
     }
 
     @Bean
