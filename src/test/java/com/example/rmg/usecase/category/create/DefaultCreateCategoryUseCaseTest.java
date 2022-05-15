@@ -23,16 +23,14 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
-class CreateCategoryUseCaseTest {
+class DefaultCreateCategoryUseCaseTest {
 
 
     @InjectMocks
-    private CreateCategoryUseCase useCase;
-
+    private DefaultCreateCategoryUseCase useCase;
 
     @Mock
     private CategoryPersistence categoryPersistence;
-
 
     @Test
     void execute_should_create_category() {

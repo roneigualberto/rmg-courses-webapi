@@ -1,9 +1,9 @@
 package com.example.rmg.infrastructure.application.rest.category;
 
 
+import com.example.rmg.usecase.category.create.CreateCategoryUseCase;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCaseInput;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCaseOutput;
-import com.example.rmg.usecase.category.create.CreateCategoryUseCase;
 import com.example.rmg.usecase.category.delete.DeleteCategoryUseCase;
 import com.example.rmg.usecase.category.delete.DeleteCategoryUseCaseInput;
 import com.example.rmg.usecase.category.delete.DeleteCategoryUseCaseOutput;

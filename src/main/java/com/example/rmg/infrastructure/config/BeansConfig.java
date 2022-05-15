@@ -12,6 +12,7 @@ import com.example.rmg.domain.subscription.persistence.CompletedLecturePersisten
 import com.example.rmg.domain.subscription.persistence.SubscriptionPersistence;
 import com.example.rmg.domain.user.persistence.UserPersistence;
 import com.example.rmg.usecase.category.create.CreateCategoryUseCase;
+import com.example.rmg.usecase.category.create.DefaultCreateCategoryUseCase;
 import com.example.rmg.usecase.category.delete.DeleteCategoryUseCase;
 import com.example.rmg.usecase.category.find.FindCategoryUseCase;
 import com.example.rmg.usecase.category.list.ListCategoryUseCase;
@@ -33,7 +34,6 @@ import com.example.rmg.usecase.purchase.make.MakePurchaseUseCase;
 import com.example.rmg.usecase.subscription.completelecture.CompleteLectureUseCase;
 import com.example.rmg.usecase.subscription.create.CreateSubscriptionUseCase;
 import com.example.rmg.usecase.subscription.finish.FinishSubscriptionUseCase;
-import com.example.rmg.usecase.subscription.finish.FinishSubscriptionUseCaseInput;
 import com.example.rmg.usecase.subscription.list.ListSubscriptionUseCase;
 import com.example.rmg.usecase.subscription.undocompletelecture.UndoCompleteLectureUseCase;
 import com.example.rmg.usecase.user.create.CreateUserUseCase;
@@ -45,7 +45,7 @@ public class BeansConfig {
 
     @Bean
     public CreateCategoryUseCase createCategoryUseCase(CategoryPersistence categoryPersistence) {
-        return new CreateCategoryUseCase(categoryPersistence);
+        return new DefaultCreateCategoryUseCase(categoryPersistence);
     }
 
     @Bean
